@@ -5,17 +5,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F4F7F1;
+  --bg:#F2F5FB;
   --surface:#FFFFFF;
-  --surface-2:#EAEFE4;
-  --surface-3:#DEE6D6;
-  --ink:#161F16;
-  --ink-soft:#4B5A49;
-  --ink-faint:#7C8A78;
-  --border:#D6DECB;
-  --accent:#28603F;
-  --accent-strong:#194A2E;
-  --accent-ink:#F4FBF3;
+  --surface-2:#E6EDF8;
+  --surface-3:#D7E1F1;
+  --ink:#121A2C;
+  --ink-soft:#47536D;
+  --ink-faint:#7784A0;
+  --border:#D1DCEE;
+  --accent:#2456A0;
+  --accent-strong:#153466;
+  --accent-ink:#F3F8FF;
   --gold:#93711C;
   --gold-bg:#F6EDD3;
   --amber:#9A6A1E;
@@ -24,22 +24,22 @@
   --committee-bg:#F7E6D8;
   --avoid:#A23636;
   --avoid-bg:#F7DEDD;
-  --focus:#2E6F4E;
-  --shadow: 0 1px 2px rgba(20,30,18,.06), 0 6px 20px -8px rgba(20,30,18,.18);
+  --focus:#2C64AE;
+  --shadow: 0 1px 2px rgba(16,26,46,.06), 0 6px 20px -8px rgba(16,26,46,.18);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0F140F;
-    --surface:#161D15;
-    --surface-2:#1D251A;
-    --surface-3:#26301F;
-    --ink:#E8EEE3;
-    --ink-soft:#AEBBA6;
-    --ink-faint:#7E8C79;
-    --border:#2C3626;
-    --accent:#63B385;
-    --accent-strong:#8AD1A6;
-    --accent-ink:#0B160F;
+    --bg:#0B1220;
+    --surface:#111A2C;
+    --surface-2:#16223A;
+    --surface-3:#1E2E4C;
+    --ink:#E8EEF9;
+    --ink-soft:#AAB8D2;
+    --ink-faint:#7C89A6;
+    --border:#293A5C;
+    --accent:#5D97E0;
+    --accent-strong:#8FBBF0;
+    --accent-ink:#08132A;
     --gold:#D8B15A;
     --gold-bg:#332A15;
     --amber:#D9A24E;
@@ -52,17 +52,17 @@
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0F140F;
-  --surface:#161D15;
-  --surface-2:#1D251A;
-  --surface-3:#26301F;
-  --ink:#E8EEE3;
-  --ink-soft:#AEBBA6;
-  --ink-faint:#7E8C79;
-  --border:#2C3626;
-  --accent:#63B385;
-  --accent-strong:#8AD1A6;
-  --accent-ink:#0B160F;
+  --bg:#0B1220;
+  --surface:#111A2C;
+  --surface-2:#16223A;
+  --surface-3:#1E2E4C;
+  --ink:#E8EEF9;
+  --ink-soft:#AAB8D2;
+  --ink-faint:#7C89A6;
+  --border:#293A5C;
+  --accent:#5D97E0;
+  --accent-strong:#8FBBF0;
+  --accent-ink:#08132A;
   --gold:#D8B15A;
   --gold-bg:#332A15;
   --amber:#D9A24E;
@@ -182,9 +182,53 @@ td.player{font-weight:600}
 .muted{color:var(--ink-faint)}
 .src-tag{font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--ink-faint); border:1px solid var(--border); border-radius:4px; padding:0 3px; vertical-align:middle}
 .est-tag{color:var(--ink-faint); cursor:help; font-weight:400}
-a.plink{color:inherit; text-decoration:none; border-bottom:1px solid transparent}
+a.plink{color:inherit; text-decoration:none; border-bottom:1px solid transparent; cursor:pointer}
 a.plink:hover{border-bottom-color:currentColor}
 a.plink:visited{color:inherit}
+
+/* ---------- player card modal ---------- */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(10,16,10,.55); backdrop-filter:blur(1px);
+  display:flex; align-items:flex-start; justify-content:center; padding:5vh 16px; z-index:100; overflow-y:auto;
+}
+.modal-overlay[hidden]{display:none}
+.modal-card{
+  position:relative; background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  box-shadow:0 24px 60px rgba(0,0,0,.35); max-width:560px; width:100%; padding:26px 26px 22px; margin-bottom:5vh;
+}
+.modal-close{
+  position:absolute; top:14px; right:14px; width:30px; height:30px; border-radius:50%; border:1px solid var(--border);
+  background:var(--surface-2); color:var(--ink-soft); font-size:18px; line-height:1; cursor:pointer;
+}
+.modal-close:hover{color:var(--ink); background:var(--surface-3)}
+.pm-head{display:flex; gap:14px; align-items:center; margin-bottom:16px}
+.pm-avatar{
+  width:56px; height:56px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center;
+  font-family:'Oswald',sans-serif; font-size:19px; font-weight:600; color:var(--accent-ink); background:var(--accent);
+}
+.pm-name{font-family:'Oswald',sans-serif; font-size:24px; font-weight:600; line-height:1.1}
+.pm-sub{font-size:12.5px; color:var(--ink-soft); margin-top:3px}
+.pm-badges{display:flex; gap:6px; flex-wrap:wrap; margin:14px 0}
+.pm-stats{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 0 16px}
+.pm-stat{background:var(--surface-2); border-radius:10px; padding:10px 12px}
+.pm-stat .k{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint)}
+.pm-stat .v{font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:600; margin-top:2px; font-variant-numeric:tabular-nums}
+.pm-section{margin-bottom:16px}
+.pm-section h4{
+  font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--ink-faint); margin:0 0 8px;
+}
+.pm-section p{font-size:13.5px; color:var(--ink-soft); margin:0}
+.pm-depth{display:flex; flex-direction:column; gap:5px}
+.pm-depth-row{
+  display:flex; justify-content:space-between; gap:10px; font-size:12.5px; padding:6px 9px; border-radius:7px;
+}
+.pm-depth-row.me{background:var(--surface-3); font-weight:600}
+.pm-depth-row .r{color:var(--ink-soft); font-weight:400}
+.pm-espn{
+  display:inline-block; margin-top:4px; font-size:12.5px; color:var(--accent); text-decoration:none; border-bottom:1px solid transparent;
+}
+.pm-espn:hover{border-bottom-color:var(--accent)}
 .small{font-size:12.5px; color:var(--ink-soft)}
 
 /* ---------- backfield summary cards on mobile handled by table scroll ---------- */
@@ -394,6 +438,13 @@ footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-
     Built for a 2026 full-PPR redraft. Depth charts move fast in early September &mdash; re-check anything flagged 🔴 or ⭐⭐⭐ the morning of your draft. Not betting or injury-diagnosis advice.
   </div>
 </footer>
+
+<div class="modal-overlay" id="playerModalOverlay" hidden>
+  <div class="modal-card" id="playerModalCard" role="dialog" aria-modal="true" aria-labelledby="pmName">
+    <button class="modal-close" id="playerModalClose" aria-label="Close">&times;</button>
+    <div id="playerModalBody"></div>
+  </div>
+</div>
 
 <script>
 /* =================== DATA =================== */
@@ -1051,11 +1102,299 @@ const ESPN_ID = {
  'jaxon smith-njigba':{id:4430878,slug:'jaxon-smith-njigba'},'rashid shaheed':{id:4032473,slug:'rashid-shaheed'},
  'cooper kupp':{id:2977187,slug:'cooper-kupp'}
 };
+
+/* Final 2025 NFL regular-season stat lines (Pro-Football-Reference, verified per player Sept 2026).
+   PPR points computed from raw stats: 0.1/rush yd, 6/rush TD, 1/reception, 0.1/rec yd, 6/rec TD.
+   {rookie:true} = player was in college in 2025, entered the NFL in the 2026 draft class. */
+const STATS_2025 = {
+ 'aaron jones':{att:132,rushYds:548,rushTD:2,rec:28,recYds:199,recTD:1,pprPts:120.7},
+ 'adonai mitchell':{att:1,rushYds:-4,rushTD:0,rec:33,recYds:453,recTD:2,pprPts:89.9},
+ 'aj brown':{att:0,rushYds:0,rushTD:0,rec:78,recYds:1003,recTD:7,pprPts:220.3},
+ 'alec pierce':{att:0,rushYds:0,rushTD:0,rec:47,recYds:1003,recTD:6,pprPts:183.3},
+ 'alvin kamara':{att:131,rushYds:471,rushTD:1,rec:33,recYds:186,recTD:0,pprPts:104.7},
+ 'amon-ra st brown':{att:3,rushYds:9,rushTD:0,rec:117,recYds:1401,recTD:11,pprPts:324.0},
+ 'andrei iosivas':{att:3,rushYds:14,rushTD:0,rec:33,recYds:435,recTD:2,pprPts:89.9},
+ 'ashton jeanty':{att:266,rushYds:975,rushTD:5,rec:55,recYds:346,recTD:5,pprPts:245.1},
+ 'bhayshul tuten':{att:83,rushYds:307,rushTD:5,rec:10,recYds:79,recTD:2,pprPts:90.6},
+ 'bijan robinson':{att:287,rushYds:1478,rushTD:7,rec:79,recYds:820,recTD:4,pprPts:370.8},
+ 'blake corum':{att:145,rushYds:746,rushTD:6,rec:8,recYds:36,recTD:0,pprPts:122.2},
+ 'braelon allen':{att:18,rushYds:76,rushTD:1,rec:2,recYds:17,recTD:0,pprPts:17.3},
+ 'breece hall':{att:243,rushYds:1065,rushTD:4,rec:36,recYds:350,recTD:1,pprPts:207.7},
+ 'brian robinson':{att:92,rushYds:400,rushTD:2,rec:8,recYds:25,recTD:0,pprPts:62.5},
+ 'brian thomas':{att:3,rushYds:21,rushTD:1,rec:48,recYds:707,recTD:2,pprPts:138.8},
+ 'bucky irving':{att:173,rushYds:588,rushTD:1,rec:30,recYds:277,recTD:3,pprPts:138.5},
+ 'caleb douglas':{rookie:true},
+ 'calvin austin':{att:0,rushYds:0,rushTD:0,rec:31,recYds:372,recTD:3,pprPts:86.2},
+ 'calvin ridley':{att:0,rushYds:0,rushTD:0,rec:17,recYds:303,recTD:0,pprPts:47.3},
+ 'cam skattebo':{att:101,rushYds:410,rushTD:5,rec:24,recYds:207,recTD:2,pprPts:127.7},
+ 'carnell tate':{rookie:true},
+ 'ceedee lamb':{att:1,rushYds:2,rushTD:0,rec:75,recYds:1077,recTD:3,pprPts:200.9},
+ 'chase brown':{att:232,rushYds:1019,rushTD:6,rec:69,recYds:437,recTD:5,pprPts:282.6},
+ 'chris godwin':{att:0,rushYds:0,rushTD:0,rec:33,recYds:360,recTD:2,pprPts:81.0},
+ 'chris olave':{att:1,rushYds:-3,rushTD:0,rec:100,recYds:1163,recTD:9,pprPts:268.0},
+ 'chris rodriguez':{att:112,rushYds:500,rushTD:6,rec:3,recYds:30,recTD:0,pprPts:92.0},
+ 'christian kirk':{att:0,rushYds:0,rushTD:0,rec:28,recYds:239,recTD:1,pprPts:57.9},
+ 'christian mccaffrey':{att:311,rushYds:1202,rushTD:10,rec:102,recYds:924,recTD:7,pprPts:416.6},
+ 'christian watson':{att:1,rushYds:3,rushTD:0,rec:35,recYds:611,recTD:6,pprPts:132.4},
+ 'chuba hubbard':{att:134,rushYds:511,rushTD:1,rec:30,recYds:223,recTD:3,pprPts:127.4},
+ 'cooper kupp':{att:0,rushYds:0,rushTD:0,rec:47,recYds:593,recTD:2,pprPts:118.3},
+ 'courtland sutton':{att:0,rushYds:0,rushTD:0,rec:74,recYds:1017,recTD:7,pprPts:219.7},
+ 'dandre swift':{att:223,rushYds:1087,rushTD:9,rec:34,recYds:299,recTD:1,pprPts:228.6},
+ 'darius slayton':{att:0,rushYds:0,rushTD:0,rec:37,recYds:538,recTD:1,pprPts:96.8},
+ 'davante adams':{att:0,rushYds:0,rushTD:0,rec:60,recYds:789,recTD:14,pprPts:222.9},
+ 'david montgomery':{att:158,rushYds:716,rushTD:8,rec:24,recYds:192,recTD:0,pprPts:166.9},
+ 'deebo samuel':{att:17,rushYds:75,rushTD:1,rec:72,recYds:727,recTD:5,pprPts:188.2},
+ 'demario douglas':{att:7,rushYds:21,rushTD:0,rec:31,recYds:447,recTD:3,pprPts:95.8},
+ 'denzel boston':{rookie:true},
+ 'derrick henry':{att:307,rushYds:1595,rushTD:16,rec:15,recYds:150,recTD:0,pprPts:279.5},
+ 'devaughn vele':{att:0,rushYds:0,rushTD:0,rec:25,recYds:293,recTD:2,pprPts:66.3},
+ 'devon achane':{att:238,rushYds:1350,rushTD:8,rec:67,recYds:488,recTD:4,pprPts:322.8},
+ 'devonta smith':{att:0,rushYds:0,rushTD:0,rec:77,recYds:1008,recTD:4,pprPts:201.8},
+ 'dezhaun stribling':{rookie:true},
+ 'dj giddens':{att:26,rushYds:96,rushTD:0,rec:0,recYds:0,recTD:0,pprPts:9.6},
+ 'dj moore':{att:15,rushYds:79,rushTD:1,rec:50,recYds:682,recTD:6,pprPts:170.2},
+ 'dk metcalf':{att:2,rushYds:12,rushTD:1,rec:59,recYds:850,recTD:6,pprPts:187.2},
+ 'dontayvion wicks':{att:1,rushYds:6,rushTD:0,rec:30,recYds:332,recTD:2,pprPts:75.8},
+ 'drake london':{att:0,rushYds:0,rushTD:0,rec:68,recYds:919,recTD:7,pprPts:201.9},
+ 'dylan sampson':{att:65,rushYds:175,rushTD:0,rec:33,recYds:271,recTD:2,pprPts:89.6},
+ 'emari demercado':{att:44,rushYds:312,rushTD:0,rec:13,recYds:101,recTD:1,pprPts:60.3},
+ 'emeka egbuka':{att:2,rushYds:9,rushTD:0,rec:63,recYds:938,recTD:6,pprPts:195.7},
+ 'emmett johnson':{rookie:true},
+ 'garrett wilson':{att:0,rushYds:0,rushTD:0,rec:36,recYds:395,recTD:4,pprPts:99.5},
+ 'george holani':{att:22,rushYds:73,rushTD:1,rec:2,recYds:15,recTD:0,pprPts:16.8},
+ 'george pickens':{att:0,rushYds:0,rushTD:0,rec:93,recYds:1429,recTD:9,pprPts:291.9},
+ 'isaac teslaa':{att:0,rushYds:0,rushTD:0,rec:16,recYds:239,recTD:6,pprPts:75.9},
+ 'isiah pacheco':{att:118,rushYds:462,rushTD:1,rec:19,recYds:101,recTD:1,pprPts:87.3},
+ 'jacory croskey-merritt':{att:175,rushYds:805,rushTD:8,rec:9,recYds:68,recTD:0,pprPts:140.3},
+ 'jadarian price':{rookie:true},
+ 'jahan dotson':{att:0,rushYds:0,rushTD:0,rec:18,recYds:262,recTD:1,pprPts:50.2},
+ 'jahmyr gibbs':{att:243,rushYds:1223,rushTD:13,rec:77,recYds:616,recTD:5,pprPts:366.9},
+ 'jakobi lane':{rookie:true},
+ 'jakobi meyers':{att:5,rushYds:13,rushTD:0,rec:75,recYds:835,recTD:3,pprPts:177.8},
+ 'jalen coker':{att:0,rushYds:0,rushTD:0,rec:33,recYds:394,recTD:3,pprPts:90.4},
+ 'jalen mcmillan':{att:1,rushYds:1,rushTD:0,rec:12,recYds:178,recTD:0,pprPts:29.9},
+ 'jalen nailor':{att:2,rushYds:13,rushTD:0,rec:29,recYds:444,recTD:4,pprPts:98.7},
+ 'jalen tolbert':{att:0,rushYds:0,rushTD:0,rec:18,recYds:203,recTD:1,pprPts:44.3},
+ 'jamarr chase':{att:3,rushYds:14,rushTD:0,rec:125,recYds:1412,recTD:8,pprPts:313.6},
+ 'james conner':{att:32,rushYds:95,rushTD:1,rec:8,recYds:38,recTD:1,pprPts:33.3},
+ 'james cook':{att:309,rushYds:1621,rushTD:12,rec:33,recYds:291,recTD:2,pprPts:302.2},
+ 'jameson williams':{att:6,rushYds:12,rushTD:0,rec:65,recYds:1117,recTD:7,pprPts:219.9},
+ 'jauan jennings':{att:0,rushYds:0,rushTD:0,rec:55,recYds:643,recTD:9,pprPts:173.3},
+ 'javonte williams':{att:252,rushYds:1201,rushTD:11,rec:35,recYds:137,recTD:2,pprPts:242.8},
+ 'jaxon smith-njigba':{att:7,rushYds:36,rushTD:0,rec:119,recYds:1793,recTD:10,pprPts:359.9},
+ 'jayden reed':{att:3,rushYds:28,rushTD:0,rec:19,recYds:207,recTD:1,pprPts:48.5},
+ 'jaydon blue':{att:38,rushYds:129,rushTD:1,rec:1,recYds:5,recTD:0,pprPts:20.4},
+ 'jaylen waddle':{att:2,rushYds:28,rushTD:0,rec:64,recYds:910,recTD:6,pprPts:194.1},
+ 'jaylen warren':{att:211,rushYds:958,rushTD:6,rec:40,recYds:333,recTD:2,pprPts:217.1},
+ 'jaylen wright':{att:70,rushYds:288,rushTD:2,rec:5,recYds:44,recTD:0,pprPts:50.2},
+ 'jeremiyah love':{rookie:true},
+ 'jerry jeudy':{att:1,rushYds:5,rushTD:0,rec:50,recYds:602,recTD:2,pprPts:122.7},
+ 'jk dobbins':{att:153,rushYds:772,rushTD:4,rec:11,recYds:37,recTD:0,pprPts:115.9},
+ 'jonah coleman':{rookie:true},
+ 'jonathan taylor':{att:323,rushYds:1585,rushTD:18,rec:46,recYds:378,recTD:2,pprPts:362.3},
+ 'jonathon brooks':{att:0,rushYds:0,rushTD:0,rec:0,recYds:0,recTD:0,pprPts:0.0},
+ 'jordan addison':{att:2,rushYds:81,rushTD:1,rec:42,recYds:610,recTD:3,pprPts:135.1},
+ 'jordan mason':{att:159,rushYds:758,rushTD:6,rec:14,recYds:51,recTD:0,pprPts:128.9},
+ 'jordan whittington':{att:3,rushYds:12,rushTD:0,rec:18,recYds:171,recTD:0,pprPts:36.3},
+ 'jordyn tyson':{rookie:true},
+ 'josh downs':{att:2,rushYds:-2,rushTD:0,rec:58,recYds:566,recTD:4,pprPts:138.4},
+ 'josh jacobs':{att:234,rushYds:929,rushTD:13,rec:36,recYds:282,recTD:1,pprPts:237.1},
+ 'justice hill':{att:18,rushYds:93,rushTD:2,rec:21,recYds:169,recTD:1,pprPts:65.2},
+ 'justin jefferson':{att:2,rushYds:7,rushTD:0,rec:84,recYds:1048,recTD:2,pprPts:201.5},
+ 'kalif raymond':{att:2,rushYds:19,rushTD:0,rec:24,recYds:289,recTD:1,pprPts:60.8},
+ 'kayshon boutte':{att:0,rushYds:0,rushTD:0,rec:33,recYds:551,recTD:6,pprPts:124.1},
+ 'kaytron allen':{rookie:true},
+ 'kc concepcion':{rookie:true},
+ 'keaton mitchell':{att:59,rushYds:341,rushTD:1,rec:9,recYds:63,recTD:0,pprPts:55.4},
+ 'keenan allen':{att:0,rushYds:0,rushTD:0,rec:81,recYds:777,recTD:4,pprPts:182.7},
+ 'kendrick bourne':{att:0,rushYds:0,rushTD:0,rec:37,recYds:551,recTD:0,pprPts:92.1},
+ 'kenneth gainwell':{att:114,rushYds:537,rushTD:5,rec:73,recYds:486,recTD:3,pprPts:221.3},
+ 'kenneth walker':{att:221,rushYds:1027,rushTD:5,rec:31,recYds:282,recTD:0,pprPts:191.9},
+ 'keon coleman':{att:0,rushYds:0,rushTD:0,rec:38,recYds:404,recTD:4,pprPts:102.4},
+ 'khalil shakir':{att:1,rushYds:5,rushTD:0,rec:72,recYds:719,recTD:4,pprPts:168.4},
+ 'kimani vidal':{att:155,rushYds:643,rushTD:3,rec:16,recYds:136,recTD:1,pprPts:117.9},
+ 'kyle monangai':{att:169,rushYds:783,rushTD:5,rec:18,recYds:164,recTD:0,pprPts:146.7},
+ 'kyren williams':{att:259,rushYds:1252,rushTD:10,rec:36,recYds:281,recTD:3,pprPts:263.3},
+ 'ladd mcconkey':{att:0,rushYds:0,rushTD:0,rec:66,recYds:789,recTD:6,pprPts:180.9},
+ 'luke mccaffrey':{att:0,rushYds:0,rushTD:0,rec:11,recYds:203,recTD:3,pprPts:49.3},
+ 'luther burden':{att:6,rushYds:37,rushTD:0,rec:47,recYds:652,recTD:2,pprPts:127.9},
+ 'makai lemon':{rookie:true},
+ 'malik benson':{rookie:true},
+ 'malik nabers':{att:0,rushYds:0,rushTD:0,rec:18,recYds:271,recTD:2,pprPts:57.1},
+ 'malik washington':{att:17,rushYds:110,rushTD:1,rec:46,recYds:317,recTD:3,pprPts:112.7},
+ 'marshawn lloyd':{att:0,rushYds:0,rushTD:0,rec:0,recYds:0,recTD:0,pprPts:0.0},
+ 'marvin harrison':{att:0,rushYds:0,rushTD:0,rec:41,recYds:608,recTD:4,pprPts:125.8},
+ 'matthew golden':{att:10,rushYds:49,rushTD:0,rec:29,recYds:361,recTD:0,pprPts:70.0},
+ 'michael pittman':{att:0,rushYds:0,rushTD:0,rec:80,recYds:784,recTD:7,pprPts:202.4},
+ 'michael wilson':{att:0,rushYds:0,rushTD:0,rec:78,recYds:1006,recTD:7,pprPts:220.6},
+ 'mike evans':{att:0,rushYds:0,rushTD:0,rec:30,recYds:368,recTD:3,pprPts:84.8},
+ 'mike washington':{rookie:true},
+ 'najee harris':{att:15,rushYds:61,rushTD:0,rec:3,recYds:25,recTD:0,pprPts:11.6},
+ 'nico collins':{att:2,rushYds:15,rushTD:1,rec:71,recYds:1117,recTD:6,pprPts:226.2},
+ 'olamide zaccheaus':{att:4,rushYds:25,rushTD:0,rec:39,recYds:313,recTD:2,pprPts:84.8},
+ 'omar cooper':{rookie:true},
+ 'omarion hampton':{att:124,rushYds:545,rushTD:4,rec:32,recYds:192,recTD:1,pprPts:135.7},
+ 'parker washington':{att:7,rushYds:0,rushTD:0,rec:58,recYds:847,recTD:5,pprPts:184.7},
+ 'puka nacua':{att:10,rushYds:105,rushTD:1,rec:129,recYds:1715,recTD:10,pprPts:375.0},
+ 'quentin johnston':{att:2,rushYds:7,rushTD:0,rec:51,recYds:735,recTD:8,pprPts:171.2},
+ 'quinshon judkins':{att:230,rushYds:827,rushTD:7,rec:26,recYds:171,recTD:0,pprPts:169.8},
+ 'rachaad white':{att:132,rushYds:572,rushTD:4,rec:40,recYds:218,recTD:0,pprPts:143.0},
+ 'rashee rice':{att:5,rushYds:20,rushTD:1,rec:53,recYds:571,recTD:5,pprPts:148.1},
+ 'rashid shaheed':{att:9,rushYds:69,rushTD:0,rec:59,recYds:687,recTD:2,pprPts:146.6},
+ 'rashod bateman':{att:0,rushYds:0,rushTD:0,rec:19,recYds:224,recTD:2,pprPts:53.4},
+ 'ray davis':{att:58,rushYds:275,rushTD:0,rec:10,recYds:86,recTD:2,pprPts:58.1},
+ 'rhamondre stevenson':{att:130,rushYds:603,rushTD:7,rec:32,recYds:345,recTD:2,pprPts:178.8},
+ 'rico dowdle':{att:236,rushYds:1076,rushTD:6,rec:39,recYds:297,recTD:1,pprPts:216.3},
+ 'rj harvey':{att:146,rushYds:540,rushTD:7,rec:47,recYds:356,recTD:5,pprPts:206.6},
+ 'roman wilson':{att:0,rushYds:0,rushTD:0,rec:12,recYds:166,recTD:2,pprPts:40.6},
+ 'rome odunze':{att:0,rushYds:0,rushTD:0,rec:44,recYds:661,recTD:6,pprPts:146.1},
+ 'romeo doubs':{att:0,rushYds:0,rushTD:0,rec:55,recYds:724,recTD:6,pprPts:165.4},
+ 'ryan flournoy':{att:4,rushYds:25,rushTD:0,rec:40,recYds:475,recTD:4,pprPts:114.0},
+ 'samaje perine':{att:84,rushYds:382,rushTD:3,rec:17,recYds:87,recTD:0,pprPts:81.9},
+ 'saquon barkley':{att:280,rushYds:1140,rushTD:7,rec:37,recYds:273,recTD:2,pprPts:232.3},
+ 'sean tucker':{att:86,rushYds:320,rushTD:7,rec:8,recYds:34,recTD:1,pprPts:91.4},
+ 'stefon diggs':{att:0,rushYds:0,rushTD:0,rec:85,recYds:1013,recTD:4,pprPts:210.3},
+ 'tank bigsby':{att:63,rushYds:356,rushTD:2,rec:3,recYds:32,recTD:0,pprPts:53.8},
+ 'tank dell':{att:0,rushYds:0,rushTD:0,rec:0,recYds:0,recTD:0,pprPts:0.0},
+ 'tee higgins':{att:0,rushYds:0,rushTD:0,rec:59,recYds:846,recTD:11,pprPts:211.6},
+ 'terry mclaurin':{att:0,rushYds:0,rushTD:0,rec:38,recYds:582,recTD:3,pprPts:114.2},
+ 'tetairoa mcmillan':{att:0,rushYds:0,rushTD:0,rec:70,recYds:1014,recTD:7,pprPts:211.4},
+ 'tony pollard':{att:242,rushYds:1082,rushTD:5,rec:33,recYds:206,recTD:0,pprPts:185.8},
+ 'travis etienne':{att:260,rushYds:1107,rushTD:7,rec:36,recYds:292,recTD:6,pprPts:253.9},
+ 'travis hunter':{att:1,rushYds:0,rushTD:0,rec:28,recYds:298,recTD:1,pprPts:63.8},
+ 'tre harris':{att:2,rushYds:10,rushTD:0,rec:30,recYds:324,recTD:1,pprPts:69.4},
+ 'tre tucker':{att:11,rushYds:51,rushTD:0,rec:57,recYds:696,recTD:5,pprPts:161.7},
+ 'treveyon henderson':{att:180,rushYds:911,rushTD:9,rec:35,recYds:221,recTD:1,pprPts:206.2},
+ 'trey benson':{att:29,rushYds:160,rushTD:0,rec:13,recYds:64,recTD:0,pprPts:35.4},
+ 'troy franklin':{att:5,rushYds:12,rushTD:0,rec:65,recYds:709,recTD:6,pprPts:177.1},
+ 'tyjae spears':{att:72,rushYds:283,rushTD:2,rec:45,recYds:264,recTD:0,pprPts:111.7},
+ 'tyler allgeier':{att:143,rushYds:514,rushTD:8,rec:14,recYds:96,recTD:0,pprPts:123.0},
+ 'tyquan thornton':{att:0,rushYds:0,rushTD:0,rec:19,recYds:438,recTD:3,pprPts:80.8},
+ 'tyrone tracy':{att:176,rushYds:740,rushTD:2,rec:36,recYds:288,recTD:2,pprPts:160.8},
+ 'wandale robinson':{att:3,rushYds:5,rushTD:0,rec:92,recYds:1014,recTD:4,pprPts:217.9},
+ 'woody marks':{att:196,rushYds:703,rushTD:2,rec:24,recYds:208,recTD:3,pprPts:151.1},
+ 'xavier hutchinson':{att:3,rushYds:22,rushTD:0,rec:35,recYds:428,recTD:3,pprPts:98.0},
+ 'xavier legette':{att:1,rushYds:0,rushTD:0,rec:35,recYds:363,recTD:3,pprPts:89.3},
+ 'xavier worthy':{att:11,rushYds:87,rushTD:0,rec:42,recYds:532,recTD:1,pprPts:109.9},
+ 'zach charbonnet':{att:184,rushYds:730,rushTD:12,rec:20,recYds:144,recTD:0,pprPts:181.4},
+ 'zay flowers':{att:10,rushYds:62,rushTD:1,rec:86,recYds:1211,recTD:5,pprPts:243.3}
+};
 function espnLink(name){
   const rec = ESPN_ID[key(name)];
   const label = esc(name);
-  return rec ? `<a class="plink" href="https://www.espn.com/nfl/player/_/id/${rec.id}/${rec.slug}" target="_blank" rel="noopener" title="ESPN player profile">${label}</a>` : label;
+  if(!rec) return label;
+  const safeName = esc(name).replace(/'/g,"\\'");
+  return `<a class="plink" href="#" onclick="openPlayerModal('${safeName}'); return false;" title="View player card">${label}</a>`;
 }
+
+/* =================== PLAYER CARD MODAL =================== */
+// Looks a player up by name across every team's RB/WR list, using the same normalized
+// key() used for projection + ESPN-ID matching, so any name that renders via espnLink()
+// resolves here too.
+function findPlayerRecord(name){
+  const k = key(name);
+  for(const t of teams){
+    for(const r of t.rbs){ if(key(r.name)===k) return {team:t, pos:'RB', p:r}; }
+    for(const w of t.wrs){ if(key(w.name)===k) return {team:t, pos:'WR', p:w}; }
+  }
+  return null;
+}
+function initials(name){
+  return String(name).split(/\s+/).filter(Boolean).map(s=>s[0]).join('').slice(0,2).toUpperCase();
+}
+function pmStat(label, value){
+  return `<div class="pm-stat"><div class="k">${esc(label)}</div><div class="v">${value}</div></div>`;
+}
+function renderPlayerModal(name){
+  const rec = findPlayerRecord(name);
+  const body = document.getElementById('playerModalBody');
+  if(!rec){ body.innerHTML = `<p>No card data for "${esc(name)}".</p>`; return; }
+  const { team: t, pos, p } = rec;
+  const espn = ESPN_ID[key(p.name)];
+  const s25 = STATS_2025[key(p.name)];
+
+  const seasonVal = (typeof p.fpts==='number') ? p.fpts.toFixed(1)+(p.fptsSource?` <span class="src-tag">${p.fptsSource==='Razzball'?'RZ':'FP'}</span>`:'') : '<span class="muted">—</span>';
+  const wk1Val = (typeof p.wk1==='number') ? p.wk1.toFixed(1)+(p.wk1Sourced?'':'<span class="est-tag" title="Season proj &divide; 17 &mdash; no individually-modeled Week 1 number exists for this player">&nbsp;~</span>') : '<span class="muted">—</span>';
+  const volLabel = pos==='RB' ? 'Projected volume' : 'Targets (top tier only)';
+  const volVal = pos==='RB' ? (p.vol || '—') : (p.targets ? p.targets+' tgt' : '—');
+
+  const s25Val = !s25 ? '<span class="muted">—</span>' : s25.rookie ? 'Rookie' : s25.pprPts.toFixed(1)+' <span class="src-tag">PFR</span>';
+  let s25Line = '';
+  if(s25 && s25.rookie){
+    s25Line = `Played college football in 2025 &mdash; this is his first NFL season, so there's no 2025 stat line to show.`;
+  } else if(s25){
+    const rushPart = s25.att>0 ? `${s25.att} car, ${s25.rushYds} yds, ${s25.rushTD} TD rushing` : '';
+    const recPart = `${s25.rec} rec, ${s25.recYds} yds, ${s25.recTD} TD receiving`;
+    s25Line = [rushPart, recPart].filter(Boolean).join(' &middot; ') + ` &mdash; <b>${s25.pprPts.toFixed(1)} PPR pts</b> for the season.`;
+  }
+
+  const badges = [
+    pos==='RB' ? `<span class="badge ${CLASS_BADGE[t.rbClass]}">${CLASS_LABEL[t.rbClass]}</span>` : '',
+    p.injury ? `<span class="tagchip">Injury: ${esc(p.injury)}</span>` : '',
+    p.secure ? `<span class="tagchip">Secure: ${esc(p.secure)}</span>` : '',
+    (pos==='RB' && p.slp) ? `<span class="tagchip">${'⭐'.repeat(p.slp)} sleeper</span>` : '',
+    (pos==='WR' && p.slp && p.slp!=='—') ? `<span class="tagchip">${esc(p.slp)}</span>` : '',
+  ].filter(Boolean).join('');
+
+  const extraStats = pos==='RB'
+    ? pmStat('Goal line', esc(p.gl||'—')) + pmStat('3rd down / PPR role', esc(p.pd||'—'))
+    : '';
+
+  let outlook = (p.note && p.note.trim()) ? p.note : (pos==='RB' ? fallbackRBNote(p) : fallbackWRNote(p));
+  if(p.projNote) outlook = p.projNote + outlook;
+
+  const rbDepth = t.rbs.map(r=>`<div class="pm-depth-row ${r===p?'me':''}"><span>${esc(r.depth)} &mdash; ${esc(r.name)}</span><span class="r">${esc(r.role||'')}</span></div>`).join('');
+  const wrDepth = t.wrs.map(w=>`<div class="pm-depth-row ${w===p?'me':''}"><span>${esc(w.depth)} &mdash; ${esc(w.name)}</span><span class="r">${esc(w.role||'')}</span></div>`).join('');
+
+  body.innerHTML = `
+    <div class="pm-head">
+      <div class="pm-avatar">${initials(p.name)}</div>
+      <div>
+        <div class="pm-name" id="pmName">${esc(p.name)}</div>
+        <div class="pm-sub">${esc(t.name)} &middot; ${pos} &middot; ${esc(p.depth)} &middot; split ${esc(t.split||'—')}</div>
+      </div>
+    </div>
+    <div class="pm-badges">${badges}</div>
+    <div class="pm-stats">
+      ${pmStat('2026 Season PPR Proj', seasonVal)}
+      ${pmStat('2025 Season PPR', s25Val)}
+      ${pmStat('Week 1 Proj', wk1Val)}
+      ${pmStat(volLabel, volVal)}
+      ${extraStats}
+    </div>
+    ${s25Line ? `<div class="pm-section"><h4>2025 Season (actual)</h4><p>${s25Line}</p></div>` : ''}
+    <div class="pm-section">
+      <h4>Role &amp; Outlook</h4>
+      <p>${esc(p.role||'')}${p.role?' — ':''}${esc(outlook)}</p>
+    </div>
+    <div class="pm-section">
+      <h4>${esc(t.code)} Depth Chart</h4>
+      <div class="pm-depth">
+        <div class="small" style="margin-bottom:2px">Running Backs</div>
+        ${rbDepth}
+        <div class="small" style="margin:8px 0 2px">Wide Receivers</div>
+        ${wrDepth}
+      </div>
+    </div>
+    ${espn ? `<a class="pm-espn" href="https://www.espn.com/nfl/player/_/id/${espn.id}/${espn.slug}" target="_blank" rel="noopener">Full stats, game log &amp; injury news on ESPN &#8599;</a>` : ''}
+  `;
+}
+function openPlayerModal(name){
+  renderPlayerModal(name);
+  document.getElementById('playerModalOverlay').hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function closePlayerModal(){
+  document.getElementById('playerModalOverlay').hidden = true;
+  document.body.style.overflow = '';
+}
+document.getElementById('playerModalClose').addEventListener('click', closePlayerModal);
+document.getElementById('playerModalOverlay').addEventListener('click', (ev)=>{
+  if(ev.target.id === 'playerModalOverlay') closePlayerModal();
+});
+document.addEventListener('keydown', (ev)=>{
+  if(ev.key === 'Escape') closePlayerModal();
+});
 
 // Razzball rest-of-season PPR points, pulled Sept 2026, keyed by normalized player name.
 const RAZZBALL_RB = {

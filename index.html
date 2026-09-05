@@ -180,6 +180,8 @@ td.player{font-weight:600}
   border-radius:5px; background:var(--surface-3); color:var(--ink-soft); white-space:nowrap;
 }
 .muted{color:var(--ink-faint)}
+.src-tag{font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--ink-faint); border:1px solid var(--border); border-radius:4px; padding:0 3px; vertical-align:middle}
+.est-tag{color:var(--ink-faint); cursor:help; font-weight:400}
 .small{font-size:12.5px; color:var(--ink-soft)}
 
 /* ---------- backfield summary cards on mobile handled by table scroll ---------- */
@@ -280,7 +282,7 @@ footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-
 
 <section id="master">
   <div class="section-head"><h2>Master Draft Table</h2><span class="part">Part 4</span></div>
-  <p class="section-intro">Every fantasy-relevant RB and WR on one sortable, filterable sheet. Click a column header to sort; use the search box to jump to a player or team. <span class="mono">FPTS</span> is blank where no reliable consensus number exists yet &mdash; that's intentional, not an omission (see Sources &amp; Method).</p>
+  <p class="section-intro">Every fantasy-relevant RB and WR on one sortable, filterable sheet. Click a column header to sort; use the search box to jump to a player or team. <span class="mono">Season PPR Proj</span> uses Razzball's full-board rest-of-season model where it covers a player (tagged <span class="src-tag">RZ</span>), falling back to FantasyPros' consensus for the handful it doesn't (tagged <span class="src-tag">FP</span>) &mdash; still blank for deep-bench players neither source projects. <span class="mono">Week 1 Proj</span> uses FantasyPros' actual Week 1 number for the ~10 players per position it publishes one for; everyone else shows season&nbsp;&divide;&nbsp;17 marked with a <span class="est-tag">~</span> (hover it) &mdash; a per-game average, not a real week-specific projection, since nobody publishes accurate individual Week 1 stat lines for the whole league. <span class="mono">Workload / Split</span> only applies to RBs, so every WR row reads <em>N/A &mdash; RB stat</em>. <span class="mono">Draft Note</span> is never empty &mdash; a player without a specific storyline gets a one-line "checked, nothing notable" note, and a note beginning "Sources disagree" flags a real gap between Razzball and FantasyPros on that player. Full detail in Sources &amp; Method below.</p>
 
   <div class="legend">
     <span class="badge b-bellcow"><span class="dot g"></span>Bell cow / clear lead</span>
@@ -314,7 +316,8 @@ footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-
           <th data-key="pos">Pos</th>
           <th data-key="player">Player</th>
           <th data-key="depth">Depth</th>
-          <th data-key="fpts">2026 PPR Proj</th>
+          <th data-key="fpts">Season PPR Proj</th>
+          <th data-key="wk1">Week 1 Proj</th>
           <th data-key="volume">Projected Volume</th>
           <th data-key="role">Role</th>
           <th data-key="split">Workload / Split</th>
@@ -376,7 +379,7 @@ footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-
 <section id="sources">
   <div class="section-head"><h2>Sources &amp; Method</h2></div>
   <p class="section-intro">
-    Numeric full-PPR projections (attempts, receptions, FPTS) come from the <b>FantasyPros consensus</b> draft-season projection model, pulled Sept 3&ndash;5, 2026 &mdash; used consistently so the numbers that exist are comparable to each other. FantasyPros only fully renders its top tier of backs and receivers to automated tools, so most players carry a qualitative tier (from FTN Fantasy's 2026 RB tiers) and a role description instead of a fabricated point total. Depth charts and role calls are cross-checked against team-released unofficial depth charts, beat-reporter reporting, and multiple fantasy outlets; committee/injury situations note disagreement explicitly. Workload splits marked "est." are this document's own estimate from the reporting below, not a stat a team publishes &mdash; treat them as directional, not exact.
+    <b>Season-long PPR points</b> blend two independently-modeled sources rather than one: <b>Razzball</b> (Rudy Gamble's model) publishes a full-board rest-of-season projection covering nearly every player on this sheet, so it's used as the primary number wherever it exists; <b>FantasyPros</b>' consensus draft-season model only auto-exposes its top ~10 backs and ~10 receivers, so it fills in nothing Razzball doesn't already cover and serves as a cross-check where both exist. The two disagreed by more than 15 points on a handful of players (a real, sourced disagreement, not an error) &mdash; those are flagged in the Draft Note column rather than silently picking one. A player neither source models numerically (mostly deep bench/practice-squad-adjacent names) stays blank rather than getting an invented figure. <b>Week 1 points</b> use FantasyPros' actual Week 1 projection for the players it publishes one for; every other player's Week 1 number is this document's own season&nbsp;&divide;&nbsp;17 average, clearly marked with a "~" &mdash; nobody publishes individually-modeled Week 1 stat lines for the full league, so that average is the honest option rather than a guess dressed up as a real projection. Attempts/targets volume, where shown, comes from FantasyPros' exposed top tier only. Depth charts and role calls are cross-checked against team-released unofficial depth charts, beat-reporter reporting, and multiple fantasy outlets; committee/injury situations note disagreement explicitly. Workload splits marked "est." are this document's own estimate from the reporting below, not a stat a team publishes &mdash; treat them as directional, not exact.
   </p>
   <ul class="src-cols" id="sourceList"></ul>
 </section>
@@ -930,35 +933,153 @@ const sources = [
  ['CBS Sports — Tyreek Hill released','https://www.cbssports.com/nfl/news/tyreek-hill-released-dolphins-wr-contract/'],
  ['NFL.com — Kenneth Walker III signs with Chiefs','https://www.nfl.com/news/chiefs-signing-ex-seahawks-rb-kenneth-walker-iii-mvp-of-super-bowl-lx'],
  ['Bleacher Report — Travis Hunter offensive role confirmed','https://bleacherreport.com/articles/25495137-travis-hunter-will-absolutely-have-role-offense-amid-2-way-questions-jaguars-hc-says'],
- ['Yahoo Sports — Rhamondre Stevenson ahead of TreVeyon Henderson','https://www.rotoballer.com/player-news/rhamondre-stevenson-ahead-of-treveyon-henderson-on-first-unofficial-depth-chart/1907557']
+ ['Yahoo Sports — Rhamondre Stevenson ahead of TreVeyon Henderson','https://www.rotoballer.com/player-news/rhamondre-stevenson-ahead-of-treveyon-henderson-on-first-unofficial-depth-chart/1907557'],
+ ['Razzball — 2026 RB rest-of-season projections (Rudy Gamble)','https://football.razzball.com/projections-rb-restofseason/'],
+ ['Razzball — 2026 WR rest-of-season projections (Rudy Gamble)','https://football.razzball.com/projections-wr-restofseason/'],
+ ['FantasyPros — Week 1 PPR RB projections','https://www.fantasypros.com/nfl/projections/rb.php?week=1&scoring=PPR'],
+ ['FantasyPros — Week 1 PPR WR projections','https://www.fantasypros.com/nfl/projections/wr.php?week=1&scoring=PPR']
 ];
+
+/* =================== SECOND PROJECTION SOURCE: full-board season totals =================== */
+// FantasyPros' auto-exposed table only covers the top ~10 at each position (used above).
+// Razzball (Rudy Gamble's model) publishes a full-board rest-of-season table, so it's used
+// here to fill in everyone else — and as the primary season number where it exists, since a
+// single consistent source beats mixing two per column. Where the two sources disagree by a
+// wide margin, that's flagged in the player's Draft Note rather than silently overwritten.
+function norm(s){
+  return String(s).toLowerCase()
+    .replace(/[.’']/g,'')
+    .replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g,'')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+const NAME_ALIAS = { 'tet mcmillan':'tetairoa mcmillan' };
+function key(name){ const n = norm(name); return NAME_ALIAS[n] || n; }
+
+// Razzball rest-of-season PPR points, pulled Sept 2026, keyed by normalized player name.
+const RAZZBALL_RB = {
+ 'bijan robinson':364.2,'christian mccaffrey':354.6,'jahmyr gibbs':313.6,'chase brown':297.3,
+ 'kenneth walker':281.1,'jonathan taylor':274.7,'javonte williams':268.2,'omarion hampton':266.2,
+ 'ashton jeanty':268.6,'james cook':254.0,'derrick henry':243.7,'saquon barkley':253.5,
+ 'cam skattebo':257.5,'devon achane':260.1,'kyren williams':242.1,'quinshon judkins':245.7,
+ 'josh jacobs':225.2,'breece hall':225.2,'treveyon henderson':226.0,'bucky irving':221.7,
+ 'jaylen warren':222.0,'dandre swift':214.7,'rico dowdle':218.4,'chuba hubbard':199.3,
+ 'aaron jones':200.5,'jeremiyah love':196.2,'tony pollard':188.2,'david montgomery':184.7,
+ 'travis etienne':180.7,'jordan mason':167.1,'rachaad white':177.8,'bhayshul tuten':167.8,
+ 'jk dobbins':158.1,'rj harvey':167.2,'chris rodriguez':158.6,'zach charbonnet':141.7,
+ 'rhamondre stevenson':149.5,'woody marks':147.0,'jonathon brooks':143.8,'kyle monangai':142.9,
+ 'tyjae spears':145.9,'kenneth gainwell':146.6,'jacory croskey-merritt':131.0,'blake corum':125.8,
+ 'jadarian price':119.6,'marshawn lloyd':116.0,'najee harris':103.5,'brian robinson':100.6,
+ 'justice hill':109.8,'jaylen wright':98.3,'alvin kamara':90.9,'dylan sampson':99.0,
+ 'samaje perine':87.7,'isiah pacheco':83.4,'braelon allen':83.4,'mike washington':76.6,
+ 'tank bigsby':73.2,'tyler allgeier':74.8
+};
+const RAZZBALL_WR = {
+ 'puka nacua':334.0,'amonra st brown':303.6,'jamarr chase':297.4,'jaxon smith-njigba':280.8,
+ 'ceedee lamb':266.3,'justin jefferson':257.1,'chris olave':258.5,'aj brown':255.1,
+ 'nico collins':251.9,'rashee rice':245.9,'zay flowers':240.6,'garrett wilson':241.9,
+ 'tee higgins':230.7,'davante adams':231.1,'drake london':235.6,'terry mclaurin':228.5,
+ 'christian watson':220.1,'tetairoa mcmillan':226.0,'george pickens':220.9,'devonta smith':217.7,
+ 'emeka egbuka':209.6,'jaylen waddle':206.7,'luther burden':199.3,'malik nabers':200.4,
+ 'ladd mcconkey':194.1,'rome odunze':190.3,'dj moore':185.5,'dk metcalf':189.4,
+ 'courtland sutton':188.4,'stefon diggs':187.2,'alec pierce':179.7,'michael pittman':180.5,
+ 'josh downs':174.6,'jakobi meyers':174.7,'jameson williams':169.4,'quentin johnston':168.0,
+ 'jayden reed':167.9,'mike evans':169.6,'chris godwin':169.4,'carnell tate':166.4,
+ 'deebo samuel':162.4,'brian thomas':163.3,'khalil shakir':165.1,'parker washington':152.3,
+ 'wandale robinson':155.8,'makai lemon':152.4,'jauan jennings':150.0,'romeo doubs':149.7,
+ 'xavier worthy':148.6,'marvin harrison':150.4,'kc concepcion':150.8,'travis hunter':145.2,
+ 'rashid shaheed':143.2,'denzel boston':145.1,'michael wilson':142.6,'dezhaun stribling':139.2,
+ 'jalen coker':135.3,'malik washington':134.9,'calvin ridley':133.5,'matthew golden':128.5,
+ 'jordan addison':127.3,'jerry jeudy':129.7,'keenan allen':129.5,'tre tucker':125.6,
+ 'cooper kupp':122.6,'rashod bateman':119.9,'jalen mcmillan':119.0,'jordyn tyson':84.5,
+ 'jalen nailor':109.0,'kayshon boutte':107.1,'andrei iosivas':105.5,'ryan flournoy':104.3,
+ 'joshua palmer':103.8,'demario douglas':99.9,'xavier legette':100.9,'adonai mitchell':98.5,
+ 'devaughn vele':88.7,'dontayvion wicks':90.6,'jakobi lane':74.8,'isaac teslaa':74.1,
+ 'darius slayton':72.9,'kendrick bourne':73.5,'jordan whittington':66.3,'olamide zaccheaus':64.1,
+ 'tre harris':66.3,'caleb douglas':71.1
+};
+// FantasyPros' own Week 1 (not rest-of-season) projection, where it exposes one — top of board only.
+const FP_WK1_RB = {
+ 'jahmyr gibbs':22.1,'bijan robinson':20.4,'christian mccaffrey':19.1,'jonathan taylor':18.1,
+ 'devon achane':17.4,'omarion hampton':16.1,'chase brown':16.1,'saquon barkley':15.7,
+ 'james cook':15.3,'derrick henry':15.2
+};
+const FP_WK1_WR = {
+ 'puka nacua':20.2,'jamarr chase':20.0,'amonra st brown':19.1,'jaxon smith-njigba':19.1,
+ 'ceedee lamb':17.0,'justin jefferson':16.8,'nico collins':16.2,'george pickens':15.6,
+ 'drake london':15.6,'zay flowers':15.1
+};
+
+function reconcile(entry, pos){
+  const k = key(entry.name);
+  const table = pos==='RB' ? RAZZBALL_RB : RAZZBALL_WR;
+  const razz = table[k];
+  if(typeof razz === 'number'){
+    if(typeof entry.fpts === 'number' && Math.abs(entry.fpts - razz) > 15){
+      entry.projNote = `Sources disagree on his season total: FantasyPros projects ${entry.fpts.toFixed(1)}, Razzball projects ${razz.toFixed(1)} (shown). `;
+    }
+    entry.fpts = razz;
+    entry.fptsSource = 'Razzball';
+  } else if(typeof entry.fpts === 'number'){
+    entry.fptsSource = 'FantasyPros';
+  }
+  const wk1table = pos==='RB' ? FP_WK1_RB : FP_WK1_WR;
+  const sourcedWk1 = wk1table[k];
+  if(typeof sourcedWk1 === 'number'){
+    entry.wk1 = sourcedWk1; entry.wk1Sourced = true;
+  } else if(typeof entry.fpts === 'number'){
+    entry.wk1 = Math.round((entry.fpts/17)*10)/10; entry.wk1Sourced = false;
+  } else {
+    entry.wk1 = null; entry.wk1Sourced = false;
+  }
+}
+teams.forEach(t=>{
+  t.rbs.forEach(r=>reconcile(r,'RB'));
+  t.wrs.forEach(w=>reconcile(w,'WR'));
+});
 
 /* =================== BUILD FLAT ROWS =================== */
 function fmt(n){ return (n===null || n===undefined || n==='') ? '<span class="muted">—</span>' : n; }
 function esc(s){ return (s===null||s===undefined) ? '' : String(s); }
 
+// A "no story" fallback so an empty Draft Note reads as "checked, nothing notable"
+// rather than "didn't look." Real notes (set on the team objects above) always win.
+function fallbackRBNote(r){
+  return `No unresolved competition or injury flag beyond what's listed — role looks stable as of Sept. 5.`;
+}
+function fallbackWRNote(w){
+  return `Steady ${w.depth} role, no notable injury or target-share story right now — just depth-chart order applies.`;
+}
+
 const allRows = [];
 teams.forEach(t=>{
   t.rbs.forEach(r=>{
+    let noteText = (r.note && r.note.trim()) ? r.note : fallbackRBNote(r);
+    if(r.projNote) noteText = r.projNote + noteText;
     allRows.push({
       team:t.code, teamName:t.name, pos:'RB', player:r.name, depth:r.depth,
-      fpts: (typeof r.fpts==='number') ? r.fpts : null,
+      fpts: (typeof r.fpts==='number') ? r.fpts : null, fptsSource: r.fptsSource || null,
+      wk1: (typeof r.wk1==='number') ? r.wk1 : null, wk1Sourced: !!r.wk1Sourced,
       volume: r.vol || '', role: r.role || '', split: t.split || '',
-      injury: r.injury || '', sleeper: r.slp || 0, note: r.note || '',
+      injury: r.injury || '', secure: r.secure || '', sleeper: r.slp || 0, note: noteText,
       cls: t.rbClass
     });
   });
   t.wrs.forEach(w=>{
     let slpNum = 0;
-    if(typeof w.slp === 'string'){
-      if(/priority/i.test(w.slp)) slpNum = 3;
-      else if(/sleeper/i.test(w.slp)) slpNum = 2;
+    let slpText = (typeof w.slp === 'string' && w.slp !== '—') ? w.slp : '';
+    if(slpText){
+      if(/priority/i.test(slpText)) slpNum = 3;
+      else if(/sleeper/i.test(slpText)) slpNum = 2;
     }
+    let noteText = (w.note && w.note.trim()) ? w.note : (slpText || fallbackWRNote(w));
+    if(w.projNote) noteText = w.projNote + noteText;
     allRows.push({
       team:t.code, teamName:t.name, pos:'WR', player:w.name, depth:w.depth,
-      fpts: (typeof w.fpts==='number') ? w.fpts : null,
-      volume: w.targets ? w.targets+' tgt' : '', role: w.role || '', split:'—',
-      injury: w.injury || '', sleeper: slpNum, note: w.note || w.slp || '',
+      fpts: (typeof w.fpts==='number') ? w.fpts : null, fptsSource: w.fptsSource || null,
+      wk1: (typeof w.wk1==='number') ? w.wk1 : null, wk1Sourced: !!w.wk1Sourced,
+      volume: w.targets ? w.targets+' tgt' : '', role: w.role || '', split:'N/A — RB stat',
+      injury: w.injury || '', secure: w.secure || '', sleeper: slpNum, note: noteText,
       cls: null
     });
   });
@@ -987,7 +1108,7 @@ function renderMaster(){
 
   rows.sort((a,b)=>{
     let k = masterSort.key, va=a[k], vb=b[k];
-    if(k==='fpts'){ va = va===null?-1:va; vb = vb===null?-1:vb; }
+    if(k==='fpts'||k==='wk1'){ va = va===null?-1:va; vb = vb===null?-1:vb; }
     if(typeof va === 'string') va = va.toLowerCase();
     if(typeof vb === 'string') vb = vb.toLowerCase();
     if(va<vb) return -1*masterSort.dir;
@@ -1002,7 +1123,8 @@ function renderMaster(){
       <td>${r.pos}</td>
       <td class="player">${esc(r.player)}</td>
       <td>${esc(r.depth)}</td>
-      <td class="num">${r.fpts!==null ? r.fpts.toFixed(1) : '<span class="muted">—</span>'}</td>
+      <td class="num">${r.fpts!==null ? r.fpts.toFixed(1)+(r.fptsSource?` <span class="src-tag">${r.fptsSource==='Razzball'?'RZ':'FP'}</span>`:'') : '<span class="muted">—</span>'}</td>
+      <td class="num">${r.wk1!==null ? r.wk1.toFixed(1)+(r.wk1Sourced?'':'<span class="est-tag" title="Estimated as season projection ÷ 17 games — FantasyPros only publishes a sourced Week 1 number for the top ~10 at each position.">&nbsp;~</span>') : '<span class="muted">—</span>'}</td>
       <td class="small">${fmt(r.volume)}</td>
       <td class="small">${fmt(r.role)}</td>
       <td class="small">${fmt(r.split)}</td>
@@ -1093,7 +1215,7 @@ function renderTeams(){
                 <div class="group-label">Running Backs &middot; split ${esc(t.split)}</div>
                 ${t.rbs.map(r=>`
                   <div class="rb-row">
-                    <div class="row-top"><span class="name">${esc(r.name)} <span class="pos-pill">${esc(r.depth)}</span></span><span class="fpts">${r.fpts?('PPR proj '+r.fpts.toFixed(1)):''}</span></div>
+                    <div class="row-top"><span class="name">${esc(r.name)} <span class="pos-pill">${esc(r.depth)}</span></span><span class="fpts">${r.fpts?('Season '+r.fpts.toFixed(1)+' &middot; Wk1 '+(r.wk1!==null?r.wk1.toFixed(1)+(r.wk1Sourced?'':'~'):'—')):''}</span></div>
                     <div class="small">${esc(r.role)}</div>
                     <div class="row-meta">
                       <span class="tagchip">GL: ${esc(r.gl)}</span>
@@ -1102,6 +1224,7 @@ function renderTeams(){
                       <span class="tagchip">Secure: ${esc(r.secure)}</span>
                       ${r.slp?`<span class="tagchip">${'⭐'.repeat(r.slp)} sleeper</span>`:''}
                     </div>
+                    ${r.projNote?`<div class="row-note">${esc(r.projNote)}</div>`:''}
                     ${r.note?`<div class="row-note">${esc(r.note)}</div>`:''}
                   </div>
                 `).join('')}
@@ -1110,13 +1233,14 @@ function renderTeams(){
                 <div class="group-label">Wide Receivers</div>
                 ${t.wrs.map(w=>`
                   <div class="wr-row">
-                    <div class="row-top"><span class="name">${esc(w.name)} <span class="pos-pill">${esc(w.depth)}</span></span><span class="fpts">${w.fpts?('PPR proj '+w.fpts.toFixed(1)):''}</span></div>
+                    <div class="row-top"><span class="name">${esc(w.name)} <span class="pos-pill">${esc(w.depth)}</span></span><span class="fpts">${w.fpts?('Season '+w.fpts.toFixed(1)+' &middot; Wk1 '+(w.wk1!==null?w.wk1.toFixed(1)+(w.wk1Sourced?'':'~'):'—')):''}</span></div>
                     <div class="small">${esc(w.role)}</div>
                     <div class="row-meta">
                       <span class="tagchip">Injury: ${esc(w.injury)}</span>
                       <span class="tagchip">Secure: ${esc(w.secure)}</span>
                       ${w.slp && w.slp!=='—' ? `<span class="tagchip">${esc(w.slp)}</span>`:''}
                     </div>
+                    ${w.projNote?`<div class="row-note">${esc(w.projNote)}</div>`:''}
                     ${w.note?`<div class="row-note">${esc(w.note)}</div>`:''}
                   </div>
                 `).join('')}

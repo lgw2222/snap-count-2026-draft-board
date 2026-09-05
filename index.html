@@ -182,6 +182,9 @@ td.player{font-weight:600}
 .muted{color:var(--ink-faint)}
 .src-tag{font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--ink-faint); border:1px solid var(--border); border-radius:4px; padding:0 3px; vertical-align:middle}
 .est-tag{color:var(--ink-faint); cursor:help; font-weight:400}
+a.plink{color:inherit; text-decoration:none; border-bottom:1px solid transparent}
+a.plink:hover{border-bottom-color:currentColor}
+a.plink:visited{color:inherit}
 .small{font-size:12.5px; color:var(--ink-soft)}
 
 /* ---------- backfield summary cards on mobile handled by table scroll ---------- */
@@ -457,7 +460,7 @@ const teams = [
  wrs:[
   {name:'Zay Flowers', depth:'WR1', fpts:null, targets:null, role:'Primary target, all alignments', injury:'Healthy', secure:'Yes', slp:'—', note:''},
   {name:'Rashod Bateman', depth:'WR2', fpts:null, targets:null, role:'Outside complement', injury:'Healthy', secure:'Yes', slp:'—', note:''},
-  {name:"Ja'Kobe Lane", depth:'WR3', fpts:null, targets:null, role:'Rookie (USC), real camp buzz for a WR3 role', injury:'Healthy', secure:'Emerging', slp:'Sleeper — could push for real snaps and TD equity', note:'Beat writers flag him as a legitimate camp standout, not just a name on the depth chart.'}
+  {name:"Ja'Kobi Lane", depth:'WR3', fpts:null, targets:null, role:'Rookie (USC), real camp buzz for a WR3 role', injury:'Healthy', secure:'Emerging', slp:'Sleeper — could push for real snaps and TD equity', note:'Beat writers flag him as a legitimate camp standout, not just a name on the depth chart.'}
  ], note:'About as clean a bell cow as exists in the league — the only question is Henry\'s age curve, not his role.'},
 
 {code:'CIN', name:'Cincinnati Bengals', div:'AFC North', rbClass:'bellcow', split:'Brown ~78% / Perine ~18% (est.)',
@@ -891,7 +894,7 @@ const rankings = [
    'Wan\'Dale Robinson (TEN) ⭐⭐ — followed his OC from New York with his role intact',
    "KC Concepcion (CLE) ⭐ — could lead a thin room's target share as a rookie",
    'Parker Washington (JAX) ⭐ — real preseason buzz for a WR2 role',
-   "Ja'Kobe Lane (BAL) ⭐ — rookie camp standout with real snap upside"
+   "Ja'Kobi Lane (BAL) ⭐ — rookie camp standout with real snap upside"
  ]},
  {title:'7. Most Important Depth-Chart Battles to Monitor', icon:'👀', items:[
    'PIT: Jaylen Warren vs. Rico Dowdle — depth chart vs. beat-reporter buzz disagree',
@@ -955,6 +958,104 @@ function norm(s){
 }
 const NAME_ALIAS = { 'tet mcmillan':'tetairoa mcmillan' };
 function key(name){ const n = norm(name); return NAME_ALIAS[n] || n; }
+
+/* =================== ESPN PROFILE LINKS =================== */
+// Every ID below was looked up individually against a live espn.com/nfl/player/_/id/ URL
+// (WebSearch, Sept 2026) — none are guessed or pattern-generated. Keyed by the same
+// normalized name() used for projection matching above.
+const ESPN_ID = {
+ 'james cook':{id:4379399,slug:'james-cook-iii'},'ray davis':{id:4429501,slug:'ray-davis'},
+ 'dj moore':{id:3915416,slug:'dj-moore'},'khalil shakir':{id:4373678,slug:'khalil-shakir'},
+ 'keon coleman':{id:4635008,slug:'keon-coleman'},'devon achane':{id:4429160,slug:'devon-achane'},
+ 'jaylen wright':{id:4682745,slug:'jaylen-wright'},'malik washington':{id:4569603,slug:'malik-washington'},
+ 'jalen tolbert':{id:4249417,slug:'jalen-tolbert'},'caleb douglas':{id:4869645,slug:'caleb-douglas'},
+ 'rhamondre stevenson':{id:4569173,slug:'rhamondre-stevenson'},'treveyon henderson':{id:4432710,slug:'treveyon-henderson'},
+ 'aj brown':{id:4047646,slug:'aj-brown'},'romeo doubs':{id:4361432,slug:'romeo-doubs'},
+ 'demario douglas':{id:4427095,slug:'demario-douglas'},'breece hall':{id:4427366,slug:'breece-hall'},
+ 'braelon allen':{id:4685247,slug:'braelon-allen'},'garrett wilson':{id:4569618,slug:'garrett-wilson'},
+ 'adonai mitchell':{id:4597500,slug:'adonai-mitchell'},'omar cooper':{id:4723820,slug:'omar-cooper-jr'},
+ 'derrick henry':{id:3043078,slug:'derrick-henry'},'justice hill':{id:4038441,slug:'justice-hill'},
+ 'zay flowers':{id:4429615,slug:'zay-flowers'},'rashod bateman':{id:4360939,slug:'rashod-bateman'},
+ 'jakobi lane':{id:4870847,slug:'jakobi-lane'},'chase brown':{id:4362238,slug:'chase-brown'},
+ 'samaje perine':{id:3116389,slug:'samaje-perine'},'jamarr chase':{id:4362628,slug:'jamarr-chase'},
+ 'tee higgins':{id:4239993,slug:'tee-higgins'},'andrei iosivas':{id:4368003,slug:'andrei-iosivas'},
+ 'quinshon judkins':{id:4685702,slug:'quinshon-judkins'},'dylan sampson':{id:5081397,slug:'dylan-sampson'},
+ 'jerry jeudy':{id:4241463,slug:'jerry-jeudy'},'kc concepcion':{id:4870653,slug:'kc-concepcion'},
+ 'denzel boston':{id:4832800,slug:'denzel-boston'},'jaylen warren':{id:4569987,slug:'jaylen-warren'},
+ 'rico dowdle':{id:4038815,slug:'rico-dowdle'},'dk metcalf':{id:4047650,slug:'dk-metcalf'},
+ 'michael pittman':{id:4035687,slug:'michael-pittman-jr'},'roman wilson':{id:4431492,slug:'roman-wilson'},
+ 'david montgomery':{id:4035538,slug:'david-montgomery'},'woody marks':{id:4429059,slug:'woody-marks'},
+ 'nico collins':{id:4258173,slug:'nico-collins'},'xavier hutchinson':{id:4686422,slug:'xavier-hutchinson'},
+ 'tank dell':{id:4366031,slug:'tank-dell'},'kayshon boutte':{id:4429022,slug:'kayshon-boutte'},
+ 'jonathan taylor':{id:4242335,slug:'jonathan-taylor'},'dj giddens':{id:4874509,slug:'dj-giddens'},
+ 'alec pierce':{id:4360078,slug:'alec-pierce'},'josh downs':{id:4688813,slug:'josh-downs'},
+ 'keenan allen':{id:15818,slug:'keenan-allen'},'bhayshul tuten':{id:4882093,slug:'bhayshul-tuten'},
+ 'chris rodriguez':{id:4362619,slug:'chris-rodriguez-jr'},'brian thomas':{id:4432773,slug:'brian-thomas-jr'},
+ 'parker washington':{id:4432620,slug:'parker-washington'},'jakobi meyers':{id:3916433,slug:'jakobi-meyers'},
+ 'travis hunter':{id:4685415,slug:'travis-hunter'},'tony pollard':{id:3916148,slug:'tony-pollard'},
+ 'tyjae spears':{id:4428557,slug:'tyjae-spears'},'carnell tate':{id:4871023,slug:'carnell-tate'},
+ 'wandale robinson':{id:4569587,slug:'wandale-robinson'},'calvin ridley':{id:3925357,slug:'calvin-ridley'},
+ 'jk dobbins':{id:4241985,slug:'jk-dobbins'},'rj harvey':{id:4568490,slug:'rj-harvey'},
+ 'jonah coleman':{id:4702555,slug:'jonah-coleman'},'courtland sutton':{id:3128429,slug:'courtland-sutton'},
+ 'jaylen waddle':{id:4372016,slug:'jaylen-waddle'},'troy franklin':{id:4431280,slug:'troy-franklin'},
+ 'kenneth walker':{id:4567048,slug:'kenneth-walker-iii'},'emari demercado':{id:4362478,slug:'emari-demercado'},
+ 'emmett johnson':{id:4832955,slug:'emmett-johnson'},'xavier worthy':{id:4683062,slug:'xavier-worthy'},
+ 'rashee rice':{id:4428331,slug:'rashee-rice'},'tyquan thornton':{id:4362921,slug:'tyquan-thornton'},
+ 'ashton jeanty':{id:4890973,slug:'ashton-jeanty'},'mike washington':{id:4686658,slug:'mike-washington-jr'},
+ 'tre tucker':{id:4428718,slug:'tre-tucker'},'jalen nailor':{id:4382466,slug:'jalen-nailor'},
+ 'malik benson':{id:5150247,slug:'malik-benson'},'omarion hampton':{id:4685382,slug:'omarion-hampton'},
+ 'keaton mitchell':{id:4596334,slug:'keaton-mitchell'},'kimani vidal':{id:4430968,slug:'kimani-vidal'},
+ 'ladd mcconkey':{id:4612826,slug:'ladd-mcconkey'},'quentin johnston':{id:4429025,slug:'quentin-johnston'},
+ 'tre harris':{id:4686612,slug:'tre-harris'},'javonte williams':{id:4361579,slug:'javonte-williams'},
+ 'jaydon blue':{id:4685279,slug:'jaydon-blue'},'ceedee lamb':{id:4241389,slug:'ceedee-lamb'},
+ 'george pickens':{id:4426354,slug:'george-pickens'},'ryan flournoy':{id:5083754,slug:'ryan-flournoy'},
+ 'cam skattebo':{id:4696981,slug:'cam-skattebo'},'tyrone tracy':{id:4360516,slug:'tyrone-tracy-jr'},
+ 'najee harris':{id:4241457,slug:'najee-harris'},'malik nabers':{id:4595348,slug:'malik-nabers'},
+ 'darius slayton':{id:3916945,slug:'darius-slayton'},'calvin austin':{id:4243389,slug:'calvin-austin'},
+ 'saquon barkley':{id:3929630,slug:'saquon-barkley'},'tank bigsby':{id:4429013,slug:'tank-bigsby'},
+ 'devonta smith':{id:4241478,slug:'devonta-smith'},'dontayvion wicks':{id:4428850,slug:'dontayvion-wicks'},
+ 'makai lemon':{id:4870795,slug:'makai-lemon'},'jacory croskey-merritt':{id:4575131,slug:'jacory-croskey-merritt'},
+ 'rachaad white':{id:4697815,slug:'rachaad-white'},'kaytron allen':{id:4685246,slug:'kaytron-allen'},
+ 'terry mclaurin':{id:3121422,slug:'terry-mclaurin'},'stefon diggs':{id:2976212,slug:'stefon-diggs'},
+ 'luke mccaffrey':{id:4426948,slug:'luke-mccaffrey'},'dandre swift':{id:4259545,slug:'dandre-swift'},
+ 'kyle monangai':{id:4608686,slug:'kyle-monangai'},'rome odunze':{id:4431299,slug:'rome-odunze'},
+ 'luther burden':{id:4685278,slug:'luther-burden-iii'},'kalif raymond':{id:2973405,slug:'kalif-raymond'},
+ 'jahmyr gibbs':{id:4429795,slug:'jahmyr-gibbs'},'isiah pacheco':{id:4361529,slug:'isiah-pacheco'},
+ 'amon-ra st brown':{id:4374302,slug:'amon-ra-st-brown'},'jameson williams':{id:4426388,slug:'jameson-williams'},
+ 'isaac teslaa':{id:5123663,slug:'isaac-teslaa'},'josh jacobs':{id:4047365,slug:'josh-jacobs'},
+ 'marshawn lloyd':{id:4429023,slug:'marshawn-lloyd'},'christian watson':{id:4248528,slug:'christian-watson'},
+ 'matthew golden':{id:4701936,slug:'matthew-golden'},'jayden reed':{id:4362249,slug:'jayden-reed'},
+ 'aaron jones':{id:3042519,slug:'aaron-jones-sr'},'jordan mason':{id:4360569,slug:'jordan-mason'},
+ 'justin jefferson':{id:4262921,slug:'justin-jefferson'},'jordan addison':{id:4429205,slug:'jordan-addison'},
+ 'jauan jennings':{id:3886598,slug:'jauan-jennings'},'bijan robinson':{id:4430807,slug:'bijan-robinson'},
+ 'brian robinson':{id:4241474,slug:'brian-robinson-jr'},'drake london':{id:4426502,slug:'drake-london'},
+ 'jahan dotson':{id:4361409,slug:'jahan-dotson'},'olamide zaccheaus':{id:3917914,slug:'olamide-zaccheaus'},
+ 'chuba hubbard':{id:4241416,slug:'chuba-hubbard'},'jonathon brooks':{id:4678008,slug:'jonathon-brooks'},
+ 'tetairoa mcmillan':{id:4685472,slug:'tetairoa-mcmillan'},'jalen coker':{id:4695883,slug:'jalen-coker'},
+ 'xavier legette':{id:4430034,slug:'xavier-legette'},'travis etienne':{id:4239996,slug:'travis-etienne-jr'},
+ 'alvin kamara':{id:3054850,slug:'alvin-kamara'},'chris olave':{id:4361370,slug:'chris-olave'},
+ 'jordyn tyson':{id:4880281,slug:'jordyn-tyson'},'devaughn vele':{id:4569559,slug:'devaughn-vele'},
+ 'bucky irving':{id:4596448,slug:'bucky-irving'},'kenneth gainwell':{id:4371733,slug:'kenny-gainwell'},
+ 'sean tucker':{id:4430871,slug:'sean-tucker'},'emeka egbuka':{id:4567750,slug:'emeka-egbuka'},
+ 'chris godwin':{id:3116165,slug:'chris-godwin-jr'},'jalen mcmillan':{id:4430834,slug:'jalen-mcmillan'},
+ 'jeremiyah love':{id:4870808,slug:'jeremiyah-love'},'james conner':{id:3045147,slug:'james-conner'},
+ 'trey benson':{id:4429275,slug:'trey-benson'},'tyler allgeier':{id:4373626,slug:'tyler-allgeier'},
+ 'marvin harrison':{id:4432708,slug:'marvin-harrison-jr'},'michael wilson':{id:4360761,slug:'michael-wilson'},
+ 'kendrick bourne':{id:3045523,slug:'kendrick-bourne'},'kyren williams':{id:4430737,slug:'kyren-williams'},
+ 'blake corum':{id:4429096,slug:'blake-corum'},'puka nacua':{id:4426515,slug:'puka-nacua'},
+ 'davante adams':{id:16800,slug:'davante-adams'},'jordan whittington':{id:4569382,slug:'jordan-whittington'},
+ 'christian mccaffrey':{id:3117251,slug:'christian-mccaffrey'},'mike evans':{id:16737,slug:'mike-evans'},
+ 'deebo samuel':{id:3126486,slug:'deebo-samuel'},'christian kirk':{id:3895856,slug:'christian-kirk'},
+ 'dezhaun stribling':{id:4710714,slug:'dezhaun-stribling'},'jadarian price':{id:4685512,slug:'jadarian-price'},
+ 'zach charbonnet':{id:4426385,slug:'zach-charbonnet'},'george holani':{id:4429835,slug:'george-holani'},
+ 'jaxon smith-njigba':{id:4430878,slug:'jaxon-smith-njigba'},'rashid shaheed':{id:4032473,slug:'rashid-shaheed'},
+ 'cooper kupp':{id:2977187,slug:'cooper-kupp'}
+};
+function espnLink(name){
+  const rec = ESPN_ID[key(name)];
+  const label = esc(name);
+  return rec ? `<a class="plink" href="https://www.espn.com/nfl/player/_/id/${rec.id}/${rec.slug}" target="_blank" rel="noopener" title="ESPN player profile">${label}</a>` : label;
+}
 
 // Razzball rest-of-season PPR points, pulled Sept 2026, keyed by normalized player name.
 const RAZZBALL_RB = {
@@ -1121,7 +1222,7 @@ function renderMaster(){
     <tr>
       <td><span class="pos-pill">${r.team}</span></td>
       <td>${r.pos}</td>
-      <td class="player">${esc(r.player)}</td>
+      <td class="player">${espnLink(r.player)}</td>
       <td>${esc(r.depth)}</td>
       <td class="num">${r.fpts!==null ? r.fpts.toFixed(1)+(r.fptsSource?` <span class="src-tag">${r.fptsSource==='Razzball'?'RZ':'FP'}</span>`:'') : '<span class="muted">—</span>'}</td>
       <td class="num">${r.wk1!==null ? r.wk1.toFixed(1)+(r.wk1Sourced?'':'<span class="est-tag" title="Estimated as season projection ÷ 17 games — FantasyPros only publishes a sourced Week 1 number for the top ~10 at each position.">&nbsp;~</span>') : '<span class="muted">—</span>'}</td>
@@ -1165,8 +1266,8 @@ function renderBF(){
   document.getElementById('bfBody').innerHTML = rows.map(r=>`
     <tr>
       <td><span class="pos-pill">${r.team}</span></td>
-      <td class="player">${esc(r.rb1)}</td>
-      <td>${esc(r.rb2)}</td>
+      <td class="player">${espnLink(r.rb1)}</td>
+      <td>${espnLink(r.rb2)}</td>
       <td class="small">${esc(r.split)}</td>
       <td class="small">${esc(r.gl)}</td>
       <td class="small">${esc(r.pd)}</td>
@@ -1215,7 +1316,7 @@ function renderTeams(){
                 <div class="group-label">Running Backs &middot; split ${esc(t.split)}</div>
                 ${t.rbs.map(r=>`
                   <div class="rb-row">
-                    <div class="row-top"><span class="name">${esc(r.name)} <span class="pos-pill">${esc(r.depth)}</span></span><span class="fpts">${r.fpts?('Season '+r.fpts.toFixed(1)+' &middot; Wk1 '+(r.wk1!==null?r.wk1.toFixed(1)+(r.wk1Sourced?'':'~'):'—')):''}</span></div>
+                    <div class="row-top"><span class="name">${espnLink(r.name)} <span class="pos-pill">${esc(r.depth)}</span></span><span class="fpts">${r.fpts?('Season '+r.fpts.toFixed(1)+' &middot; Wk1 '+(r.wk1!==null?r.wk1.toFixed(1)+(r.wk1Sourced?'':'~'):'—')):''}</span></div>
                     <div class="small">${esc(r.role)}</div>
                     <div class="row-meta">
                       <span class="tagchip">GL: ${esc(r.gl)}</span>
@@ -1233,7 +1334,7 @@ function renderTeams(){
                 <div class="group-label">Wide Receivers</div>
                 ${t.wrs.map(w=>`
                   <div class="wr-row">
-                    <div class="row-top"><span class="name">${esc(w.name)} <span class="pos-pill">${esc(w.depth)}</span></span><span class="fpts">${w.fpts?('Season '+w.fpts.toFixed(1)+' &middot; Wk1 '+(w.wk1!==null?w.wk1.toFixed(1)+(w.wk1Sourced?'':'~'):'—')):''}</span></div>
+                    <div class="row-top"><span class="name">${espnLink(w.name)} <span class="pos-pill">${esc(w.depth)}</span></span><span class="fpts">${w.fpts?('Season '+w.fpts.toFixed(1)+' &middot; Wk1 '+(w.wk1!==null?w.wk1.toFixed(1)+(w.wk1Sourced?'':'~'):'—')):''}</span></div>
                     <div class="small">${esc(w.role)}</div>
                     <div class="row-meta">
                       <span class="tagchip">Injury: ${esc(w.injury)}</span>
@@ -1266,7 +1367,7 @@ function renderSleepers(){
       <div class="sleeper-grid">
         ${items.map(s=>`
           <div class="sleeper-card">
-            <div class="sname">${esc(s.name)}</div>
+            <div class="sname">${espnLink(s.name)}</div>
             <div class="steam">${esc(s.team)}</div>
             <p>${esc(s.why)}</p>
           </div>

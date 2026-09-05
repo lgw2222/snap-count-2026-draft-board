@@ -329,7 +329,7 @@ footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-
 
 <section id="master">
   <div class="section-head"><h2>Master Draft Table</h2><span class="part">Part 4</span></div>
-  <p class="section-intro">Every fantasy-relevant RB and WR on one sortable, filterable sheet. Click a column header to sort; use the search box to jump to a player or team. <span class="mono">Season PPR Proj</span> uses Razzball's full-board rest-of-season model where it covers a player (tagged <span class="src-tag">RZ</span>), falling back to FantasyPros' consensus for the handful it doesn't (tagged <span class="src-tag">FP</span>) &mdash; still blank for deep-bench players neither source projects. <span class="mono">Week 1 Proj</span> uses FantasyPros' actual Week 1 number for the ~10 players per position it publishes one for; everyone else shows season&nbsp;&divide;&nbsp;17 marked with a <span class="est-tag">~</span> (hover it) &mdash; a per-game average, not a real week-specific projection, since nobody publishes accurate individual Week 1 stat lines for the whole league. <span class="mono">Workload / Split</span> only applies to RBs, so every WR row reads <em>N/A &mdash; RB stat</em>. <span class="mono">Draft Note</span> is never empty &mdash; a player without a specific storyline gets a one-line "checked, nothing notable" note, and a note beginning "Sources disagree" flags a real gap between Razzball and FantasyPros on that player. Full detail in Sources &amp; Method below.</p>
+  <p class="section-intro">Every fantasy-relevant RB and WR on one sortable, filterable sheet. Click a column header to sort; use the search box to jump to a player or team. <span class="mono">Season PPR Proj</span> uses Razzball's full-board rest-of-season model where it covers a player (tagged <span class="src-tag">RZ</span>), falling back to FantasyPros' consensus for the handful it doesn't (tagged <span class="src-tag">FP</span>) &mdash; still blank for deep-bench players neither source projects. <span class="mono">Week 1 Proj</span> uses FantasyPros' actual Week 1 number for the ~10 players per position it publishes one for; everyone else shows season&nbsp;&divide;&nbsp;17 marked with a <span class="est-tag">~</span> (hover it) &mdash; a per-game average, not a real week-specific projection, since nobody publishes accurate individual Week 1 stat lines for the whole league. <span class="mono">ADP (10-tm)</span> and <span class="mono">Rd</span> come from FantasyFootballCalculator's live 10-team PPR mock-draft data (real drafts, sampled Aug 28&ndash;Sept 4 2026) &mdash; the closest public, verifiable stand-in for "what round does this player actually go in a 10-team league," since ESPN's and Yahoo's own ADP tools live inside their logged-in draft apps and aren't publicly fetchable. A player who wasn't drafted in any sampled mock reads <span class="muted">UDA</span> (undrafted average) rather than a made-up late-round number &mdash; treat those as waiver-tier fliers. <span class="mono">Workload / Split</span> only applies to RBs, so every WR row reads <em>N/A &mdash; RB stat</em>. <span class="mono">Draft Note</span> is never empty &mdash; a player without a specific storyline gets a one-line "checked, nothing notable" note, and a note beginning "Sources disagree" flags a real gap between Razzball and FantasyPros on that player. Full detail in Sources &amp; Method below.</p>
 
   <div class="legend">
     <span class="badge b-bellcow"><span class="dot g"></span>Bell cow / clear lead</span>
@@ -365,6 +365,8 @@ footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-
           <th data-key="depth">Depth</th>
           <th data-key="fpts">Season PPR Proj</th>
           <th data-key="wk1">Week 1 Proj</th>
+          <th data-key="adp">ADP (10-tm)</th>
+          <th data-key="round">Rd</th>
           <th data-key="volume">Projected Volume</th>
           <th data-key="role">Role</th>
           <th data-key="split">Workload / Split</th>
@@ -426,7 +428,7 @@ footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-
 <section id="sources">
   <div class="section-head"><h2>Sources &amp; Method</h2></div>
   <p class="section-intro">
-    <b>Season-long PPR points</b> blend two independently-modeled sources rather than one: <b>Razzball</b> (Rudy Gamble's model) publishes a full-board rest-of-season projection covering nearly every player on this sheet, so it's used as the primary number wherever it exists; <b>FantasyPros</b>' consensus draft-season model only auto-exposes its top ~10 backs and ~10 receivers, so it fills in nothing Razzball doesn't already cover and serves as a cross-check where both exist. The two disagreed by more than 15 points on a handful of players (a real, sourced disagreement, not an error) &mdash; those are flagged in the Draft Note column rather than silently picking one. A player neither source models numerically (mostly deep bench/practice-squad-adjacent names) stays blank rather than getting an invented figure. <b>Week 1 points</b> use FantasyPros' actual Week 1 projection for the players it publishes one for; every other player's Week 1 number is this document's own season&nbsp;&divide;&nbsp;17 average, clearly marked with a "~" &mdash; nobody publishes individually-modeled Week 1 stat lines for the full league, so that average is the honest option rather than a guess dressed up as a real projection. Attempts/targets volume, where shown, comes from FantasyPros' exposed top tier only. Depth charts and role calls are cross-checked against team-released unofficial depth charts, beat-reporter reporting, and multiple fantasy outlets; committee/injury situations note disagreement explicitly. Workload splits marked "est." are this document's own estimate from the reporting below, not a stat a team publishes &mdash; treat them as directional, not exact.
+    <b>Season-long PPR points</b> blend two independently-modeled sources rather than one: <b>Razzball</b> (Rudy Gamble's model) publishes a full-board rest-of-season projection covering nearly every player on this sheet, so it's used as the primary number wherever it exists; <b>FantasyPros</b>' consensus draft-season model only auto-exposes its top ~10 backs and ~10 receivers, so it fills in nothing Razzball doesn't already cover and serves as a cross-check where both exist. The two disagreed by more than 15 points on a handful of players (a real, sourced disagreement, not an error) &mdash; those are flagged in the Draft Note column rather than silently picking one. A player neither source models numerically (mostly deep bench/practice-squad-adjacent names) stays blank rather than getting an invented figure. <b>Week 1 points</b> use FantasyPros' actual Week 1 projection for the players it publishes one for; every other player's Week 1 number is this document's own season&nbsp;&divide;&nbsp;17 average, clearly marked with a "~" &mdash; nobody publishes individually-modeled Week 1 stat lines for the full league, so that average is the honest option rather than a guess dressed up as a real projection. Attempts/targets volume, where shown, comes from FantasyPros' exposed top tier only. Depth charts and role calls are cross-checked against team-released unofficial depth charts, beat-reporter reporting, and multiple fantasy outlets; committee/injury situations note disagreement explicitly. Workload splits marked "est." are this document's own estimate from the reporting below, not a stat a team publishes &mdash; treat them as directional, not exact. <b>2025 Season</b> numbers (shown on each player's card) are real, final Pro-Football-Reference regular-season stat lines, verified individually per player &mdash; not projections. PPR points there are computed from the raw stat line (0.1/rush yd, 6/rush TD, 1/reception, 0.1/rec yd, 6/rec TD), not PFR's own scoring column, so they match this sheet's full-PPR format exactly. A player tagged "Rookie" was in college during the 2025 season and has no NFL stat line yet. <b>ADP and draft round</b> reflect FantasyFootballCalculator's live 10-team PPR mock-draft data, not ESPN's or Yahoo's own numbers &mdash; those platforms only expose ADP inside their logged-in draft tools, with no public page to pull from, so FFC's real mock-draft sample (thousands of actual 10-team PPR drafts, most recent week) is the honest public substitute rather than a guess at what those sites would show. Round is simply ADP&nbsp;&divide;&nbsp;10, rounded up, for a 10-team league specifically &mdash; it will not match a 12- or 14-team league's rounds.
   </p>
   <ul class="src-cols" id="sourceList"></ul>
 </section>
@@ -962,6 +964,8 @@ const rankings = [
 ];
 
 const sources = [
+ ['FantasyFootballCalculator — 10-Team PPR ADP (live mock drafts, Aug 28–Sept 4 2026)','https://fantasyfootballcalculator.com/adp/ppr/10-team/all/2026'],
+ ['Pro-Football-Reference — 2025 NFL Fantasy Stats (season totals)','https://www.pro-football-reference.com/years/2025/fantasy.htm'],
  ['FantasyPros — 2026 PPR RB Projections','https://www.fantasypros.com/nfl/projections/rb.php?week=draft&scoring=PPR'],
  ['FantasyPros — 2026 PPR WR Projections','https://www.fantasypros.com/nfl/projections/wr.php?week=draft&scoring=PPR'],
  ['FantasyPros — Evaluating RB-by-Committees (2026)','https://www.fantasypros.com/2026/08/fantasy-football-evaluating-running-back-by-committees-2026/'],
@@ -1279,6 +1283,159 @@ const STATS_2025 = {
  'zach charbonnet':{att:184,rushYds:730,rushTD:12,rec:20,recYds:144,recTD:0,pprPts:181.4},
  'zay flowers':{att:10,rushYds:62,rushTD:1,rec:86,recYds:1211,recTD:5,pprPts:243.3}
 };
+
+/* 10-team PPR ADP from FantasyFootballCalculator.com live mock drafts (Aug 28–Sept 4, 2026).
+   round = ceil(adp / 10). A player absent here was not drafted in any sampled 10-team mock
+   at all (shown as UDA in the UI) — that itself is real signal, not a lookup failure. */
+const ADP_10TEAM = {
+ 'aaron jones':{adp:106.3,round:11},
+ 'adonai mitchell':{adp:161.6,round:17},
+ 'aj brown':{adp:16.6,round:2},
+ 'alec pierce':{adp:69.6,round:7},
+ 'alvin kamara':{adp:151.9,round:16},
+ 'amon-ra st brown':{adp:6.7,round:1},
+ 'ashton jeanty':{adp:21.1,round:3},
+ 'bhayshul tuten':{adp:54.0,round:6},
+ 'bijan robinson':{adp:2.4,round:1},
+ 'blake corum':{adp:122.9,round:13},
+ 'braelon allen':{adp:157.7,round:16},
+ 'breece hall':{adp:31.7,round:4},
+ 'brian robinson':{adp:164.2,round:17},
+ 'brian thomas':{adp:73.3,round:8},
+ 'bucky irving':{adp:46.2,round:5},
+ 'caleb douglas':{adp:165.2,round:17},
+ 'calvin ridley':{adp:153.5,round:16},
+ 'cam skattebo':{adp:39.5,round:4},
+ 'carnell tate':{adp:79.6,round:8},
+ 'ceedee lamb':{adp:10.4,round:2},
+ 'chase brown':{adp:13.0,round:2},
+ 'chris godwin':{adp:78.0,round:8},
+ 'chris olave':{adp:19.5,round:2},
+ 'chris rodriguez':{adp:157.2,round:16},
+ 'christian mccaffrey':{adp:6.1,round:1},
+ 'christian watson':{adp:57.2,round:6},
+ 'chuba hubbard':{adp:81.2,round:9},
+ 'cooper kupp':{adp:158.3,round:16},
+ 'courtland sutton':{adp:61.1,round:7},
+ 'dandre swift':{adp:43.6,round:5},
+ 'darius slayton':{adp:178.0,round:18},
+ 'davante adams':{adp:41.5,round:5},
+ 'david montgomery':{adp:53.9,round:6},
+ 'deebo samuel':{adp:113.6,round:12},
+ 'denzel boston':{adp:136.1,round:14},
+ 'derrick henry':{adp:15.9,round:2},
+ 'devaughn vele':{adp:165.0,round:17},
+ 'devon achane':{adp:9.7,round:1},
+ 'devonta smith':{adp:29.2,round:3},
+ 'dezhaun stribling':{adp:124.3,round:13},
+ 'dj moore':{adp:47.0,round:5},
+ 'dk metcalf':{adp:65.8,round:7},
+ 'dontayvion wicks':{adp:161.2,round:17},
+ 'drake london':{adp:13.5,round:2},
+ 'dylan sampson':{adp:158.3,round:16},
+ 'emeka egbuka':{adp:35.6,round:4},
+ 'emmett johnson':{adp:149.0,round:15},
+ 'garrett wilson':{adp:26.9,round:3},
+ 'george holani':{adp:157.2,round:16},
+ 'george pickens':{adp:19.7,round:2},
+ 'isaac teslaa':{adp:175.0,round:18},
+ 'isiah pacheco':{adp:157.0,round:16},
+ 'jacory croskey-merritt':{adp:114.9,round:12},
+ 'jadarian price':{adp:70.4,round:8},
+ 'jahmyr gibbs':{adp:1.4,round:1},
+ 'jakobi lane':{adp:162.6,round:17},
+ 'jakobi meyers':{adp:87.7,round:9},
+ 'jalen coker':{adp:120.1,round:13},
+ 'jalen mcmillan':{adp:139.5,round:14},
+ 'jalen nailor':{adp:156.7,round:16},
+ 'jamarr chase':{adp:3.8,round:1},
+ 'james cook':{adp:11.4,round:2},
+ 'jameson williams':{adp:45.6,round:5},
+ 'jauan jennings':{adp:144.4,round:15},
+ 'javonte williams':{adp:34.1,round:4},
+ 'jaxon smith-njigba':{adp:5.5,round:1},
+ 'jayden reed':{adp:90.2,round:10},
+ 'jaylen waddle':{adp:44.2,round:5},
+ 'jaylen warren':{adp:62.6,round:7},
+ 'jeremiyah love':{adp:28.0,round:3},
+ 'jerry jeudy':{adp:129.6,round:13},
+ 'jk dobbins':{adp:87.1,round:9},
+ 'jonah coleman':{adp:153.9,round:16},
+ 'jonathan taylor':{adp:7.4,round:1},
+ 'jonathon brooks':{adp:91.7,round:10},
+ 'jordan addison':{adp:96.5,round:10},
+ 'jordan mason':{adp:112.9,round:12},
+ 'jordyn tyson':{adp:157.7,round:16},
+ 'josh downs':{adp:92.1,round:10},
+ 'josh jacobs':{adp:77.0,round:8},
+ 'justice hill':{adp:163.8,round:17},
+ 'justin jefferson':{adp:11.6,round:2},
+ 'kayshon boutte':{adp:159.5,round:16},
+ 'kc concepcion':{adp:117.8,round:12},
+ 'keaton mitchell':{adp:159.9,round:16},
+ 'keenan allen':{adp:135.8,round:14},
+ 'kenneth walker':{adp:21.1,round:3},
+ 'kenneth gainwell':{adp:91.7,round:10},
+ 'khalil shakir':{adp:100.6,round:11},
+ 'kyle monangai':{adp:109.9,round:11},
+ 'kyren williams':{adp:31.6,round:4},
+ 'ladd mcconkey':{adp:38.4,round:4},
+ 'luther burden':{adp:52.2,round:6},
+ 'makai lemon':{adp:131.7,round:14},
+ 'malik nabers':{adp:26.8,round:3},
+ 'malik washington':{adp:151.9,round:16},
+ 'marshawn lloyd':{adp:119.2,round:12},
+ 'marvin harrison':{adp:64.5,round:7},
+ 'matthew golden':{adp:104.6,round:11},
+ 'michael pittman':{adp:77.0,round:8},
+ 'michael wilson':{adp:75.2,round:8},
+ 'mike evans':{adp:56.0,round:6},
+ 'mike washington':{adp:150.8,round:16},
+ 'najee harris':{adp:145.5,round:15},
+ 'nico collins':{adp:20.7,round:3},
+ 'omar cooper':{adp:175.7,round:18},
+ 'omarion hampton':{adp:22.4,round:3},
+ 'parker washington':{adp:62.5,round:7},
+ 'puka nacua':{adp:2.8,round:1},
+ 'quentin johnston':{adp:93.2,round:10},
+ 'quinshon judkins':{adp:50.1,round:6},
+ 'rachaad white':{adp:120.4,round:13},
+ 'rashee rice':{adp:17.0,round:2},
+ 'rashid shaheed':{adp:127.9,round:13},
+ 'rashod bateman':{adp:156.7,round:16},
+ 'ray davis':{adp:169.0,round:17},
+ 'rhamondre stevenson':{adp:61.7,round:7},
+ 'rico dowdle':{adp:74.7,round:8},
+ 'rj harvey':{adp:95.3,round:10},
+ 'rome odunze':{adp:54.8,round:6},
+ 'romeo doubs':{adp:108.6,round:11},
+ 'ryan flournoy':{adp:167.5,round:17},
+ 'samaje perine':{adp:152.9,round:16},
+ 'saquon barkley':{adp:18.4,round:2},
+ 'stefon diggs':{adp:94.6,round:10},
+ 'tank bigsby':{adp:161.7,round:17},
+ 'tank dell':{adp:164.0,round:17},
+ 'tee higgins':{adp:36.0,round:4},
+ 'terry mclaurin':{adp:48.5,round:5},
+ 'tetairoa mcmillan':{adp:32.0,round:4},
+ 'tony pollard':{adp:69.0,round:7},
+ 'travis etienne':{adp:37.3,round:4},
+ 'travis hunter':{adp:168.8,round:17},
+ 'tre harris':{adp:172.6,round:18},
+ 'tre tucker':{adp:131.2,round:14},
+ 'treveyon henderson':{adp:64.0,round:7},
+ 'troy franklin':{adp:180.2,round:19},
+ 'tyjae spears':{adp:128.8,round:13},
+ 'tyler allgeier':{adp:153.5,round:16},
+ 'tyquan thornton':{adp:174.5,round:18},
+ 'tyrone tracy':{adp:160.7,round:17},
+ 'wandale robinson':{adp:86.6,round:9},
+ 'woody marks':{adp:140.7,round:15},
+ 'xavier legette':{adp:180.6,round:19},
+ 'xavier worthy':{adp:105.8,round:11},
+ 'zach charbonnet':{adp:139.5,round:14},
+ 'zay flowers':{adp:24.4,round:3}
+};
 function espnLink(name){
   const rec = ESPN_ID[key(name)];
   const label = esc(name);
@@ -1317,6 +1474,10 @@ function renderPlayerModal(name){
   const wk1Val = (typeof p.wk1==='number') ? p.wk1.toFixed(1)+(p.wk1Sourced?'':'<span class="est-tag" title="Season proj &divide; 17 &mdash; no individually-modeled Week 1 number exists for this player">&nbsp;~</span>') : '<span class="muted">—</span>';
   const volLabel = pos==='RB' ? 'Projected volume' : 'Targets (top tier only)';
   const volVal = pos==='RB' ? (p.vol || '—') : (p.targets ? p.targets+' tgt' : '—');
+
+  const adpRec = ADP_10TEAM[key(p.name)];
+  const adpVal = adpRec ? `${adpRec.adp.toFixed(1)} <span class="src-tag">FFC</span>` : `<span class="muted" title="Not drafted in any sampled 10-team PPR mock — very late/waiver tier">UDA</span>`;
+  const rdVal = adpRec ? `Round ${adpRec.round}` : '<span class="muted">—</span>';
 
   const s25Val = !s25 ? '<span class="muted">—</span>' : s25.rookie ? 'Rookie' : s25.pprPts.toFixed(1)+' <span class="src-tag">PFR</span>';
   let s25Line = '';
@@ -1359,6 +1520,8 @@ function renderPlayerModal(name){
       ${pmStat('2026 Season PPR Proj', seasonVal)}
       ${pmStat('2025 Season PPR', s25Val)}
       ${pmStat('Week 1 Proj', wk1Val)}
+      ${pmStat('ADP (10-tm PPR)', adpVal)}
+      ${pmStat('Draft round (10-tm)', rdVal)}
       ${pmStat(volLabel, volVal)}
       ${extraStats}
     </div>
@@ -1496,10 +1659,12 @@ teams.forEach(t=>{
   t.rbs.forEach(r=>{
     let noteText = (r.note && r.note.trim()) ? r.note : fallbackRBNote(r);
     if(r.projNote) noteText = r.projNote + noteText;
+    const adpRec = ADP_10TEAM[key(r.name)];
     allRows.push({
       team:t.code, teamName:t.name, pos:'RB', player:r.name, depth:r.depth,
       fpts: (typeof r.fpts==='number') ? r.fpts : null, fptsSource: r.fptsSource || null,
       wk1: (typeof r.wk1==='number') ? r.wk1 : null, wk1Sourced: !!r.wk1Sourced,
+      adp: adpRec ? adpRec.adp : null, round: adpRec ? adpRec.round : null,
       volume: r.vol || '', role: r.role || '', split: t.split || '',
       injury: r.injury || '', secure: r.secure || '', sleeper: r.slp || 0, note: noteText,
       cls: t.rbClass
@@ -1514,10 +1679,12 @@ teams.forEach(t=>{
     }
     let noteText = (w.note && w.note.trim()) ? w.note : (slpText || fallbackWRNote(w));
     if(w.projNote) noteText = w.projNote + noteText;
+    const adpRec = ADP_10TEAM[key(w.name)];
     allRows.push({
       team:t.code, teamName:t.name, pos:'WR', player:w.name, depth:w.depth,
       fpts: (typeof w.fpts==='number') ? w.fpts : null, fptsSource: w.fptsSource || null,
       wk1: (typeof w.wk1==='number') ? w.wk1 : null, wk1Sourced: !!w.wk1Sourced,
+      adp: adpRec ? adpRec.adp : null, round: adpRec ? adpRec.round : null,
       volume: w.targets ? w.targets+' tgt' : '', role: w.role || '', split:'N/A — RB stat',
       injury: w.injury || '', secure: w.secure || '', sleeper: slpNum, note: noteText,
       cls: null
@@ -1549,6 +1716,7 @@ function renderMaster(){
   rows.sort((a,b)=>{
     let k = masterSort.key, va=a[k], vb=b[k];
     if(k==='fpts'||k==='wk1'){ va = va===null?-1:va; vb = vb===null?-1:vb; }
+    if(k==='adp'||k==='round'){ va = va===null?9999:va; vb = vb===null?9999:vb; }
     if(typeof va === 'string') va = va.toLowerCase();
     if(typeof vb === 'string') vb = vb.toLowerCase();
     if(va<vb) return -1*masterSort.dir;
@@ -1565,6 +1733,8 @@ function renderMaster(){
       <td>${esc(r.depth)}</td>
       <td class="num">${r.fpts!==null ? r.fpts.toFixed(1)+(r.fptsSource?` <span class="src-tag">${r.fptsSource==='Razzball'?'RZ':'FP'}</span>`:'') : '<span class="muted">—</span>'}</td>
       <td class="num">${r.wk1!==null ? r.wk1.toFixed(1)+(r.wk1Sourced?'':'<span class="est-tag" title="Estimated as season projection ÷ 17 games — FantasyPros only publishes a sourced Week 1 number for the top ~10 at each position.">&nbsp;~</span>') : '<span class="muted">—</span>'}</td>
+      <td class="num">${r.adp!==null ? r.adp.toFixed(1) : '<span class="muted" title="Not drafted in any sampled 10-team PPR mock draft — treat as a very late-round/waiver-tier flier.">UDA</span>'}</td>
+      <td class="num">${r.round!==null ? r.round : '<span class="muted">—</span>'}</td>
       <td class="small">${fmt(r.volume)}</td>
       <td class="small">${fmt(r.role)}</td>
       <td class="small">${fmt(r.split)}</td>

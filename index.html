@@ -1,0 +1,1196 @@
+<title>Snap Count</title>
+<meta name="description" content="2026 full-PPR RB/WR draft board for all 32 NFL teams, built around workload and opportunity rather than raw rankings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F7F1;
+  --surface:#FFFFFF;
+  --surface-2:#EAEFE4;
+  --surface-3:#DEE6D6;
+  --ink:#161F16;
+  --ink-soft:#4B5A49;
+  --ink-faint:#7C8A78;
+  --border:#D6DECB;
+  --accent:#28603F;
+  --accent-strong:#194A2E;
+  --accent-ink:#F4FBF3;
+  --gold:#93711C;
+  --gold-bg:#F6EDD3;
+  --amber:#9A6A1E;
+  --amber-bg:#F5EBD4;
+  --committee:#B14E22;
+  --committee-bg:#F7E6D8;
+  --avoid:#A23636;
+  --avoid-bg:#F7DEDD;
+  --focus:#2E6F4E;
+  --shadow: 0 1px 2px rgba(20,30,18,.06), 0 6px 20px -8px rgba(20,30,18,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F140F;
+    --surface:#161D15;
+    --surface-2:#1D251A;
+    --surface-3:#26301F;
+    --ink:#E8EEE3;
+    --ink-soft:#AEBBA6;
+    --ink-faint:#7E8C79;
+    --border:#2C3626;
+    --accent:#63B385;
+    --accent-strong:#8AD1A6;
+    --accent-ink:#0B160F;
+    --gold:#D8B15A;
+    --gold-bg:#332A15;
+    --amber:#D9A24E;
+    --amber-bg:#332813;
+    --committee:#E4864F;
+    --committee-bg:#38210F;
+    --avoid:#E17F7F;
+    --avoid-bg:#3A1717;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -10px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F140F;
+  --surface:#161D15;
+  --surface-2:#1D251A;
+  --surface-3:#26301F;
+  --ink:#E8EEE3;
+  --ink-soft:#AEBBA6;
+  --ink-faint:#7E8C79;
+  --border:#2C3626;
+  --accent:#63B385;
+  --accent-strong:#8AD1A6;
+  --accent-ink:#0B160F;
+  --gold:#D8B15A;
+  --gold-bg:#332A15;
+  --amber:#D9A24E;
+  --amber-bg:#332813;
+  --committee:#E4864F;
+  --committee-bg:#38210F;
+  --avoid:#E17F7F;
+  --avoid-bg:#3A1717;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -10px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'IBM Plex Sans', system-ui, sans-serif;
+  font-size:15px; line-height:1.5;
+  font-variant-numeric: tabular-nums;
+}
+::selection{background:var(--accent); color:var(--accent-ink)}
+a{color:var(--accent)}
+h1,h2,h3,h4{font-family:'Oswald',system-ui,sans-serif; text-wrap:balance; font-weight:600; letter-spacing:.01em; margin:0}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.wrap{max-width:1220px; margin:0 auto; padding:0 22px}
+
+/* ---------- header ---------- */
+header.top{
+  background:linear-gradient(180deg, var(--accent-strong), var(--accent) 140%);
+  color:var(--accent-ink);
+  padding:38px 0 26px;
+}
+header.top .wrap{display:flex; flex-direction:column; gap:14px}
+.brand-row{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+header.top h1{font-size:clamp(32px,5vw,48px); letter-spacing:.02em; text-transform:uppercase}
+header.top .tag{font-family:'IBM Plex Mono',monospace; font-size:12.5px; opacity:.82; letter-spacing:.06em; text-transform:uppercase; border:1px solid rgba(244,251,243,.4); padding:3px 9px; border-radius:100px}
+header.top p.sub{margin:0; max-width:72ch; font-size:15.5px; opacity:.92}
+.meta-strip{display:flex; gap:22px; flex-wrap:wrap; margin-top:6px; font-size:13px; font-family:'IBM Plex Mono',monospace; opacity:.88}
+.meta-strip b{font-weight:600}
+
+/* ---------- nav ---------- */
+nav.sub{
+  position:sticky; top:0; z-index:40;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+}
+nav.sub .wrap{display:flex; gap:2px; overflow-x:auto; padding:0 22px; scrollbar-width:none}
+nav.sub .wrap::-webkit-scrollbar{display:none}
+nav.sub a{
+  white-space:nowrap; padding:13px 14px; font-size:13.5px; font-weight:500;
+  color:var(--ink-soft); text-decoration:none; border-bottom:2px solid transparent;
+}
+nav.sub a:hover{color:var(--ink)}
+nav.sub a.active{color:var(--accent); border-bottom-color:var(--accent)}
+
+main{padding:38px 0 80px}
+section{scroll-margin-top:56px; margin-bottom:64px}
+.section-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:6px; flex-wrap:wrap}
+.section-head h2{font-size:26px; text-transform:uppercase}
+.section-head .part{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint); letter-spacing:.08em}
+.section-intro{color:var(--ink-soft); max-width:80ch; font-size:14.5px; margin:6px 0 20px}
+
+/* ---------- legend / badges ---------- */
+.legend{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 22px}
+.badge{
+  display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600;
+  padding:5px 10px; border-radius:7px; line-height:1.2; white-space:nowrap;
+}
+.b-bellcow{background:var(--gold-bg); color:var(--gold)}
+.b-lead{background:var(--amber-bg); color:var(--amber)}
+.b-committee{background:var(--committee-bg); color:var(--committee)}
+.b-avoid{background:var(--avoid-bg); color:var(--avoid)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.g{background:var(--gold)} .dot.a{background:var(--amber)} .dot.c{background:var(--committee)} .dot.r{background:var(--avoid)}
+.stars{color:var(--gold); font-weight:600; letter-spacing:1px}
+
+/* ---------- toolbar ---------- */
+.toolbar{
+  display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:12px; margin-bottom:14px; box-shadow:var(--shadow);
+}
+.toolbar input[type=search]{
+  flex:1 1 220px; min-width:160px; background:var(--surface-2); border:1px solid var(--border);
+  color:var(--ink); padding:9px 12px; border-radius:8px; font-family:inherit; font-size:14px;
+}
+.toolbar select{
+  background:var(--surface-2); border:1px solid var(--border); color:var(--ink);
+  padding:9px 10px; border-radius:8px; font-family:inherit; font-size:13.5px;
+}
+.toolbar input:focus, .toolbar select:focus, a:focus-visible, button:focus-visible, details summary:focus-visible{
+  outline:2px solid var(--focus); outline-offset:1px;
+}
+.count-pill{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);
+  margin-left:auto; padding:6px 2px;
+}
+
+/* ---------- tables ---------- */
+.table-scroll{overflow-x:auto; border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:920px; font-size:13.5px}
+thead th{
+  position:sticky; top:0; background:var(--surface-3); text-align:left; font-family:'IBM Plex Mono',monospace;
+  font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft);
+  padding:10px 10px; border-bottom:1px solid var(--border); cursor:pointer; user-select:none; white-space:nowrap;
+}
+thead th:hover{color:var(--ink)}
+thead th .arrow{opacity:.5; font-size:10px; margin-left:3px}
+tbody td{padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:none}
+td.num{text-align:right; font-family:'IBM Plex Mono',monospace}
+td.player{font-weight:600}
+.pos-pill{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; padding:2px 7px;
+  border-radius:5px; background:var(--surface-3); color:var(--ink-soft); white-space:nowrap;
+}
+.muted{color:var(--ink-faint)}
+.small{font-size:12.5px; color:var(--ink-soft)}
+
+/* ---------- backfield summary cards on mobile handled by table scroll ---------- */
+
+/* ---------- team cards ---------- */
+.division-block{margin-bottom:30px}
+.division-title{
+  display:flex; align-items:center; gap:10px; margin-bottom:12px;
+  font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);
+}
+.division-title::after{content:""; flex:1; height:1px; background:var(--border)}
+.team-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px}
+details.team-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  box-shadow:var(--shadow); overflow:hidden;
+}
+details.team-card summary{
+  list-style:none; cursor:pointer; padding:14px 16px; display:flex; align-items:center; gap:10px;
+}
+details.team-card summary::-webkit-details-marker{display:none}
+summary .tcode{font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:13px; background:var(--surface-3); padding:3px 7px; border-radius:6px}
+summary .tname{font-weight:600; font-size:14.5px; flex:1}
+summary .chev{transition:transform .15s ease; color:var(--ink-faint)}
+details[open] summary .chev{transform:rotate(90deg)}
+.team-body{padding:0 16px 16px; display:flex; flex-direction:column; gap:14px}
+.rb-row, .wr-row{
+  border:1px solid var(--border); border-radius:9px; padding:10px 12px; background:var(--surface-2);
+}
+.rb-row + .rb-row, .wr-row + .wr-row{margin-top:8px}
+.row-top{display:flex; justify-content:space-between; gap:10px; align-items:baseline; flex-wrap:wrap}
+.row-top .name{font-weight:600; font-size:14px}
+.row-top .fpts{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft)}
+.row-meta{display:flex; gap:6px; flex-wrap:wrap; margin-top:6px}
+.tagchip{font-size:11px; padding:2px 7px; border-radius:20px; background:var(--surface-3); color:var(--ink-soft); white-space:nowrap}
+.row-note{font-size:12.5px; color:var(--ink-soft); margin-top:6px}
+.group-label{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint)}
+.team-note{
+  font-size:13px; color:var(--ink-soft); border-left:3px solid var(--accent); padding-left:10px;
+}
+
+/* ---------- sleeper list ---------- */
+.sleeper-tier{margin-bottom:22px}
+.sleeper-tier h3{font-size:16px; display:flex; align-items:center; gap:8px; margin-bottom:10px}
+.sleeper-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px}
+.sleeper-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:11px 13px;
+  box-shadow:var(--shadow);
+}
+.sleeper-card .sname{font-weight:600; font-size:14px}
+.sleeper-card .steam{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint)}
+.sleeper-card p{margin:6px 0 0; font-size:12.5px; color:var(--ink-soft)}
+
+/* ---------- rankings lists ---------- */
+.rank-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:18px}
+.rank-card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow)}
+.rank-card h3{font-size:15px; margin-bottom:10px; display:flex; gap:8px; align-items:center}
+.rank-card ol{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:7px; font-size:13.5px}
+.rank-card ol li b{font-weight:600}
+.rank-card .note{color:var(--ink-soft); font-size:12px}
+
+/* ---------- sources ---------- */
+.src-cols{columns:2; column-gap:32px; font-size:13px; color:var(--ink-soft)}
+.src-cols li{break-inside:avoid; margin-bottom:6px}
+@media (max-width:640px){.src-cols{columns:1}}
+
+footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-faint); font-size:12.5px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand-row">
+      <h1>Snap Count</h1>
+      <span class="tag">2026 Season &middot; Full PPR</span>
+    </div>
+    <p class="sub">A workload-first RB/WR draft board for all 32 teams. The question isn't just "how good is this player" — it's "who actually gets the touches," and "which cheap backup becomes a starter the moment someone gets hurt."</p>
+    <div class="meta-strip">
+      <span><b>Scoring:</b> Full PPR (1pt/reception)</span>
+      <span><b>Built:</b> Sept 5, 2026, pre&#8211;Week 1</span>
+      <span><b>Projections:</b> FantasyPros consensus (where numeric) + FTN/analyst tiers (where not)</span>
+    </div>
+  </div>
+</header>
+
+<nav class="sub">
+  <div class="wrap" id="subnav">
+    <a href="#master">Master Table</a>
+    <a href="#backfields">Backfield Summary</a>
+    <a href="#teams">Team Reports</a>
+    <a href="#sleepers">RB Sleepers</a>
+    <a href="#rankings">Final Rankings</a>
+    <a href="#sources">Sources &amp; Method</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="master">
+  <div class="section-head"><h2>Master Draft Table</h2><span class="part">Part 4</span></div>
+  <p class="section-intro">Every fantasy-relevant RB and WR on one sortable, filterable sheet. Click a column header to sort; use the search box to jump to a player or team. <span class="mono">FPTS</span> is blank where no reliable consensus number exists yet &mdash; that's intentional, not an omission (see Sources &amp; Method).</p>
+
+  <div class="legend">
+    <span class="badge b-bellcow"><span class="dot g"></span>Bell cow / clear lead</span>
+    <span class="badge b-lead"><span class="dot a"></span>Lead back, some sharing</span>
+    <span class="badge b-committee"><span class="dot c"></span>Committee</span>
+    <span class="badge b-avoid"><span class="dot r"></span>Very unclear / avoid</span>
+  </div>
+
+  <div class="toolbar">
+    <input type="search" id="searchBox" placeholder="Search player, team, or note&hellip;">
+    <select id="posFilter">
+      <option value="">All positions</option>
+      <option value="RB">RB only</option>
+      <option value="WR">WR only</option>
+    </select>
+    <select id="teamFilter"><option value="">All teams</option></select>
+    <select id="sleeperFilter">
+      <option value="">Any sleeper rating</option>
+      <option value="3">⭐⭐⭐ Priority target</option>
+      <option value="2">⭐⭐ Strong sleeper</option>
+      <option value="1">⭐ Sleeper</option>
+    </select>
+    <span class="count-pill" id="rowCount"></span>
+  </div>
+
+  <div class="table-scroll">
+    <table id="masterTable">
+      <thead>
+        <tr>
+          <th data-key="team">Team</th>
+          <th data-key="pos">Pos</th>
+          <th data-key="player">Player</th>
+          <th data-key="depth">Depth</th>
+          <th data-key="fpts">2026 PPR Proj</th>
+          <th data-key="volume">Projected Volume</th>
+          <th data-key="role">Role</th>
+          <th data-key="split">Workload / Split</th>
+          <th data-key="injury">Injury</th>
+          <th data-key="sleeper">Sleeper</th>
+          <th data-key="note">Draft Note</th>
+        </tr>
+      </thead>
+      <tbody id="masterBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="backfields">
+  <div class="section-head"><h2>Backfield Summary — One Row Per Team</h2><span class="part">Part 5</span></div>
+  <p class="section-intro">Sort by classification to find bell cows fast, or by split to see who's closest to a true workhorse share.</p>
+  <div class="toolbar">
+    <input type="search" id="bfSearch" placeholder="Search team or back&hellip;">
+    <span class="count-pill" id="bfCount"></span>
+  </div>
+  <div class="table-scroll">
+    <table id="bfTable">
+      <thead>
+        <tr>
+          <th data-key="team">Team</th>
+          <th data-key="rb1">RB1</th>
+          <th data-key="rb2">RB2</th>
+          <th data-key="split">Carry Split (est.)</th>
+          <th data-key="gl">Goal-Line</th>
+          <th data-key="pd">Passing-Down</th>
+          <th data-key="class">Classification</th>
+          <th data-key="best">Best Fantasy Target</th>
+          <th data-key="handcuff">Sleeper / Handcuff</th>
+          <th data-key="explain">Explanation</th>
+        </tr>
+      </thead>
+      <tbody id="bfBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="teams">
+  <div class="section-head"><h2>Team-by-Team Reports</h2><span class="part">Parts 1 &amp; 3</span></div>
+  <p class="section-intro">Full backfield breakdown plus the WR pecking order for all 32 teams, grouped by division. Click a team to expand. Where beat reporters and depth charts disagree, both sides are noted.</p>
+  <div id="teamsContainer"></div>
+</section>
+
+<section id="sleepers">
+  <div class="section-head"><h2>RB Sleepers — Opportunity Over ADP</h2><span class="part">Part 2</span></div>
+  <p class="section-intro">Ranked by how much the expected workload outstrips current draft cost, not by raw talent.</p>
+  <div id="sleeperContainer"></div>
+</section>
+
+<section id="rankings">
+  <div class="section-head"><h2>Final Rankings</h2><span class="part">Part 6</span></div>
+  <div class="rank-grid" id="rankGrid"></div>
+</section>
+
+<section id="sources">
+  <div class="section-head"><h2>Sources &amp; Method</h2></div>
+  <p class="section-intro">
+    Numeric full-PPR projections (attempts, receptions, FPTS) come from the <b>FantasyPros consensus</b> draft-season projection model, pulled Sept 3&ndash;5, 2026 &mdash; used consistently so the numbers that exist are comparable to each other. FantasyPros only fully renders its top tier of backs and receivers to automated tools, so most players carry a qualitative tier (from FTN Fantasy's 2026 RB tiers) and a role description instead of a fabricated point total. Depth charts and role calls are cross-checked against team-released unofficial depth charts, beat-reporter reporting, and multiple fantasy outlets; committee/injury situations note disagreement explicitly. Workload splits marked "est." are this document's own estimate from the reporting below, not a stat a team publishes &mdash; treat them as directional, not exact.
+  </p>
+  <ul class="src-cols" id="sourceList"></ul>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Built for a 2026 full-PPR redraft. Depth charts move fast in early September &mdash; re-check anything flagged 🔴 or ⭐⭐⭐ the morning of your draft. Not betting or injury-diagnosis advice.
+  </div>
+</footer>
+
+<script>
+/* =================== DATA =================== */
+// RB classification codes: bellcow | lead | committee | avoid
+const CLASS_LABEL = {
+  bellcow: '🟢 Bell Cow', lead: '🟡 Lead + Sharing', committee: '🟠 Committee', avoid: '🔴 Unclear/Avoid'
+};
+const CLASS_BADGE = {
+  bellcow: 'b-bellcow', lead: 'b-lead', committee: 'b-committee', avoid: 'b-avoid'
+};
+
+const teams = [
+// ---------------- AFC EAST ----------------
+{code:'BUF', name:'Buffalo Bills', div:'AFC East', rbClass:'bellcow', split:'Cook ~78% / Davis ~17% / Johnson ~5% (est.)',
+ rbs:[
+  {name:'James Cook', depth:'RB1', fpts:270.7, vol:'288 att / 33 rec (proj.)', role:'Every-down back, goal-line and passing-down primary', gl:'Primary', pd:'Primary', injury:'Healthy', secure:'Yes — extended, entrenched', slp:0, note:'Locked-in RB1 workload; draft as a true bell cow.'},
+  {name:'Ray Davis', depth:'RB2', fpts:null, vol:'Change-of-pace touches', role:'Early-down relief, has had spot 100+ yard games', gl:'Occasional', pd:'Limited', injury:'Healthy', secure:'Clear #2', slp:1, note:'One of the better "proven" handcuffs — has started and produced when Cook has sat.'}
+ ],
+ wrs:[
+  {name:'DJ Moore', depth:'WR1', fpts:null, targets:'~120 (proj.)', role:'Outside, now the unquestioned #1 target for Josh Allen', injury:'Healthy', secure:'Yes', slp:'Buy-back candidate after a down 2025', note:'Full bell-cow role at WR now that the room thinned out around him.'},
+  {name:'Khalil Shakir', depth:'WR2', fpts:null, targets:null, role:'Slot/possession, high catch rate', injury:'Questionable (camp bump, minor)', secure:'Yes', slp:'—', note:'Reliable PPR floor piece.'},
+  {name:'Keon Coleman', depth:'WR3', fpts:null, targets:null, role:'Outside/vertical, Year 2 jump candidate', injury:'Questionable (minor)', secure:'Yes', slp:'Boom/bust upside', note:'Touchdown-dependent but has the size/role for one.'}
+ ], note:'One of the cleanest bell-cow backfields in football; Cook is a set-and-forget RB1.'},
+
+{code:'MIA', name:'Miami Dolphins', div:'AFC East', rbClass:'bellcow', split:'Achane ~75% / Wright ~20% (est.)',
+ rbs:[
+  {name:"De'Von Achane", depth:'RB1', fpts:292.8, vol:'238 att / 66 rec (proj.)', role:'Workhorse in space — runs, screens, routes', gl:'Shares some with Wright', pd:'Primary', injury:'Healthy entering camp; extensive injury history (ankle/shoulder/knee in past seasons)', secure:'Yes, when on the field', slp:0, note:'Elite ceiling, but his own injury history is the real risk, not a timeshare.'},
+  {name:'Jaylen Wright', depth:'RB2', fpts:null, vol:'Complementary/early-down spell', role:'Change of pace, some goal-line work', gl:'Some', pd:'Limited', injury:'Healthy', secure:'Clear #2', slp:1, note:'Real weekly-flex value if Achane misses time.'}
+ ],
+ wrs:[
+  {name:'Malik Washington', depth:'WR1', fpts:null, targets:null, role:'Slot-heavy #1 by default after Tyreek Hill\'s release', injury:'Healthy', secure:'Interim WR1', slp:'Post-Hill target voids create value', note:'Value spike simply because the room emptied out above him.'},
+  {name:'Jalen Tolbert', depth:'WR2', fpts:null, targets:null, role:'Outside complement', injury:'Healthy', secure:'Yes', slp:'—', note:'Depth-chart beneficiary of the Hill release.'},
+  {name:'Caleb Douglas', depth:'WR3', fpts:null, targets:null, role:'Rookie, slot/depth', injury:'Healthy', secure:'Unproven', slp:'Deep-league watch', note:'Nobody has proven they can be a real fantasy factor here yet.'}
+ ], note:'Miami released Tyreek Hill after his 2025 knee injury — the whole WR room is a value crater. Achane\'s health, not touches, is the swing factor.'},
+
+{code:'NE', name:'New England Patriots', div:'AFC East', rbClass:'lead', split:'Stevenson ~60% / Henderson ~35% (est., per camp snap counts)',
+ rbs:[
+  {name:'Rhamondre Stevenson', depth:'RB1', fpts:null, vol:'Lead early-down/short-yardage work', role:'Named RB1 on first unofficial depth chart', gl:'Primary', pd:'Shared', injury:'Healthy', secure:'Yes, for now', slp:0, note:'Analysts (Fantasy Life/RotoBaller) say draft Stevenson ahead of Henderson — "trusted starter at a discount."'},
+  {name:'TreVeyon Henderson', depth:'RB2', fpts:null, vol:'~46% offensive snaps in camp', role:'Explosive change-of-pace; pass-protection limitations are holding him back from more', gl:'Limited', pd:'Emerging', injury:'Healthy', secure:'Competing, not settled', slp:2, note:'Rookie hype real, but the depth chart and beat reporting both currently favor Stevenson.'}
+ ],
+ wrs:[
+  {name:'A.J. Brown', depth:'WR1', fpts:256.7, targets:null, role:'True #1, acquired via blockbuster trade from Philadelphia', injury:'Healthy', secure:'Yes', slp:'Massive landing-spot value change', note:'Went from Philly\'s 1B to New England\'s clear alpha target — one of the biggest offseason value swings at the position.'},
+  {name:'Romeo Doubs', depth:'WR2', fpts:null, targets:null, role:'Outside complement, offseason addition from Green Bay', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'DeMario Douglas', depth:'WR3', fpts:null, targets:null, role:'Slot', injury:'Healthy', secure:'Yes', slp:'PPR floor piece', note:''}
+ ], note:'Stevenson is the current lead, but Henderson is a real 50-touch-away threat to overtake him if pass pro clicks.'},
+
+{code:'NYJ', name:'New York Jets', div:'AFC East', rbClass:'bellcow', split:'Hall ~80% when healthy / Allen fills in fully if he sits',
+ rbs:[
+  {name:'Breece Hall', depth:'RB1', fpts:null, vol:'Bell-cow workload when active', role:'All-situations back', gl:'Primary', pd:'Primary', injury:'Groin strain (Aug 18); HC Aaron Glenn says on track for Week 1 vs. TEN (Sept 13)', secure:'Yes, if healthy', slp:0, note:'Monitor his practice status the week of the opener — 2-3 week groin injury dated right against Week 1.'},
+  {name:'Braelon Allen', depth:'RB2', fpts:null, vol:'Would inherit a near-workhorse role', role:'Primary handcuff, has starter-caliber size/style', gl:'Would be primary if starting', pd:'Adequate', injury:'Healthy', secure:'Clear #2', slp:2, note:'One of the best "if the starter is hurt" stashes in the league given Hall\'s current injury.'}
+ ],
+ wrs:[
+  {name:'Garrett Wilson', depth:'WR1', fpts:null, targets:null, role:'Alpha target regardless of QB play', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Adonai Mitchell', depth:'WR2', fpts:null, targets:null, role:'Outside vertical complement', injury:'Healthy', secure:'Competing for snaps', slp:'Unproven role', note:''},
+  {name:'Omar Cooper Jr.', depth:'WR3', fpts:null, targets:null, role:'Rookie, slot', injury:'Healthy', secure:'Unproven', slp:'Deep watch', note:''}
+ ], note:'Hall\'s groin strain is the single most important injury to track before Week 1 among locked-in RB1s.'},
+
+// ---------------- AFC NORTH ----------------
+{code:'BAL', name:'Baltimore Ravens', div:'AFC North', rbClass:'bellcow', split:'Henry ~85% / Hill ~13% (est.)',
+ rbs:[
+  {name:'Derrick Henry', depth:'RB1', fpts:274.9, vol:'316 att / 18 rec (proj.)', role:'Workhorse power runner, all short-yardage/goal-line work', gl:'Primary', pd:'Minimal', injury:'Healthy', secure:'Yes — entering age-32 season but still the clear #1', slp:0, note:'Age is the only real risk; touches and role are as secure as anyone in football.'},
+  {name:'Justice Hill', depth:'RB2', fpts:null, vol:'Passing-down role only', role:'Third-down/change-of-pace', gl:'None', pd:'Primary', injury:'Healthy', secure:'Clear #2, low ceiling', slp:0, note:'Standalone value is thin — this is Henry\'s backfield.'}
+ ],
+ wrs:[
+  {name:'Zay Flowers', depth:'WR1', fpts:null, targets:null, role:'Primary target, all alignments', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Rashod Bateman', depth:'WR2', fpts:null, targets:null, role:'Outside complement', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:"Ja'Kobe Lane", depth:'WR3', fpts:null, targets:null, role:'Rookie (USC), real camp buzz for a WR3 role', injury:'Healthy', secure:'Emerging', slp:'Sleeper — could push for real snaps and TD equity', note:'Beat writers flag him as a legitimate camp standout, not just a name on the depth chart.'}
+ ], note:'About as clean a bell cow as exists in the league — the only question is Henry\'s age curve, not his role.'},
+
+{code:'CIN', name:'Cincinnati Bengals', div:'AFC North', rbClass:'bellcow', split:'Brown ~78% / Perine ~18% (est.)',
+ rbs:[
+  {name:'Chase Brown', depth:'RB1', fpts:278.8, vol:'239 att / 64 rec (proj.)', role:'Every-down back with real receiving usage', gl:'Primary', pd:'Primary', injury:'Healthy', secure:'Yes', slp:0, note:'Locked in as a true three-down back in a high-powered offense.'},
+  {name:'Samaje Perine', depth:'RB2', fpts:null, vol:'Change-of-pace/insurance', role:'Veteran passing-down insurance', gl:'Rare', pd:'Some', injury:'Healthy', secure:'Clear #2', slp:0, note:'Journeyman insurance, not a real standalone piece unless Brown is out.'}
+ ],
+ wrs:[
+  {name:"Ja'Marr Chase", depth:'WR1', fpts:335.9, targets:'~185 (highest projected target total in the league)', role:'Alpha target in every sense', injury:'Healthy', secure:'Yes', slp:'—', note:'Consensus #2 overall fantasy WR behind only Puka Nacua.'},
+  {name:'Tee Higgins', depth:'WR2', fpts:null, targets:null, role:'Legitimate #2 in most offenses, elite red-zone body', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Andrei Iosivas', depth:'WR3', fpts:null, targets:null, role:'Depth/injury insurance', injury:'Healthy', secure:'Yes', slp:'Deep-league only', note:''}
+ ], note:'One of the safer bell-cow plus alpha-WR combinations in the league.'},
+
+{code:'CLE', name:'Cleveland Browns', div:'AFC North', rbClass:'lead', split:'Judkins ~65% / Sampson ~30% (est.)',
+ rbs:[
+  {name:'Quinshon Judkins', depth:'RB1', fpts:null, vol:'Lead + goal-line', role:'Early-down and short-yardage lead', gl:'Primary', pd:'Some', injury:'Healthy', secure:'Yes', slp:0, note:'FTN Tier 6 — real touches, but on a bad offense which caps the ceiling.'},
+  {name:'Dylan Sampson', depth:'RB2', fpts:88.2, vol:'Receiving/change-of-pace', role:'Third-down back, home-run threat on limited touches', gl:'Rare', pd:'Primary', injury:'Healthy', secure:'Clear #2', slp:1, note:'Real standalone PPR floor and the clear handcuff if Judkins sits.'}
+ ],
+ wrs:[
+  {name:'Jerry Jeudy', depth:'WR1', fpts:null, targets:null, role:'Primary outside target on a rebuilding offense', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'KC Concepcion', depth:'WR2', fpts:null, targets:null, role:'Rookie, after-the-catch playmaker', injury:'Healthy', secure:'Emerging', slp:'Sleeper — could be a fantasy WR1 in deep leagues simply by volume in a thin room', note:'"Wasteland" receiving corps means whoever plays well eats a huge target share.'},
+  {name:'Denzel Boston', depth:'WR3', fpts:null, targets:null, role:'Rookie depth', injury:'Healthy', secure:'Unproven', slp:'Deep watch', note:''}
+ ], note:'Cleveland\'s offense is the concern, not the role clarity — Judkins is the lead, Sampson the clear complementary piece.'},
+
+{code:'PIT', name:'Pittsburgh Steelers', div:'AFC North', rbClass:'committee', split:'Unclear — "hot hand" rotation between Warren and Dowdle (est. close to 50/50)',
+ rbs:[
+  {name:'Jaylen Warren', depth:'RB1 (per depth chart)', fpts:null, vol:'958 rush yds + 40 rec last year (usage baseline)', role:'Named nominal RB1 on the first unofficial depth chart, third-down chops', gl:'Shared', pd:'Primary historically', injury:'Healthy', secure:'No — Dowdle hype is real', slp:0, note:'An analyst called him "a tier above Dowdle as a football player," but new HC Mike McCarthy may just play the hot hand.'},
+  {name:'Rico Dowdle', depth:'RB2 (per depth chart)', fpts:null, vol:'Two straight 1,000+ yard seasons in Carolina', role:'Early-down banger, arrives with real starter production and a prior relationship with McCarthy from Dallas', gl:'Shared', pd:'Limited historically', injury:'Healthy', secure:'No — genuine 1B, not a clean backup', slp:2, note:'Real profile as a value pick if he wins more than half the touches, which multiple outlets think is live.'}
+ ],
+ wrs:[
+  {name:'DK Metcalf', depth:'WR1', fpts:null, targets:null, role:'Outside #1, contested-catch specialist', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Michael Pittman Jr.', depth:'WR2', fpts:null, targets:null, role:'Outside complement, offseason addition from Indianapolis', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Roman Wilson', depth:'WR3', fpts:null, targets:null, role:'Slot/depth', injury:'Healthy', secure:'Competing', slp:'Deep watch', note:''}
+ ], note:'The single most important backfield to watch in the first two weeks of the season — do not assume Warren\'s "RB1" tag holds.'},
+
+// ---------------- AFC SOUTH ----------------
+{code:'HOU', name:'Houston Texans', div:'AFC South', rbClass:'lead', split:'Montgomery ~65% / Marks ~30% (est.)',
+ rbs:[
+  {name:'David Montgomery', depth:'RB1', fpts:null, vol:'Lead + goal-line', role:'Early-down/short-yardage lead', gl:'Primary', pd:'Some', injury:'Healthy', secure:'Yes, for now', slp:0, note:''},
+  {name:'Woody Marks', depth:'RB2', fpts:null, vol:'Already proven capable of a real workload', role:'Receiving back who has flashed lead-back traits when given snaps', gl:'Some', pd:'Primary', injury:'Healthy', secure:'Clear #2 with real upside', slp:2, note:'Ranked among the very best handcuffs league-wide because he has already shown he can handle volume, not just theoretically.'}
+ ],
+ wrs:[
+  {name:'Nico Collins', depth:'WR1', fpts:null, targets:null, role:'Alpha target', injury:'Healthy (history of neck/concussion issues — monitor practice reports)', secure:'Yes', slp:'—', note:''},
+  {name:'Xavier Hutchinson', depth:'WR2', fpts:null, targets:null, role:'Complementary outside/slot', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Tank Dell', depth:'WR3', fpts:null, targets:null, role:'Slot, returning from past knee injury', injury:'Recovering — snap count likely managed early', secure:'Competing', slp:'Boom/bust if fully healthy', note:''},
+  {name:'Kayshon Boutte', depth:'WR4', fpts:null, targets:null, role:'Offseason addition, secondary target competition', injury:'Healthy', secure:'Competing', slp:'Cheap depth-chart sleeper', note:'Stefon Diggs left in free agency (landed in Washington), opening real target share here.'}
+ ], note:'Marks is one of the best "proven, not just theoretical" handcuffs in football.'},
+
+{code:'IND', name:'Indianapolis Colts', div:'AFC South', rbClass:'bellcow', split:'Taylor ~90%+ (est.) — highest-volume back in the league',
+ rbs:[
+  {name:'Jonathan Taylor', depth:'RB1', fpts:311.8, vol:'327 att / 44 rec — highest projected carry total of any RB in football', role:'True workhorse, every situation', gl:'Primary', pd:'Primary', injury:'Healthy', secure:'Yes', slp:0, note:'As close to a guaranteed 300+ carry workload as exists in 2026.'},
+  {name:'DJ Giddens', depth:'RB2', fpts:null, vol:'Minimal', role:'Rookie depth', gl:'None', pd:'None', injury:'Healthy', secure:'Deep bench', slp:0, note:'Not a meaningful handcuff target given how little the offense would need to change if Taylor sat.'}
+ ],
+ wrs:[
+  {name:'Alec Pierce', depth:'WR1', fpts:null, targets:null, role:'Outside/vertical', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Josh Downs', depth:'WR2', fpts:null, targets:null, role:'Slot, elite targets-per-route-run rate', injury:'Healthy', secure:'Yes', slp:'Sleeper — Michael Pittman\'s departure clears real target share for him', note:''},
+  {name:'Keenan Allen', depth:'WR3', fpts:null, targets:null, role:'Veteran possession/slot', injury:'Healthy', secure:'Competing', slp:'Deep-league value on routes alone', note:''}
+ ], note:'Taylor is a set-and-forget RB1; Downs is one of the cleaner post-Pittman-departure WR value bumps in the league.'},
+
+{code:'JAX', name:'Jacksonville Jaguars', div:'AFC South', rbClass:'committee', split:'Unclear — Tuten presumed favorite, Rodriguez a real threat (est. 55/35/10 Tuten/Rodriguez/Allen)',
+ rbs:[
+  {name:'Bhayshul Tuten', depth:'RB1 (presumed)', fpts:null, vol:'Ceiling play if he wins the job outright', role:'Presumed heir to the lead role after Etienne\'s exit; unproven as a workhorse', gl:'Contested', pd:'Contested', injury:'Healthy', secure:'No — genuinely open competition', slp:1, note:'FTN calls him a "top-12 fantasy upside" play if it breaks his way, but it is not settled.'},
+  {name:'Chris Rodriguez Jr.', depth:'RB2', fpts:null, vol:'Elite yards-after-contact efficiency (3.6 YAC/carry, 2nd among all RBs over 3 years)', role:"Hand-picked by OC Liam Coen (reunited from Kentucky/LA), bigger frame gives him a real path to goal-line work", gl:'Real path to work', pd:'Some', injury:'Healthy', secure:'No — could easily out-touch Tuten', slp:3, note:'One of the highest-priority sleepers on this whole board: cheap, and a real chance to be JAX\'s lead back.'}
+ ],
+ wrs:[
+  {name:'Brian Thomas Jr.', depth:'WR1', fpts:null, targets:null, role:'Alpha target', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Parker Washington', depth:'WR2', fpts:null, targets:null, role:'Strong preseason, could lead the WR2/3 pecking order', injury:'Healthy', secure:'Emerging', slp:'Sleeper — "consistent drumbeat all offseason" per beat coverage', note:''},
+  {name:'Jakobi Meyers', depth:'WR3', fpts:null, targets:null, role:'Veteran slot/possession', injury:'Healthy', secure:'Competing', slp:'—', note:''},
+  {name:'Travis Hunter', depth:'WR2/3 (two-way)', fpts:null, targets:null, role:'Plays both WR and CB; HC Liam Coen says he will "absolutely" have an offensive role, with snaps shifting week to week depending on defensive need', injury:'Healthy', secure:'Role is real but variable', slp:'High-touchdown, low-target-floor profile — track his weekly snap split', note:'Unique fantasy asset: explosive but genuinely capped on routes by his defensive workload.'}
+ ], note:'The RB room here is one of the murkiest and highest-value-to-solve committees in the league — Rodriguez is a priority sleeper target.'},
+
+{code:'TEN', name:'Tennessee Titans', div:'AFC South', rbClass:'lead', split:'Pollard ~68% / Spears ~28% (est.)',
+ rbs:[
+  {name:'Tony Pollard', depth:'RB1', fpts:null, vol:'Lead role', role:'Early-down/lead back', gl:'Primary', pd:'Shared', injury:'Healthy', secure:'Yes, but not bulletproof', slp:0, note:''},
+  {name:'Tyjae Spears', depth:'RB2', fpts:null, vol:'Passing-down + change-of-pace, real snaps', role:'New OC Brian Daboll has shown willingness to feed the back playing well', gl:'Some', pd:'Primary', injury:'Healthy', secure:'Real threat to overtake Pollard', slp:2, note:'A sleeper who does not need an injury to pay off — could simply out-play Pollard for the job.'}
+ ],
+ wrs:[
+  {name:'Carnell Tate', depth:'WR1', fpts:null, targets:null, role:'Rookie, thrust into the top target role', injury:'Healthy', secure:'Unproven but WR1 by design', slp:'Boom/bust rookie profile', note:''},
+  {name:'Wan\'Dale Robinson', depth:'WR2', fpts:null, targets:null, role:'Followed OC Brian Daboll from the Giants; 92 catches/1,014 yards last year', injury:'Healthy', secure:'Yes', slp:'Sleeper — could finish well ahead of current draft position', note:''},
+  {name:'Calvin Ridley', depth:'WR3', fpts:null, targets:null, role:'Veteran outside complement', injury:'Healthy', secure:'Competing for targets', slp:'—', note:''}
+ ], note:'Spears is one of the better "no injury required" sleeper cases in the league.'},
+
+// ---------------- AFC WEST ----------------
+{code:'DEN', name:'Denver Broncos', div:'AFC West', rbClass:'avoid', split:'Genuinely unclear — three-way mix (est. Dobbins lead if healthy, Harvey and Coleman both involved)',
+ rbs:[
+  {name:'J.K. Dobbins', depth:'RB1 (nominal)', fpts:null, vol:'Would lead if he wins/holds the job', role:'Veteran with a real injury history looking to hold off two younger backs', gl:'Contested', pd:'Contested', injury:'Healthy entering camp, but has a long injury history', secure:'No', slp:0, note:''},
+  {name:'RJ Harvey', depth:'RB2', fpts:null, vol:'Most explosive of the three per analysts', role:'Change-of-pace/big-play threat', gl:'Contested', pd:'Contested', injury:'Healthy', secure:'No', slp:1, note:''},
+  {name:'Jonah Coleman', depth:'RB3', fpts:null, vol:'Developmental', role:'Rookie, considered mostly a "double handcuff"', gl:'Unlikely', pd:'Unlikely', injury:'Healthy', secure:'No', slp:1, note:'Interesting purely as insurance in case both backs ahead of him falter.'}
+ ],
+ wrs:[
+  {name:'Courtland Sutton', depth:'WR1', fpts:null, targets:null, role:'Outside #1', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Jaylen Waddle', depth:'WR2', fpts:null, targets:null, role:'Offseason addition from Miami, vertical/slot versatility', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Troy Franklin', depth:'WR3', fpts:null, targets:null, role:'Depth/complementary', injury:'Questionable (minor)', secure:'Competing', slp:'Deep-league watch', note:''}
+ ], note:'Sean Payton\'s committee philosophy makes this the backfield to actively avoid on workload grounds — most analysts flag it as such.'},
+
+{code:'KC', name:'Kansas City Chiefs', div:'AFC West', rbClass:'lead', split:'Walker ~70% / Demercado ~20% (est.)',
+ rbs:[
+  {name:'Kenneth Walker III', depth:'RB1', fpts:null, vol:'Lead role in a run-focused offense after free-agent move', role:'Signed away from Seattle (Super Bowl LX MVP) as KC\'s new lead back', gl:'Primary', pd:'Some', injury:'Healthy', secure:'Yes', slp:0, note:'Widely called one of the best value free-agent RB signings of the offseason.'},
+  {name:'Emari Demercado', depth:'RB2', fpts:null, vol:'Change-of-pace', role:'Passing-down complement', gl:'Rare', pd:'Primary', injury:'Healthy', secure:'Clear #2', slp:0, note:''},
+  {name:'Emmett Johnson', depth:'RB3', fpts:null, vol:'Deep bench', role:'Rookie depth', gl:'None', pd:'None', injury:'Healthy', secure:'Deep bench', slp:1, note:'Deep-league dynasty flier only.'}
+ ],
+ wrs:[
+  {name:'Xavier Worthy', depth:'Interim WR1 (Weeks 1-6)', fpts:null, targets:null, role:'Vertical/slot speed; inherits the top target role while Rice is out', injury:'Healthy', secure:'Yes through the suspension window', slp:'Real early-season value spike', note:'Rashee Rice is suspended the first 6 games — Worthy is the direct target-share beneficiary until Rice returns.'},
+  {name:'Rashee Rice', depth:'WR1 (once eligible)', fpts:267.5, targets:'~97 rec (proj., prorated for a partial season)', role:'True #1 when active', injury:'Suspended first 6 games (personal conduct policy)', secure:'Yes once back', slp:'Buy the discount — talent/role are elite, only games missed are the issue', note:'His per-game rate would rank as a top-tier WR1 — the suspension is the entire story on his ADP.'},
+  {name:'Tyquan Thornton', depth:'WR2/3', fpts:null, targets:null, role:'Depth beneficiary during Rice\'s suspension', injury:'Healthy', secure:'Temporary bump', slp:'Deep-league only, tied to Rice\'s absence', note:''}
+ ], note:'The Rice suspension is the single most important WR-market inefficiency on this board — plan your bye-week-style math around games 1-6.'},
+
+{code:'LV', name:'Las Vegas Raiders', div:'AFC West', rbClass:'bellcow', split:'Jeanty ~85% / Washington ~10% (est.)',
+ rbs:[
+  {name:'Ashton Jeanty', depth:'RB1', fpts:260.1, vol:'258 att / 57 rec (proj.)', role:'Rookie workhorse, all situations', gl:'Primary', pd:'Primary', injury:'Healthy', secure:'Yes', slp:0, note:'Some line-play concerns cap the ceiling slightly, but touch share is not in question.'},
+  {name:'Mike Washington Jr.', depth:'RB2', fpts:null, vol:'Minimal', role:'Rookie depth', gl:'None', pd:'None', injury:'Healthy', secure:'Deep bench', slp:0, note:'Weak offense limits his ceiling even in an injury scenario.'}
+ ],
+ wrs:[
+  {name:'Tre Tucker', depth:'WR1', fpts:null, targets:null, role:'Already playing ~90% of snaps; needs a better offense more than a bigger role', injury:'Healthy', secure:'Yes', slp:'Efficiency already there, offense is the ceiling question', note:''},
+  {name:'Jalen Nailor', depth:'WR2', fpts:null, targets:null, role:'Reunited with Kirk Cousins', injury:'Healthy', secure:'Yes', slp:'Sleeper — physical, explosive after the catch', note:''},
+  {name:'Malik Benson', depth:'WR3', fpts:null, targets:null, role:'Rookie depth', injury:'Healthy', secure:'Unproven', slp:'Deep watch', note:''}
+ ], note:'Jeanty is a clean bell cow; the passing game around him is the bigger question mark.'},
+
+{code:'LAC', name:'Los Angeles Chargers', div:'AFC West', rbClass:'lead', split:'Hampton "clear lead back" but coordinator has publicly said Mitchell/Vidal will "all play every game" (est. Hampton ~55-60%)',
+ rbs:[
+  {name:'Omarion Hampton', depth:'RB1', fpts:null, vol:'Presumptive lead in Year 2', role:'OC Mike McDaniel has explicitly floated a hot-hand rotation with Mitchell and Vidal rather than a workhorse plan', gl:'Likely primary', pd:'Shared', injury:'Healthy entering 2026', secure:'Named the lead, but McDaniel has hedged publicly', slp:0, note:'Analysts note McDaniel ran both Mostert and Achane as fantasy-relevant backs in Miami — this scheme can support more than one producer.'},
+  {name:'Keaton Mitchell', depth:'RB2', fpts:null, vol:'Real receiving-down role', role:'Fits McDaniel\'s preferred back archetype; graded as the best receiver of the group', gl:'Limited', pd:'Primary', injury:'Healthy', secure:'Real complementary role, not just a handcuff', slp:2, note:'Sleeper case: highest PFF grade of the RB trio the last three years, including best receiving grade.'},
+  {name:'Kimani Vidal', depth:'RB3', fpts:null, vol:'Rotational', role:'Early-down relief', gl:'Some', pd:'Limited', injury:'Healthy', secure:'Rotational', slp:1, note:''}
+ ],
+ wrs:[
+  {name:'Ladd McConkey', depth:'WR1', fpts:null, targets:null, role:'Alpha target, all alignments', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Quentin Johnston', depth:'WR2', fpts:null, targets:null, role:'Outside complement', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Tre Harris', depth:'WR3', fpts:null, targets:null, role:'Rookie, developing role', injury:'Healthy', secure:'Competing', slp:'Deep watch', note:''}
+ ], note:'Publicly stated committee plans make this a lead-back-plus-real-passing-down-back situation rather than a clean bell cow, despite Hampton\'s name value.'},
+
+// ---------------- NFC EAST ----------------
+{code:'DAL', name:'Dallas Cowboys', div:'NFC East', rbClass:'lead', split:'Williams ~70% / Blue ~25% (est.)',
+ rbs:[
+  {name:'Javonte Williams', depth:'RB1', fpts:null, vol:'Lead role', role:'Early-down/lead back', gl:'Primary', pd:'Shared', injury:'Healthy', secure:'Yes, for now', slp:0, note:''},
+  {name:'Jaydon Blue', depth:'RB2', fpts:null, vol:'Passing-down/change-of-pace', role:'Receiving back', gl:'Rare', pd:'Primary', injury:'Healthy', secure:'Clear #2', slp:1, note:'Real weekly-flex appeal in a pass-funnel offense if Williams struggles.'}
+ ],
+ wrs:[
+  {name:'CeeDee Lamb', depth:'WR1', fpts:272.5, targets:null, role:'Alpha target', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'George Pickens', depth:'WR1b/WR2', fpts:null, targets:null, role:'Offseason addition; genuinely competes with Lamb for the top target role', injury:'Healthy', secure:'Yes', slp:'—', note:'Two true WR1-caliber targets in one offense — good for both in a pass-funnel game plan, caps each other\'s ceiling slightly.'},
+  {name:'Ryan Flournoy', depth:'WR3', fpts:null, targets:null, role:'Depth/slot', injury:'Healthy', secure:'Competing', slp:'Deep watch', note:''}
+ ], note:'A pass-funnel offense with two big-bodied outside WRs makes Blue an interesting change-of-pace value if Williams stumbles.'},
+
+{code:'NYG', name:'New York Giants', div:'NFC East', rbClass:'lead', split:'Skattebo ~75% / Tracy+Harris ~20% combined (est.)',
+ rbs:[
+  {name:'Cam Skattebo', depth:'RB1', fpts:null, vol:'Clear lead role', role:'Every-down back for a rebuilding offense', gl:'Primary', pd:'Primary', injury:'Healthy', secure:'Yes', slp:0, note:'Clean bell-cow-caliber role even though he\'s a first/second-year player.'},
+  {name:'Tyrone Tracy Jr.', depth:'RB2', fpts:null, vol:'Complementary', role:'Change-of-pace, currently ahead of Harris for the #2 job', gl:'Some', pd:'Some', injury:'Healthy', secure:'Currently ahead, but not settled', slp:1, note:''},
+  {name:'Najee Harris', depth:'RB3 (competing)', fpts:null, vol:'Would be a real handcuff once healthy', role:'Free-agent addition still building back from a torn Achilles; not yet full speed', gl:'Would compete for it if healthy', pd:'Unclear', injury:'Recovering from Achilles tear — not full football shape yet per camp reporting', secure:'No — a real "if he gets healthy" watch, not a Week 1 factor', slp:1, note:'Worth a very late-round dynasty/deep-league stash on the bet he rounds into shape by mid-season.'}
+ ],
+ wrs:[
+  {name:'Malik Nabers', depth:'WR1', fpts:null, targets:null, role:'Alpha target regardless of QB situation', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Darius Slayton', depth:'WR2', fpts:null, targets:null, role:'Outside complement', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Calvin Austin III', depth:'WR3', fpts:null, targets:null, role:'Offseason addition, slot/depth', injury:'Healthy', secure:'Competing', slp:'Deep watch', note:''}
+ ], note:'Skattebo is a clean lead; the real subplot is whether Harris ever pushes Tracy for the #2 role once fully healthy.'},
+
+{code:'PHI', name:'Philadelphia Eagles', div:'NFC East', rbClass:'bellcow', split:'Barkley ~85% / Bigsby ~12% (est.)',
+ rbs:[
+  {name:'Saquon Barkley', depth:'RB1', fpts:264.9, vol:'296 att / 42 rec (proj.)', role:'True workhorse, all situations', gl:'Primary', pd:'Primary', injury:'Healthy', secure:'Yes', slp:0, note:'One of the safest bell cows on the board.'},
+  {name:'Tank Bigsby', depth:'RB2', fpts:null, vol:'Change-of-pace', role:'Early-down relief/handcuff', gl:'Some', pd:'Limited', injury:'Healthy', secure:'Clear #2', slp:1, note:'Ranked among the better handcuffs given Philly\'s run-heavy offense.'}
+ ],
+ wrs:[
+  {name:'DeVonta Smith', depth:'WR1', fpts:null, targets:null, role:'Now the unquestioned #1 after A.J. Brown was traded to New England', injury:'Healthy', secure:'Yes', slp:'Big value bump from the target vacancy', note:'One of the clearer post-trade WR1 promotions in the league.'},
+  {name:'Dontayvion Wicks', depth:'WR2', fpts:null, targets:null, role:'Offseason addition from a crowded Green Bay room; signed a 1-year deal specifically to get real opportunity', injury:'Healthy', secure:'Yes', slp:'Sleeper — priced like a WR3/4, role like a WR2', note:''},
+  {name:'Makai Lemon', depth:'WR3', fpts:null, targets:null, role:'Rookie depth', injury:'Healthy', secure:'Unproven', slp:'Deep watch', note:''}
+ ], note:'The A.J. Brown trade makes Smith a clean WR1 promotion and Barkley remains as safe a bell cow as exists.'},
+
+{code:'WAS', name:'Washington Commanders', div:'NFC East', rbClass:'avoid', split:'Genuinely unsettled — six backs in camp for a handful of roles',
+ rbs:[
+  {name:'Jacory Croskey-Merritt', depth:'RB1 (lead candidate)', fpts:null, vol:'Unclear', role:'Gets the first opportunity but inconsistent so far', gl:'Contested', pd:'Contested', injury:'Healthy', secure:'No', slp:1, note:'One of six backs (with White, rookie Kaytron Allen, Jerome Ford, Robert Henry Jr., Jeremy McNichols) in an openly unresolved camp battle.'},
+  {name:'Rachaad White', depth:'RB2 (lead candidate)', fpts:null, vol:'Unclear', role:'Veteran alternative, seen as the more reliable receiving option', gl:'Contested', pd:'Primary if he wins the passing-down job', injury:'Healthy', secure:'No', slp:1, note:'Some analysts prefer him over Croskey-Merritt as the safer target given his receiving chops.'},
+  {name:'Kaytron Allen', depth:'RB3 (rookie)', fpts:null, vol:'Unclear', role:'Rookie (Penn State), has a "draft-investment" edge in a muddled room', gl:'Unclear', pd:'Unclear', injury:'Healthy', secure:'No', slp:1, note:'A true wildcard — nobody has clarity here yet.'}
+ ],
+ wrs:[
+  {name:'Terry McLaurin', depth:'WR1', fpts:null, targets:null, role:'Alpha target', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Stefon Diggs', depth:'WR2', fpts:null, targets:null, role:'Free-agent addition after leaving Houston; target-hungry veteran slot/possession piece', injury:'Recovering from a 2024 ACL tear — monitor snap counts early', secure:'Yes if healthy', slp:'Buy-low if the ACL recovery looks clean in camp', note:''},
+  {name:'Luke McCaffrey', depth:'WR3', fpts:null, targets:null, role:'Depth/gadget', injury:'Healthy', secure:'Competing', slp:'Deep watch', note:''}
+ ], note:'The single messiest backfield in the league heading into Week 1 — "someone worthy of a role is getting cut" per beat reporting. Hard avoid for confident lineup planning.'},
+
+// ---------------- NFC NORTH ----------------
+{code:'CHI', name:'Chicago Bears', div:'NFC North', rbClass:'lead', split:'Swift presumed lead, but BOTH backs are banged up entering Week 1 (est. Swift ~55% if healthy)',
+ rbs:[
+  {name:"D'Andre Swift", depth:'RB1', fpts:null, vol:'Lead role, presumptive', role:'Every-down back in Ben Johnson\'s offense', gl:'Primary', pd:'Primary', injury:'Dealing with a camp practice exit — questionable, monitor closely', secure:'Nominal RB1, but health is in question for both backs in this room', slp:0, note:'Some outlets are openly asking whether Monangai has more 2026 value than Swift given usage upside once healthy.'},
+  {name:'Kyle Monangai', depth:'RB2', fpts:null, vol:'Would be a near-workhorse if given the job', role:'Proved he can handle real volume as a rookie', gl:'Some', pd:'Some', injury:'Hyperextended right knee (Aug 17) — "week to week," Week 1 in doubt', secure:'No — game status uncertain', slp:2, note:'Ranked the #2 handcuff in the league by Draft Sharks — massive value if Swift ever sits, but he himself is currently hurt too.'}
+ ],
+ wrs:[
+  {name:'Rome Odunze', depth:'WR1', fpts:null, targets:null, role:'Alpha target, Year 3 breakout candidate in Ben Johnson\'s offense', injury:'Has dealt with a foot issue — confirm pregame status', secure:'Yes', slp:'—', note:''},
+  {name:'Luther Burden III', depth:'WR2', fpts:null, targets:null, role:'Rookie, elite route-runner per analysts', injury:'Groin injury has affected his camp reps and draft price', secure:'Emerging', slp:'Sleeper — efficiency profile is "a darling" among analysts despite the injury discount', note:''},
+  {name:'Kalif Raymond', depth:'WR3', fpts:null, targets:null, role:'Slot depth', injury:'Healthy', secure:'Competing', slp:'—', note:''}
+ ], note:'Unusually, both Chicago backs are hurt at the same time entering Week 1 — track the practice reports for both before drafting either with confidence.'},
+
+{code:'DET', name:'Detroit Lions', div:'NFC North', rbClass:'bellcow', split:'Gibbs ~80% / Pacheco ~15% (est.)',
+ rbs:[
+  {name:'Jahmyr Gibbs', depth:'RB1', fpts:378.6, vol:'281 att / 72 rec (proj.) — the single highest-projected RB in the league', role:'Dual-threat workhorse', gl:'Primary', pd:'Primary', injury:'Healthy', secure:'Yes', slp:0, note:'The #1 overall fantasy RB per FantasyPros consensus.'},
+  {name:'Isiah Pacheco', depth:'RB2', fpts:null, vol:'Complementary', role:'Offseason addition (from Kansas City) after David Montgomery left, early-down/short-yardage insurance', gl:'Some', pd:'Limited', injury:'Healthy', secure:'Clear #2', slp:1, note:'A real handcuff piece given his prior lead-back track record in KC.'}
+ ],
+ wrs:[
+  {name:'Amon-Ra St. Brown', depth:'WR1', fpts:320.0, targets:null, role:'Elite alpha target, PPR machine', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Jameson Williams', depth:'WR2', fpts:null, targets:null, role:'Vertical #2 with real target volume growth', injury:'Healthy', secure:'Yes', slp:'Continues an efficiency/route-running trend upward', note:''},
+  {name:'Isaac TeSlaa', depth:'WR3', fpts:null, targets:null, role:'Depth', injury:'Healthy', secure:'Competing', slp:'Deep watch', note:''}
+ ], note:'Gibbs is the top overall fantasy running back on this entire board.'},
+
+{code:'GB', name:'Green Bay Packers', div:'NFC North', rbClass:'bellcow', split:'Jacobs ~78% / Lloyd ~18% (est.)',
+ rbs:[
+  {name:'Josh Jacobs', depth:'RB1', fpts:null, vol:'Lead + goal-line', role:'Every-down/short-yardage back', gl:'Primary', pd:'Some', injury:'Healthy', secure:'Yes', slp:0, note:''},
+  {name:'MarShawn Lloyd', depth:'RB2', fpts:null, vol:'Change-of-pace', role:'Complementary back', gl:'Rare', pd:'Some', injury:'Healthy', secure:'Clear #2', slp:1, note:''}
+ ],
+ wrs:[
+  {name:'Christian Watson', depth:'WR1', fpts:null, targets:null, role:"Now Jordan Love's primary deep threat after Doubs and Wicks both left this offseason", injury:'Healthy, previously returning from an ACL tear — efficiency (2.67 yds/route) has held up', secure:'Yes', slp:'Sleeper — role vacancy plus proven per-target efficiency', note:''},
+  {name:'Matthew Golden', depth:'WR2', fpts:null, targets:null, role:'Year 2, HC Matt LaFleur reportedly tightening the rotation to feature him as the primary X', injury:'Healthy', secure:'Yes', slp:'Sleeper — "true league-winning upside" per analysts if the rotation call holds', note:''},
+  {name:'Jayden Reed', depth:'WR3', fpts:null, targets:null, role:'Slot/gadget, competing in a genuinely deep but muddled room', injury:'Healthy', secure:'Competing', slp:'Target-share risk from the crowded room', note:''}
+ ], note:'A deep, talented WR room with real target-share ambiguity below Watson/Golden — don\'t assume a clean pecking order.'},
+
+{code:'MIN', name:'Minnesota Vikings', div:'NFC North', rbClass:'lead', split:'Jones ~55% / Mason ~40% (est., and trending toward Mason)',
+ rbs:[
+  {name:'Aaron Jones', depth:'RB1 (nominal)', fpts:null, vol:'Diminishing lead share', role:'Entering his 10th season; early-down work but real age/health risk', gl:'Shared', pd:'Shared', injury:'Extensive injury history — has missed time in each of the last several seasons', secure:'No — a durability bet, not a clean lead', slp:0, note:''},
+  {name:'Jordan Mason', depth:'RB2', fpts:null, vol:'Real early-down share already, would be a full workhorse if Jones sits', role:'Efficient early-down runner (91.3 PFF rushing grade, top-10 among qualified backs over 4 years)', gl:'Some', pd:'Limited', injury:'Healthy', secure:'Real and growing', slp:2, note:'One of the more analytically-backed sleepers on this board — cheap ADP, real path to a lead role even without a Jones injury.'}
+ ],
+ wrs:[
+  {name:'Justin Jefferson', depth:'WR1', fpts:273.3, targets:null, role:'Elite alpha target', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Jordan Addison', depth:'WR2', fpts:null, targets:null, role:'Outside complement', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Jauan Jennings', depth:'WR3', fpts:null, targets:null, role:'Slot, offseason addition', injury:'Healthy', secure:'Competing', slp:'—', note:''}
+ ], note:'Mason is a legitimate analytics-community favorite sleeper independent of a Jones injury — his efficiency profile stands on its own.'},
+
+// ---------------- NFC SOUTH ----------------
+{code:'ATL', name:'Atlanta Falcons', div:'NFC South', rbClass:'bellcow', split:'Robinson ~82% / B. Robinson ~14% (est.)',
+ rbs:[
+  {name:'Bijan Robinson', depth:'RB1', fpts:356.6, vol:'286 att / 77 rec (proj.) — 2nd-highest RB projection in the league', role:'Elite dual-threat workhorse', gl:'Primary', pd:'Primary', injury:'Healthy', secure:'Yes', slp:0, note:'A top-2 overall fantasy running back.'},
+  {name:'Brian Robinson Jr.', depth:'RB2', fpts:null, vol:'Change-of-pace/insurance', role:'Proven, capable backup with a prior starter track record', gl:'Some', pd:'Limited', injury:'Healthy', secure:'Clear #2', slp:1, note:'One of the safer "proven if needed" handcuffs given his own starter history.'}
+ ],
+ wrs:[
+  {name:'Drake London', depth:'WR1', fpts:276.3, targets:null, role:'Alpha target', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Jahan Dotson', depth:'WR2', fpts:null, targets:null, role:'Outside complement', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Olamide Zaccheaus', depth:'WR3', fpts:null, targets:null, role:'Slot/depth', injury:'Healthy', secure:'Competing', slp:'—', note:''}
+ ], note:'One of the very best bell-cow plus alpha-WR1 combos in the league.'},
+
+{code:'CAR', name:'Carolina Panthers', div:'NFC South', rbClass:'lead', split:'Hubbard opens as starter, but the organization prefers Brooks long-term if healthy (est. Hubbard ~60% early)',
+ rbs:[
+  {name:'Chuba Hubbard', depth:'RB1', fpts:null, vol:'Opens as the starter', role:'Proven, workmanlike lead back', gl:'Primary for now', pd:'Some', injury:'Healthy', secure:'Yes to start the season, but not long-term guaranteed', slp:0, note:'The floor play in this backfield — proven ceiling, but the team\'s draft investment says Brooks is the plan.'},
+  {name:'Jonathon Brooks', depth:'RB2', fpts:null, vol:'Unclear — only 9 career carries', role:'2nd-round pick returning from dual ACL tears; the organization\'s long-term preference', gl:'Would take over if healthy and productive', pd:'Unclear', injury:'Recovering from dual ACL tears — a genuine health "mystery box"', secure:'No — highest boom/bust profile on this board', slp:2, note:'Priority stash if you can afford the risk: real chance to take over the backfield outright if he\'s healthy.'}
+ ],
+ wrs:[
+  {name:"Tet McMillan", depth:'WR1', fpts:null, targets:null, role:'Year 2 breakout candidate, alpha target', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Jalen Coker', depth:'WR2', fpts:null, targets:null, role:'Outside complement', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Xavier Legette', depth:'WR3', fpts:null, targets:null, role:'Depth/complementary', injury:'Healthy', secure:'Competing', slp:'—', note:''}
+ ], note:'Brooks vs. Hubbard is one of the clearest "your money or your patience" sleeper dilemmas in the league.'},
+
+{code:'NO', name:'New Orleans Saints', div:'NFC South', rbClass:'committee', split:'Genuinely contingent on Kamara\'s roster future (est. Etienne ~55% / Kamara ~40% if both stay)',
+ rbs:[
+  {name:'Travis Etienne Jr.', depth:'RB1 (nominal)', fpts:null, vol:'Reduced if Kamara stays on the roster', role:'Signed as the presumed lead, but shares meaningfully with Kamara', gl:'Shared', pd:'Shared', injury:'Healthy', secure:'No — genuinely tied to Kamara\'s roster status', slp:0, note:'If Kamara is moved or cut, Etienne jumps to borderline RB1 territory with "350-plus touch upside" per Fantasy Life; if Kamara stays, Etienne is more of an RB2.'},
+  {name:'Alvin Kamara', depth:'RB2', fpts:null, vol:'Reduced from his prior workhorse role', role:'Restructured his contract to stay; still involved in passing-down work', gl:'Shared', pd:'Primary if Etienne is more of a runner', injury:'Healthy', secure:'Roster spot itself was in question this offseason, but he restructured and stayed', slp:0, note:'Underperformed his ADP in 2025; now a complicating factor rather than a clean handcuff for Etienne.'}
+ ],
+ wrs:[
+  {name:'Chris Olave', depth:'WR1', fpts:263.9, targets:null, role:'True alpha target (27.2% target share, 33.8% first-read share per analysts)', injury:'Healthy', secure:'Yes', slp:'Sleeper — market treats him as a "back-end WR1" but the underlying target data supports a top-5 finish', note:''},
+  {name:'Jordyn Tyson', depth:'WR2', fpts:null, targets:null, role:'Rookie, WR2 role out of camp', injury:'Healthy', secure:'Emerging', slp:'Rookie watch', note:''},
+  {name:'DeVaughn Vele', depth:'WR3', fpts:null, targets:null, role:'Depth/possession', injury:'Healthy', secure:'Competing', slp:'—', note:''}
+ ], note:'Do not draft either Saints RB expecting a clean bell-cow workload — this only resolves if Kamara is moved.'},
+
+{code:'TB', name:'Tampa Bay Buccaneers', div:'NFC South', rbClass:'committee', split:'Irving nominal starter, but Gainwell owns passing-down/red-zone work and Tucker takes short-yardage (est. Irving ~45% / Gainwell ~30% / Tucker ~15%)',
+ rbs:[
+  {name:'Bucky Irving', depth:'RB1 (nominal)', fpts:null, vol:'Reduced role from a year ago', role:'Lost receiving and goal-line work to teammates', gl:'Lost to Tucker', pd:'Lost to Gainwell', injury:'Healthy', secure:'No — multiple analysts are "fully fading" him at his current price', slp:0, note:''},
+  {name:'Kenneth Gainwell', depth:'RB2', fpts:null, vol:'Real receiving/red-zone role', role:'Pass-catching and red-zone specialist', gl:'Primary in some packages', pd:'Primary', injury:'Healthy', secure:'Real role, not a traditional "backup"', slp:2, note:'The analyst-favorite target in this backfield — "the guy I am targeting in this backfield" per one outlet.'},
+  {name:'Sean Tucker', depth:'RB3', fpts:null, vol:'Short-yardage role', role:'Goal-line/short-yardage specialist', gl:'Primary in some packages', pd:'Limited', injury:'Healthy', secure:'Real niche role', slp:1, note:''}
+ ],
+ wrs:[
+  {name:'Emeka Egbuka', depth:'WR1', fpts:null, targets:null, role:'Now the clear alpha with Mike Evans gone to San Francisco', injury:'Healthy', secure:'Yes', slp:'Priority sleeper — averaged 20.5 PPR points per game across a 5-week stretch as a rookie; role only grows from here', note:''},
+  {name:'Chris Godwin', depth:'WR2', fpts:null, targets:null, role:'Veteran possession/slot', injury:'Monitor camp reports (injury history)', secure:'Yes if healthy', slp:'—', note:''},
+  {name:'Jalen McMillan', depth:'WR3', fpts:null, targets:null, role:'Outside depth', injury:'Healthy', secure:'Competing', slp:'—', note:''}
+ ], note:'Irving is one of the clearer "fade at current price" RBs on the board; Gainwell is the analyst-favorite value play instead.'},
+
+// ---------------- NFC WEST ----------------
+{code:'ARI', name:'Arizona Cardinals', div:'NFC West', rbClass:'committee', split:'In flux — Love (when healthy) presumed long-term lead, Conner the safe short-term play (est. Conner ~50% / Love ~30% / others ~20% while Love is banged up)',
+ rbs:[
+  {name:'Jeremiyah Love', depth:'RB1 (when healthy)', fpts:null, vol:'Would be a true workhorse if he wins the job outright', role:'Rookie (drafted in the top few picks at the position), the long-term plan under new OC Nathaniel Hackett', gl:'Contested while hurt', pd:'Contested', injury:'"50/50" for Week 1 after a preseason injury (per Sept. reporting)', secure:'No — health is the entire question right now', slp:2, note:'A priority stash if you believe the health clears up — this is the highest-drafted rookie back with the murkiest Week 1 outlook on the board.'},
+  {name:'James Conner', depth:'RB1 (interim)', fpts:null, vol:'Would lead if Love is out/limited', role:'Proven veteran leader of the room in the interim', gl:'Primary in Love\'s absence', pd:'Some', injury:'Healthy', secure:'The short-term safe play', slp:0, note:'Reported as the "no-brainer" veteran the team leans on while Love is banged up.'},
+  {name:'Trey Benson', depth:'RB3', fpts:null, vol:'Rotational', role:'Committee piece under Hackett\'s scheme', gl:'Some', pd:'Some', injury:'Healthy', secure:'Rotational', slp:1, note:''},
+  {name:'Tyler Allgeier', depth:'RB4', fpts:null, vol:'Depth', role:'Depth/short-yardage', gl:'Some', pd:'None', injury:'Healthy', secure:'Depth', slp:0, note:''}
+ ],
+ wrs:[
+  {name:'Marvin Harrison Jr.', depth:'WR1', fpts:null, targets:null, role:'Alpha target; new OC Nathaniel Hackett brings a more pass-oriented scheme', injury:'Healthy', secure:'Yes', slp:'Sleeper — scheme change could unlock a Year 2 leap', note:''},
+  {name:'Michael Wilson', depth:'WR2', fpts:null, targets:null, role:'Outside/slot complement', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Kendrick Bourne', depth:'WR3', fpts:null, targets:null, role:'Slot depth', injury:'Healthy', secure:'Competing', slp:'—', note:''}
+ ], note:'One of the murkiest committees in the league purely because of Love\'s Week 1 health — re-check this the morning of your draft.'},
+
+{code:'LAR', name:'Los Angeles Rams', div:'NFC West', rbClass:'lead', split:'Williams ~62% / Corum ~33% (est.)',
+ rbs:[
+  {name:'Kyren Williams', depth:'RB1', fpts:null, vol:'Starter, owns passing-down work too', role:'Lead back who also handles third downs', gl:'Primary', pd:'Primary', injury:'Healthy', secure:'Yes', slp:0, note:'"He is the starter, and he owns the passing-down work" per analyst consensus — but full-drive rotation with Corum caps his ceiling somewhat.'},
+  {name:'Blake Corum', depth:'RB2', fpts:null, vol:'Alternates full drives with Williams', role:'Real complementary role, not just a handcuff', gl:'Some', pd:'Limited', injury:'Healthy', secure:'Yes, a real role', slp:2, note:'Ranked the #1 handcuff in the league by Draft Sharks; some analysts prefer him to Williams at their respective costs.'}
+ ],
+ wrs:[
+  {name:'Puka Nacua', depth:'WR1', fpts:339.5, targets:null, role:'Top overall fantasy WR', injury:'Healthy', secure:'Yes', slp:'—', note:'#1 overall fantasy wide receiver per consensus projections.'},
+  {name:'Davante Adams', depth:'WR2', fpts:null, targets:null, role:'Elite red-zone target (32 red-zone targets, 12 TD conversions in 2025)', injury:'Healthy', secure:'Yes', slp:'Some TD regression expected at 33, but still elite volume', note:''},
+  {name:'Jordan Whittington', depth:'WR3', fpts:null, targets:null, role:'Slot/depth', injury:'Healthy', secure:'Competing', slp:'—', note:''}
+ ], note:'A genuine 1-1a backfield rather than a clean bell cow — Corum has real standalone value, not just handcuff appeal.'},
+
+{code:'SF', name:'San Francisco 49ers', div:'NFC West', rbClass:'bellcow', split:'McCaffrey ~80% when active / Black-James committee if he sits',
+ rbs:[
+  {name:'Christian McCaffrey', depth:'RB1', fpts:334.8, vol:'270 att / 79 rec (proj.)', role:'Elite dual-threat workhorse', gl:'Primary', pd:'Primary', injury:'Recovered from camp "tightness"; HC Kyle Shanahan says he\'d play "today" if it were a game week', secure:'Yes if active — health is the only variable', slp:0, note:'Top-3 overall fantasy RB when on the field; his own health record is the sole risk factor, not competition for touches.'},
+  {name:'Kaelon Black / Jordan James', depth:'RB2 (committee)', fpts:null, vol:'Would split time if McCaffrey sits', role:'Unproven committee behind an elite starter', gl:'Unclear', pd:'Unclear', injury:'Healthy (Isaac Guerendo currently on PUP)', secure:'No clear #2 has emerged', slp:1, note:'Not a clean single handcuff — treat as a mostly unownable committee unless one player separates in-season.'}
+ ],
+ wrs:[
+  {name:'Mike Evans', depth:'WR1', fpts:null, targets:null, role:'Major free-agent addition from Tampa Bay, entering Kyle Shanahan\'s system', injury:'Healthy', secure:'Yes', slp:'Some risk flagged around fit/scheme at this stage of his career, but a clear volume role', note:''},
+  {name:'Deebo Samuel', depth:'WR2', fpts:null, targets:null, role:'Back in a full Shanahan-system role', injury:'Healthy', secure:'Yes', slp:'Sleeper — "not washed," priced low relative to his ceiling in this scheme', note:''},
+  {name:'Christian Kirk', depth:'WR3', fpts:null, targets:null, role:'Slot, currently designated to return from injured reserve', injury:'Injured reserve — timeline unclear', secure:'No, pending health', slp:'Deep watch pending health', note:''},
+  {name:"De'Zhaun Stribling", depth:'WR4 (rookie)', fpts:null, targets:null, role:'33rd overall pick, hot preseason (11 catches/109 yards over 2 games)', injury:'Healthy', secure:'Emerging', slp:'Deep-league sleeper watch', note:''}
+ ], note:"McCaffrey's touch share is never in question when he plays — this is purely a health bet, not a workload-competition bet."},
+
+{code:'SEA', name:'Seattle Seahawks', div:'NFC West', rbClass:'lead', split:'Price starting the season as the lead (Charbonnet out); reverts toward a Charbonnet/Price split once he returns',
+ rbs:[
+  {name:'Jadarian Price', depth:'RB1 (Weeks 1-4+)', fpts:null, vol:'Full early-season workload', role:'Rookie now sitting atop the unofficial depth chart with a "big opportunity" per beat reporters', gl:'Primary while starting', pd:'Primary while starting', injury:'Healthy', secure:'Yes, for as long as Charbonnet is out', slp:3, note:'One of the clearest injury-created-opportunity plays on the entire board — a rookie stepping into a lead role for at least a month.'},
+  {name:'Zach Charbonnet', depth:'RB1 (long-term plan)', fpts:null, vol:'Would resume a lead/shared role on return', role:'Team\'s stated long-term preference at the position, currently out', gl:'Would resume sharing', pd:'Would resume sharing', injury:'Expected to miss at least the first 4 games (offseason procedure/recovery)', secure:'Long-term yes, but a non-factor to start the year', slp:0, note:'Do not bench Price for him in Weeks 1-4 — he is not active.'},
+  {name:'George Holani', depth:'RB3', fpts:null, vol:'Deep bench', role:'Depth', gl:'None', pd:'Some', injury:'Healthy', secure:'Deep bench', slp:0, note:''}
+ ],
+ wrs:[
+  {name:'Jaxon Smith-Njigba', depth:'WR1', fpts:325.8, targets:null, role:'Elite alpha target', injury:'Healthy', secure:'Yes', slp:'—', note:'A top-3 overall fantasy WR per consensus projections.'},
+  {name:'Rashid Shaheed', depth:'WR2', fpts:null, targets:null, role:'Vertical complement', injury:'Healthy', secure:'Yes', slp:'—', note:''},
+  {name:'Cooper Kupp', depth:'WR3 (slot)', fpts:null, targets:null, role:'Free-agent addition from the Rams; name-value slot piece with recent injury history', injury:'Monitor camp reports', secure:'Competing for a real role', slp:'Name-value discount play if he\'s healthy and the slot role is real', note:''}
+ ], note:'Price is the headline injury-driven RB opportunity in this entire draft class — start him with confidence through at least Week 4.'}
+];
+
+/* ---- Part 5: one row per team, hand-built so it matches the reporting above exactly ---- */
+const bfSummary = [
+ {team:'BUF', rb1:'James Cook', rb2:'Ray Davis', split:'~78/17/5', gl:'Cook', pd:'Cook', cls:'bellcow', best:'James Cook', handcuff:'Ray Davis', explain:'As clean a bell cow as exists in football.'},
+ {team:'MIA', rb1:"De'Von Achane", rb2:'Jaylen Wright', split:'~75/20', gl:'Achane/Wright split', pd:'Achane', cls:'bellcow', best:"De'Von Achane", handcuff:'Jaylen Wright', explain:"Achane's own injury history is the risk, not competition for touches."},
+ {team:'NE', rb1:'Rhamondre Stevenson', rb2:'TreVeyon Henderson', split:'~60/35 (camp snaps)', gl:'Stevenson', pd:'Both', cls:'lead', best:'Rhamondre Stevenson', handcuff:'TreVeyon Henderson', explain:'Named RB1 over the rookie, but Henderson\'s snap share is real and rising.'},
+ {team:'NYJ', rb1:'Breece Hall', rb2:'Braelon Allen', split:'~80/15 when Hall healthy', gl:'Hall', pd:'Hall', cls:'bellcow', best:'Breece Hall', handcuff:'Braelon Allen', explain:'Groin strain timed right against Week 1 — confirm his practice status.'},
+ {team:'BAL', rb1:'Derrick Henry', rb2:'Justice Hill', split:'~85/13', gl:'Henry', pd:'Hill', cls:'bellcow', best:'Derrick Henry', handcuff:'Justice Hill', explain:'Age is the only risk; role is airtight.'},
+ {team:'CIN', rb1:'Chase Brown', rb2:'Samaje Perine', split:'~78/18', gl:'Brown', pd:'Brown', cls:'bellcow', best:'Chase Brown', handcuff:'Samaje Perine', explain:'True three-down back in a top-tier offense.'},
+ {team:'CLE', rb1:'Quinshon Judkins', rb2:'Dylan Sampson', split:'~65/30', gl:'Judkins', pd:'Sampson', cls:'lead', best:'Quinshon Judkins', handcuff:'Dylan Sampson', explain:'Offense quality caps the ceiling more than the role does.'},
+ {team:'PIT', rb1:'Jaylen Warren', rb2:'Rico Dowdle', split:'Unclear, "hot hand" (est. ~50/50)', gl:'Contested', pd:'Warren (historically)', cls:'committee', best:'Jaylen Warren (nominal)', handcuff:'Rico Dowdle', explain:'Depth chart says Warren; beat reporting says real 1B in Dowdle. Monitor Week 1 snaps.'},
+ {team:'HOU', rb1:'David Montgomery', rb2:'Woody Marks', split:'~65/30', gl:'Montgomery', pd:'Marks', cls:'lead', best:'David Montgomery', handcuff:'Woody Marks', explain:'Marks has already proven he can handle real volume.'},
+ {team:'IND', rb1:'Jonathan Taylor', rb2:'DJ Giddens', split:'~90+/5', gl:'Taylor', pd:'Taylor', cls:'bellcow', best:'Jonathan Taylor', handcuff:'DJ Giddens', explain:'Highest projected carry total of any back in the league.'},
+ {team:'JAX', rb1:'Bhayshul Tuten', rb2:'Chris Rodriguez Jr.', split:'Genuinely open (est. 55/35/10 w/ Allen)', gl:'Contested — Rodriguez has the size edge', pd:'Contested', cls:'committee', best:'Bhayshul Tuten (if he wins the job)', handcuff:'Chris Rodriguez Jr.', explain:'One of the murkiest, highest-value-to-solve rooms in football.'},
+ {team:'TEN', rb1:'Tony Pollard', rb2:'Tyjae Spears', split:'~68/28', gl:'Pollard', pd:'Spears', cls:'lead', best:'Tony Pollard', handcuff:'Tyjae Spears', explain:'Spears could simply outplay Pollard for the job — no injury required.'},
+ {team:'DEN', rb1:'J.K. Dobbins', rb2:'RJ Harvey / Jonah Coleman', split:'Genuinely unclear, three-way', gl:'Contested', pd:'Contested', cls:'avoid', best:'RJ Harvey (highest ceiling per analysts)', handcuff:'Jonah Coleman', explain:'Sean Payton\'s committee philosophy makes this a workload avoid.'},
+ {team:'KC', rb1:'Kenneth Walker III', rb2:'Emari Demercado', split:'~70/20', gl:'Walker', pd:'Demercado', cls:'lead', best:'Kenneth Walker III', handcuff:'Emari Demercado', explain:'One of the best value FA RB signings of the offseason.'},
+ {team:'LV', rb1:'Ashton Jeanty', rb2:'Mike Washington Jr.', split:'~85/10', gl:'Jeanty', pd:'Jeanty', cls:'bellcow', best:'Ashton Jeanty', handcuff:'Mike Washington Jr.', explain:'Rookie workhorse; O-line play is the only ceiling question.'},
+ {team:'LAC', rb1:'Omarion Hampton', rb2:'Keaton Mitchell', split:'Hampton lead, but OC has floated a hot-hand rotation (est. 55-60/25)', gl:'Hampton', pd:'Mitchell', cls:'lead', best:'Omarion Hampton', handcuff:'Keaton Mitchell', explain:'McDaniel has publicly hedged on a workhorse plan.'},
+ {team:'DAL', rb1:'Javonte Williams', rb2:'Jaydon Blue', split:'~70/25', gl:'Williams', pd:'Blue', cls:'lead', best:'Javonte Williams', handcuff:'Jaydon Blue', explain:'Blue has real weekly-flex appeal in a pass-funnel offense.'},
+ {team:'NYG', rb1:'Cam Skattebo', rb2:'Tyrone Tracy Jr.', split:'~75/20', gl:'Skattebo', pd:'Skattebo', cls:'lead', best:'Cam Skattebo', handcuff:'Tyrone Tracy Jr. (Najee Harris a stash if he rounds into shape)', explain:'Clean lead; the subplot is Harris pushing for the #2 job later in the year.'},
+ {team:'PHI', rb1:'Saquon Barkley', rb2:'Tank Bigsby', split:'~85/12', gl:'Barkley', pd:'Barkley', cls:'bellcow', best:'Saquon Barkley', handcuff:'Tank Bigsby', explain:'One of the safest bell cows on the board.'},
+ {team:'WAS', rb1:'Jacory Croskey-Merritt', rb2:'Rachaad White', split:'Genuinely unsettled, six backs in camp', gl:'Contested', pd:'Contested', cls:'avoid', best:'Jacory Croskey-Merritt (nominal)', handcuff:'Rachaad White / Kaytron Allen', explain:'"Someone worthy of a role is getting cut" — the messiest room in the league.'},
+ {team:'CHI', rb1:"D'Andre Swift", rb2:'Kyle Monangai', split:'Uncertain — both banged up (est. 55/30 if both healthy)', gl:'Swift', pd:'Swift', cls:'lead', best:"D'Andre Swift (if healthy)", handcuff:'Kyle Monangai', explain:'Unusually, both RBs are hurt entering Week 1 — check practice reports.'},
+ {team:'DET', rb1:'Jahmyr Gibbs', rb2:'Isiah Pacheco', split:'~80/15', gl:'Gibbs', pd:'Gibbs', cls:'bellcow', best:'Jahmyr Gibbs', handcuff:'Isiah Pacheco', explain:'The #1 overall fantasy RB per consensus projections.'},
+ {team:'GB', rb1:'Josh Jacobs', rb2:'MarShawn Lloyd', split:'~78/18', gl:'Jacobs', pd:'Jacobs', cls:'bellcow', best:'Josh Jacobs', handcuff:'MarShawn Lloyd', explain:'Clean every-down/goal-line role.'},
+ {team:'MIN', rb1:'Aaron Jones', rb2:'Jordan Mason', split:'~55/40 and trending toward Mason', gl:'Jones', pd:'Jones', cls:'lead', best:'Aaron Jones (Mason if Jones sits)', handcuff:'Jordan Mason', explain:'Mason is an analytics-community favorite even without a Jones injury.'},
+ {team:'ATL', rb1:'Bijan Robinson', rb2:'Brian Robinson Jr.', split:'~82/14', gl:'Robinson', pd:'Robinson', cls:'bellcow', best:'Bijan Robinson', handcuff:'Brian Robinson Jr.', explain:'A top-2 overall fantasy running back.'},
+ {team:'CAR', rb1:'Chuba Hubbard', rb2:'Jonathon Brooks', split:'Hubbard leads early (est. ~60/35)', gl:'Hubbard (for now)', pd:'Unclear', cls:'lead', best:'Chuba Hubbard', handcuff:'Jonathon Brooks', explain:'Organization\'s long-term plan is Brooks if he\'s healthy — track this weekly.'},
+ {team:'NO', rb1:'Travis Etienne Jr.', rb2:'Alvin Kamara', split:'Contingent on Kamara\'s roster future (est. 55/40)', gl:'Shared', pd:'Shared', cls:'committee', best:'Travis Etienne Jr.', handcuff:'—', explain:'Resolves into a clean Etienne bell cow only if Kamara is moved.'},
+ {team:'TB', rb1:'Bucky Irving', rb2:'Kenneth Gainwell', split:'~45/30/15 w/ Tucker', gl:'Tucker', pd:'Gainwell', cls:'committee', best:'Kenneth Gainwell (per analyst consensus)', handcuff:'Sean Tucker', explain:'Irving lost goal-line and receiving work; several analysts are fading him.'},
+ {team:'ARI', rb1:'Jeremiyah Love', rb2:'James Conner', split:'In flux around Love\'s health (est. Conner 50 / Love 30 while banged up)', gl:'Conner (short-term)', pd:'Contested', cls:'committee', best:'James Conner (short-term) / Love (long-term)', handcuff:'Trey Benson', explain:'Love\'s Week 1 health is a coin flip — re-check morning-of.'},
+ {team:'LAR', rb1:'Kyren Williams', rb2:'Blake Corum', split:'~62/33', gl:'Williams', pd:'Williams', cls:'lead', best:'Kyren Williams', handcuff:'Blake Corum', explain:'A genuine 1-1a; Corum has real standalone value.'},
+ {team:'SF', rb1:'Christian McCaffrey', rb2:'Kaelon Black / Jordan James', split:'~80/15 when McCaffrey active', gl:'McCaffrey', pd:'McCaffrey', cls:'bellcow', best:'Christian McCaffrey', handcuff:'None clear — unownable committee behind him', explain:'Health, not competition, is the only risk to his workload.'},
+ {team:'SEA', rb1:'Jadarian Price (Wks 1-4+)', rb2:'Zach Charbonnet (out)', split:'Price full workload to start; reverts to a split once Charbonnet returns', gl:'Price (while starting)', pd:'Price (while starting)', cls:'lead', best:'Jadarian Price (immediate)', handcuff:'—', explain:'The headline injury-created starting opportunity in this draft class.'}
+];
+
+/* ---- Part 2: RB sleepers, ranked ---- */
+const sleepers = [
+ {stars:3, name:'Chris Rodriguez Jr.', team:'JAX', why:'Elite yards-after-contact efficiency, OC\'s own pick from their shared college days, and a real path to the goal-line work Bhayshul Tuten hasn\'t locked down. Cheapest priority target on the board.'},
+ {stars:3, name:'Jadarian Price', team:'SEA', why:'Rookie stepping into a full starting workload for at least 4 games with Zach Charbonnet out. As close to a guaranteed short-term bell cow as a late-round rookie gets.'},
+ {stars:3, name:'Emeka Egbuka', team:'TB', why:"(WR) Averaged 20.5 PPR points/game across a 5-week rookie stretch and now inherits the alpha role with Mike Evans gone. Priority target, not just a flier."},
+ {stars:2, name:'Jordan Mason', team:'MIN', why:'Elite efficiency profile (91.3 PFF rush grade, top-10 over 4 years) behind an aging, injury-prone Aaron Jones. Doesn\'t need Jones to get hurt to pay off, but definitely spikes if he does.'},
+ {stars:2, name:'Keaton Mitchell', team:'LAC', why:"OC Mike McDaniel's preferred archetype (the Achane/Mostert mold) and the best receiving grade of the Chargers' RB trio. A real complementary role, not a paper handcuff."},
+ {stars:2, name:'Tyjae Spears', team:'TEN', why:'Could simply outplay Tony Pollard for the lead job under a new, more flexible OC — a "no injury required" sleeper.'},
+ {stars:2, name:'Jonathon Brooks', team:'CAR', why:"The organization's real long-term plan at RB if he's healthy off dual ACL tears. Boom/bust, but the ceiling is a full backfield takeover."},
+ {stars:2, name:'Kenneth Gainwell', team:'TB', why:'Already owns the passing-down and red-zone work in Tampa\'s backfield — the analyst-favorite play over nominal starter Bucky Irving.'},
+ {stars:2, name:'Kyle Monangai', team:'CHI', why:"Ranked as a top-2 handcuff league-wide for proven volume capability — but is himself banged up (hyperextended knee) entering Week 1, so treat as a stash, not a Week 1 play."},
+ {stars:2, name:'Rico Dowdle', team:'PIT', why:'Arrives with two straight 1,000-yard seasons and a real shot at more than half the Steelers\' touches despite Jaylen Warren\'s "RB1" tag on the depth chart.'},
+ {stars:2, name:'Blake Corum', team:'LAR', why:"Ranked the league's #1 handcuff by Draft Sharks with a real standalone role (alternates full drives with Kyren Williams), not just a name on the bench."},
+ {stars:1, name:'Woody Marks', team:'HOU', why:'Has already shown he can handle a real workload behind David Montgomery — a "proven," not theoretical, handcuff.'},
+ {stars:1, name:'Braelon Allen', team:'NYJ', why:'Would step into a near-workhorse role if Breece Hall\'s groin strain (dated right against Week 1) lingers.'},
+ {stars:1, name:'Isiah Pacheco', team:'DET', why:'Prior lead-back track record in Kansas City now backing up the #1 overall projected RB — cheap, proven-if-needed insurance.'},
+ {stars:1, name:'Jonah Coleman', team:'DEN', why:'Rookie "double handcuff" in Denver\'s three-way mess — only relevant if both Dobbins and Harvey falter, but the offense itself has volume.'},
+ {stars:1, name:'James Conner', team:'ARI', why:'The short-term beneficiary if Jeremiyah Love\'s Week 1 injury keeps him out or limited — proven veteran leader of the room.'},
+ {stars:1, name:'Najee Harris', team:'NYG', why:'Deep, patient stash: not full speed yet after his Achilles tear, but a prior workhorse skill set if he rounds into shape behind Cam Skattebo.'}
+];
+
+/* ---- Part 6: final rankings ---- */
+const rankings = [
+ {title:'1. Best Bell-Cow Situations', icon:'🟢', items:[
+   'Jonathan Taylor (IND) — highest projected carry total in the league',
+   'Jahmyr Gibbs (DET) — #1 overall projected fantasy RB',
+   'Bijan Robinson (ATL) — #2 overall projected fantasy RB',
+   'Derrick Henry (BAL) — age is the only risk to an airtight role',
+   'James Cook (BUF) — no real competition behind him',
+   'Christian McCaffrey (SF) — health, not touches, is the variable',
+   'Saquon Barkley (PHI)',
+   'Chase Brown (CIN)',
+   'Ashton Jeanty (LV)',
+   'Cam Skattebo (NYG) — clean lead despite being early in his career'
+ ]},
+ {title:'2. Best RB Values (Opportunity > Cost)', icon:'💰', items:[
+   'Kenneth Walker III (KC) — lead role in an efficient offense at a discount after leaving Seattle',
+   'Chris Rodriguez Jr. (JAX) — real path to lead touches at a backup price',
+   'Jordan Mason (MIN) — efficiency profile of a starter behind an aging, oft-injured veteran',
+   'Woody Marks (HOU) — proven volume capability priced as a backup',
+   'Jadarian Price (SEA) — a full month (or more) of starter touches at rookie-handcuff cost',
+   "Rico Dowdle (PIT) — real shot at 50%+ of the touches despite the depth chart's RB2 label"
+ ]},
+ {title:'3. Best Late-Round RB Sleepers', icon:'⭐', items:[
+   'Chris Rodriguez Jr. (JAX) ⭐⭐⭐',
+   'Jadarian Price (SEA) ⭐⭐⭐',
+   'Jordan Mason (MIN) ⭐⭐',
+   'Keaton Mitchell (LAC) ⭐⭐',
+   'Tyjae Spears (TEN) ⭐⭐',
+   'Kenneth Gainwell (TB) ⭐⭐',
+   'Jonathon Brooks (CAR) ⭐⭐ (boom/bust)'
+ ]},
+ {title:'4. Best Handcuffs', icon:'🛡️', items:[
+   'Blake Corum (LAR) — real role even before an injury, per Draft Sharks\' #1 handcuff ranking',
+   'Kyle Monangai (CHI) — #2 handcuff league-wide on proven volume, currently hurt himself',
+   'Woody Marks (HOU) — already shown he can start',
+   'Chris Rodriguez Jr. (JAX)',
+   'Ray Davis (BUF)',
+   'Braelon Allen (NYJ) — timely given Breece Hall\'s groin strain',
+   'TreVeyon Henderson (NE) — real snap share already, not a pure clipboard-holder'
+ ]},
+ {title:'5. Backfields to Avoid', icon:'🔴', items:[
+   'Washington — six backs in an openly unresolved camp battle',
+   'Denver — three-way mix under a stated committee philosophy',
+   'Arizona — top rookie back is a Week 1 coin flip health-wise',
+   'New Orleans — entirely contingent on Alvin Kamara\'s roster future',
+   'Tampa Bay — Irving\'s goal-line and receiving work has been stripped away by committee mates',
+   'Pittsburgh — "hot hand" rotation means the depth chart\'s RB1 tag may not hold'
+ ]},
+ {title:'6. Best WR Sleepers', icon:'📡', items:[
+   'Emeka Egbuka (TB) ⭐⭐⭐ — inherits the alpha role with Evans gone',
+   'Chris Olave (NO) ⭐⭐ — market treats him as back-end WR1, target share says top-5',
+   'Christian Watson (GB) ⭐⭐ — clear vacancy at the top of the WR room',
+   'Matthew Golden (GB) ⭐⭐ — coaching staff reportedly tightening the rotation around him',
+   'Dontayvion Wicks (PHI) ⭐⭐ — priced like a WR3/4, role like a real WR2',
+   'Josh Downs (IND) ⭐⭐ — direct beneficiary of Michael Pittman\'s departure',
+   'Wan\'Dale Robinson (TEN) ⭐⭐ — followed his OC from New York with his role intact',
+   "KC Concepcion (CLE) ⭐ — could lead a thin room's target share as a rookie",
+   'Parker Washington (JAX) ⭐ — real preseason buzz for a WR2 role',
+   "Ja'Kobe Lane (BAL) ⭐ — rookie camp standout with real snap upside"
+ ]},
+ {title:'7. Most Important Depth-Chart Battles to Monitor', icon:'👀', items:[
+   'PIT: Jaylen Warren vs. Rico Dowdle — depth chart vs. beat-reporter buzz disagree',
+   'DEN: Dobbins vs. Harvey vs. Coleman — no resolution in sight',
+   'WAS: six-man RB scrum — expect roster cuts to clarify this the week of Week 1',
+   'ARI: Jeremiyah Love\'s Week 1 health (reported "50/50") vs. James Conner\'s interim role',
+   'SEA: Zach Charbonnet\'s return timeline and what it does to Jadarian Price\'s workload',
+   'NO: Alvin Kamara\'s roster status and its effect on Travis Etienne\'s ceiling',
+   'NYG: Tyrone Tracy Jr. vs. Najee Harris for the RB2 job as Harris rounds into shape',
+   'CHI: Health of BOTH D\'Andre Swift and Kyle Monangai heading into Week 1',
+   'TB: Whether Bucky Irving reclaims any goal-line or receiving work from Gainwell/Tucker',
+   "KC: Rashee Rice's return from suspension (~Week 7) and what it does to Xavier Worthy's target share"
+ ]}
+];
+
+const sources = [
+ ['FantasyPros — 2026 PPR RB Projections','https://www.fantasypros.com/nfl/projections/rb.php?week=draft&scoring=PPR'],
+ ['FantasyPros — 2026 PPR WR Projections','https://www.fantasypros.com/nfl/projections/wr.php?week=draft&scoring=PPR'],
+ ['FantasyPros — Evaluating RB-by-Committees (2026)','https://www.fantasypros.com/2026/08/fantasy-football-evaluating-running-back-by-committees-2026/'],
+ ['FantasyPros — 21 WR Sleepers & Breakouts (2026)','https://www.fantasypros.com/2026/08/21-wide-receiver-sleepers-breakouts-experts-love-2026-fantasy-football/'],
+ ['FTN Fantasy — Jeff Ratcliffe\'s 2026 RB Tiers','https://ftnfantasy.com/nfl/jeff-ratcliffes-2026-rb-tiers'],
+ ['PhillyVoice — Every Team\'s Starting/Backup RB (2026)','https://www.phillyvoice.com/fantasy-football-every-teams-starting-backup-running-back-2026-start-injuries-rookies-rosters/'],
+ ['PhillyVoice — Every Team\'s Starting WR Depth Chart (2026)','https://www.phillyvoice.com/fantasy-football-every-nfl-team-starting-wr-depth-chart-slot-wr1-2026-targets-total-stats-draft-guide/'],
+ ['Yahoo Sports — 2026 Controversial RB Depth Charts','https://sports.yahoo.com/articles/2026-controversial-fantasy-football-running-195517091.html'],
+ ['PFF — Fantasy Football RB Sleepers','https://www.pff.com/news/fantasy-football-running-back-sleepers'],
+ ['Draft Sharks — Best RB Handcuffs 2026','https://www.draftsharks.com/article/best-rb-handcuffs'],
+ ['Steeler Nation — Warren/Dowdle Sept. 3 update','https://www.steelernation.com/2026/09/03/steelers-jaylen-warren-surprising-defense'],
+ ['Bleacher Report — Breece Hall injury timeline','https://bleacherreport.com/articles/25474387-breece-halls-injury-return-timeline-updated-jets-aaron-glenn-after-groin-setback'],
+ ['Bleacher Report — Christian McCaffrey injury update','https://bleacherreport.com/articles/25481651-christian-mccaffrey-injury-update-latest-49ers-stars-practice-status-ahead-2026-nfl-season'],
+ ['CBS Sports — Rashee Rice suspended six games','https://www.cbssports.com/nfl/news/rashee-rice-suspension-chiefs-wr-to-miss-first-six-games-of-season-as-part-of-disciplinary-action'],
+ ['Yahoo Sports — Seahawks unofficial depth chart / Jadarian Price','https://sports.yahoo.com/articles/jadarian-price-set-heavy-workload-143916884.html'],
+ ['Pro Football Rumors — Jeremiyah Love "50/50" for Week 1','https://www.profootballrumors.com/2026/09/cardinals-rb-jeremiyah-love-50-50-for-week-1'],
+ ['FTN Fantasy — Chargers "cold water" on Hampton workload','https://ftnfantasy.com/nfl/chargers-throw-cold-water-on-omarion-hamptons-workload'],
+ ['Fantasy Life — Etienne vs. Kamara breakdown','https://www.fantasylife.com/articles/fantasy/breaking-down-travis-etienne-alvin-kamara-for-2026-fantasy-footb'],
+ ['SI/OnSI — Commanders RB roster battle','https://www.si.com/nfl/commanders/onsi/commanders-roster-battles-running-back-depth-chart-2026'],
+ ['Bleacher Nation — Kyle Monangai injury update','https://www.bleachernation.com/bears/2026/08/17/kyle-monangai-injury/'],
+ ['49ers.com — Mike Evans signing','https://www.49ers.com/news/49ers-sign-wr-mike-evans-to-three-year-deal-nfl-free-agency'],
+ ['NFL.com — A.J. Brown traded to Patriots','https://www.nfl.com/news/aj-brown-patriots-eagles-trade'],
+ ['CBS Sports — Tyreek Hill released','https://www.cbssports.com/nfl/news/tyreek-hill-released-dolphins-wr-contract/'],
+ ['NFL.com — Kenneth Walker III signs with Chiefs','https://www.nfl.com/news/chiefs-signing-ex-seahawks-rb-kenneth-walker-iii-mvp-of-super-bowl-lx'],
+ ['Bleacher Report — Travis Hunter offensive role confirmed','https://bleacherreport.com/articles/25495137-travis-hunter-will-absolutely-have-role-offense-amid-2-way-questions-jaguars-hc-says'],
+ ['Yahoo Sports — Rhamondre Stevenson ahead of TreVeyon Henderson','https://www.rotoballer.com/player-news/rhamondre-stevenson-ahead-of-treveyon-henderson-on-first-unofficial-depth-chart/1907557']
+];
+
+/* =================== BUILD FLAT ROWS =================== */
+function fmt(n){ return (n===null || n===undefined || n==='') ? '<span class="muted">—</span>' : n; }
+function esc(s){ return (s===null||s===undefined) ? '' : String(s); }
+
+const allRows = [];
+teams.forEach(t=>{
+  t.rbs.forEach(r=>{
+    allRows.push({
+      team:t.code, teamName:t.name, pos:'RB', player:r.name, depth:r.depth,
+      fpts: (typeof r.fpts==='number') ? r.fpts : null,
+      volume: r.vol || '', role: r.role || '', split: t.split || '',
+      injury: r.injury || '', sleeper: r.slp || 0, note: r.note || '',
+      cls: t.rbClass
+    });
+  });
+  t.wrs.forEach(w=>{
+    let slpNum = 0;
+    if(typeof w.slp === 'string'){
+      if(/priority/i.test(w.slp)) slpNum = 3;
+      else if(/sleeper/i.test(w.slp)) slpNum = 2;
+    }
+    allRows.push({
+      team:t.code, teamName:t.name, pos:'WR', player:w.name, depth:w.depth,
+      fpts: (typeof w.fpts==='number') ? w.fpts : null,
+      volume: w.targets ? w.targets+' tgt' : '', role: w.role || '', split:'—',
+      injury: w.injury || '', sleeper: slpNum, note: w.note || w.slp || '',
+      cls: null
+    });
+  });
+});
+
+/* =================== MASTER TABLE =================== */
+let masterSort = {key:'team', dir:1};
+function starStr(n){ return n>0 ? '⭐'.repeat(n) : '<span class="muted">—</span>'; }
+
+function renderMaster(){
+  const q = document.getElementById('searchBox').value.toLowerCase();
+  const posF = document.getElementById('posFilter').value;
+  const teamF = document.getElementById('teamFilter').value;
+  const slpF = document.getElementById('sleeperFilter').value;
+
+  let rows = allRows.filter(r=>{
+    if(posF && r.pos!==posF) return false;
+    if(teamF && r.team!==teamF) return false;
+    if(slpF && r.sleeper < Number(slpF)) return false;
+    if(q){
+      const hay = (r.player+' '+r.team+' '+r.teamName+' '+r.role+' '+r.note).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  rows.sort((a,b)=>{
+    let k = masterSort.key, va=a[k], vb=b[k];
+    if(k==='fpts'){ va = va===null?-1:va; vb = vb===null?-1:vb; }
+    if(typeof va === 'string') va = va.toLowerCase();
+    if(typeof vb === 'string') vb = vb.toLowerCase();
+    if(va<vb) return -1*masterSort.dir;
+    if(va>vb) return 1*masterSort.dir;
+    return 0;
+  });
+
+  document.getElementById('rowCount').textContent = rows.length + ' rows';
+  document.getElementById('masterBody').innerHTML = rows.map(r=>`
+    <tr>
+      <td><span class="pos-pill">${r.team}</span></td>
+      <td>${r.pos}</td>
+      <td class="player">${esc(r.player)}</td>
+      <td>${esc(r.depth)}</td>
+      <td class="num">${r.fpts!==null ? r.fpts.toFixed(1) : '<span class="muted">—</span>'}</td>
+      <td class="small">${fmt(r.volume)}</td>
+      <td class="small">${fmt(r.role)}</td>
+      <td class="small">${fmt(r.split)}</td>
+      <td class="small">${fmt(r.injury)}</td>
+      <td>${starStr(r.sleeper)}</td>
+      <td class="small">${fmt(r.note)}</td>
+    </tr>
+  `).join('');
+}
+
+document.querySelectorAll('#masterTable thead th').forEach(th=>{
+  th.addEventListener('click', ()=>{
+    const key = th.dataset.key;
+    if(masterSort.key===key) masterSort.dir *= -1; else { masterSort.key=key; masterSort.dir=1; }
+    renderMaster();
+  });
+});
+['searchBox','posFilter','teamFilter','sleeperFilter'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', renderMaster);
+});
+
+// populate team filter options
+const teamFilterSel = document.getElementById('teamFilter');
+teams.map(t=>t.code).forEach(code=>{
+  const o = document.createElement('option'); o.value=code; o.textContent=code;
+  teamFilterSel.appendChild(o);
+});
+
+/* =================== BACKFIELD SUMMARY TABLE =================== */
+function renderBF(){
+  const q = document.getElementById('bfSearch').value.toLowerCase();
+  let rows = bfSummary.filter(r=>{
+    if(!q) return true;
+    const hay = (r.team+' '+r.rb1+' '+r.rb2+' '+r.best+' '+r.explain).toLowerCase();
+    return hay.includes(q);
+  });
+  document.getElementById('bfCount').textContent = rows.length + ' teams';
+  document.getElementById('bfBody').innerHTML = rows.map(r=>`
+    <tr>
+      <td><span class="pos-pill">${r.team}</span></td>
+      <td class="player">${esc(r.rb1)}</td>
+      <td>${esc(r.rb2)}</td>
+      <td class="small">${esc(r.split)}</td>
+      <td class="small">${esc(r.gl)}</td>
+      <td class="small">${esc(r.pd)}</td>
+      <td><span class="badge ${CLASS_BADGE[r.cls]}">${CLASS_LABEL[r.cls]}</span></td>
+      <td class="small">${esc(r.best)}</td>
+      <td class="small">${esc(r.handcuff)}</td>
+      <td class="small">${esc(r.explain)}</td>
+    </tr>
+  `).join('');
+}
+document.getElementById('bfSearch').addEventListener('input', renderBF);
+
+let bfSort = null;
+document.querySelectorAll('#bfTable thead th').forEach(th=>{
+  th.addEventListener('click', ()=>{
+    const key = th.dataset.key;
+    const dir = (bfSort && bfSort.key===key) ? -bfSort.dir : 1;
+    bfSort = {key,dir};
+    bfSummary.sort((a,b)=>{
+      let va=(a[key]||'').toString().toLowerCase(), vb=(b[key]||'').toString().toLowerCase();
+      if(va<vb) return -1*dir; if(va>vb) return 1*dir; return 0;
+    });
+    renderBF();
+  });
+});
+
+/* =================== TEAM CARDS =================== */
+const DIVISIONS = ['AFC East','AFC North','AFC South','AFC West','NFC East','NFC North','NFC South','NFC West'];
+function renderTeams(){
+  const container = document.getElementById('teamsContainer');
+  container.innerHTML = DIVISIONS.map(div=>{
+    const inDiv = teams.filter(t=>t.div===div);
+    return `<div class="division-block">
+      <div class="division-title">${div}</div>
+      <div class="team-grid">
+        ${inDiv.map(t=>`
+          <details class="team-card" id="team-${t.code}">
+            <summary>
+              <span class="tcode">${t.code}</span>
+              <span class="tname">${t.name}</span>
+              <span class="badge ${CLASS_BADGE[t.rbClass]}">${CLASS_LABEL[t.rbClass]}</span>
+              <span class="chev">&#9654;</span>
+            </summary>
+            <div class="team-body">
+              <div>
+                <div class="group-label">Running Backs &middot; split ${esc(t.split)}</div>
+                ${t.rbs.map(r=>`
+                  <div class="rb-row">
+                    <div class="row-top"><span class="name">${esc(r.name)} <span class="pos-pill">${esc(r.depth)}</span></span><span class="fpts">${r.fpts?('PPR proj '+r.fpts.toFixed(1)):''}</span></div>
+                    <div class="small">${esc(r.role)}</div>
+                    <div class="row-meta">
+                      <span class="tagchip">GL: ${esc(r.gl)}</span>
+                      <span class="tagchip">3rd down: ${esc(r.pd)}</span>
+                      <span class="tagchip">Injury: ${esc(r.injury)}</span>
+                      <span class="tagchip">Secure: ${esc(r.secure)}</span>
+                      ${r.slp?`<span class="tagchip">${'⭐'.repeat(r.slp)} sleeper</span>`:''}
+                    </div>
+                    ${r.note?`<div class="row-note">${esc(r.note)}</div>`:''}
+                  </div>
+                `).join('')}
+              </div>
+              <div>
+                <div class="group-label">Wide Receivers</div>
+                ${t.wrs.map(w=>`
+                  <div class="wr-row">
+                    <div class="row-top"><span class="name">${esc(w.name)} <span class="pos-pill">${esc(w.depth)}</span></span><span class="fpts">${w.fpts?('PPR proj '+w.fpts.toFixed(1)):''}</span></div>
+                    <div class="small">${esc(w.role)}</div>
+                    <div class="row-meta">
+                      <span class="tagchip">Injury: ${esc(w.injury)}</span>
+                      <span class="tagchip">Secure: ${esc(w.secure)}</span>
+                      ${w.slp && w.slp!=='—' ? `<span class="tagchip">${esc(w.slp)}</span>`:''}
+                    </div>
+                    ${w.note?`<div class="row-note">${esc(w.note)}</div>`:''}
+                  </div>
+                `).join('')}
+              </div>
+              <div class="team-note">${esc(t.note)}</div>
+            </div>
+          </details>
+        `).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* =================== SLEEPERS =================== */
+function renderSleepers(){
+  const tiers = [3,2,1];
+  const labels = {3:'⭐⭐⭐ Priority Target',2:'⭐⭐ Strong Sleeper',1:'⭐ Sleeper'};
+  document.getElementById('sleeperContainer').innerHTML = tiers.map(tier=>{
+    const items = sleepers.filter(s=>s.stars===tier);
+    if(!items.length) return '';
+    return `<div class="sleeper-tier">
+      <h3>${labels[tier]}</h3>
+      <div class="sleeper-grid">
+        ${items.map(s=>`
+          <div class="sleeper-card">
+            <div class="sname">${esc(s.name)}</div>
+            <div class="steam">${esc(s.team)}</div>
+            <p>${esc(s.why)}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* =================== RANKINGS =================== */
+function renderRankings(){
+  document.getElementById('rankGrid').innerHTML = rankings.map(r=>`
+    <div class="rank-card">
+      <h3>${r.icon} ${esc(r.title)}</h3>
+      <ol>${r.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ol>
+    </div>
+  `).join('');
+}
+
+/* =================== SOURCES =================== */
+function renderSources(){
+  document.getElementById('sourceList').innerHTML = sources.map(([title,url])=>
+    `<li><a href="${url}" target="_blank" rel="noopener">${esc(title)}</a></li>`
+  ).join('');
+}
+
+/* =================== NAV ACTIVE STATE =================== */
+function setupNav(){
+  const links = document.querySelectorAll('nav.sub a');
+  const secs = Array.from(links).map(l=>document.querySelector(l.getAttribute('href')));
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        const id = '#'+en.target.id;
+        links.forEach(l=>l.classList.toggle('active', l.getAttribute('href')===id));
+      }
+    });
+  }, {rootMargin:'-40% 0px -55% 0px'});
+  secs.forEach(s=>{ if(s) io.observe(s); });
+}
+
+/* =================== INIT =================== */
+renderMaster();
+renderBF();
+renderTeams();
+renderSleepers();
+renderRankings();
+renderSources();
+setupNav();
+</script>
+

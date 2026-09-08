@@ -159,6 +159,21 @@ section{scroll-margin-top:56px; margin-bottom:64px}
   font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);
   margin-left:auto; padding:6px 2px;
 }
+.toolbar label.check-inline{
+  display:flex; align-items:center; gap:6px; font-size:13px; color:var(--ink-soft);
+  white-space:nowrap; cursor:pointer; padding:0 2px;
+}
+.toolbar label.check-inline input{accent-color:var(--accent); cursor:pointer}
+.btn-ghost{
+  background:var(--surface-2); border:1px solid var(--border); color:var(--ink-soft);
+  padding:8px 12px; border-radius:8px; font-size:13px; cursor:pointer; font-family:inherit; white-space:nowrap;
+}
+.btn-ghost:hover{color:var(--ink); background:var(--surface-3)}
+.btn-link{
+  background:none; border:none; color:var(--ink-faint); font-family:inherit; font-size:12px;
+  cursor:pointer; text-decoration:underline; padding:6px 2px; white-space:nowrap;
+}
+.btn-link:hover{color:var(--avoid)}
 
 /* ---------- tables ---------- */
 .table-scroll{overflow-x:auto; border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); background:var(--surface)}
@@ -186,6 +201,24 @@ a.plink{color:inherit; text-decoration:none; border-bottom:1px solid transparent
 a.plink:hover{border-bottom-color:currentColor}
 a.plink:visited{color:inherit}
 
+/* ---------- draft tracker / watchlist ---------- */
+th.col-icon, td.col-icon{width:30px; text-align:center; padding:9px 4px; cursor:default}
+.icon-btn{
+  background:none; border:none; cursor:pointer; font-size:16px; line-height:1;
+  color:var(--ink-faint); padding:2px; font-family:inherit;
+}
+.icon-btn:hover{color:var(--gold)}
+.icon-btn.active{color:var(--gold)}
+input.draft-check{width:15px; height:15px; accent-color:var(--accent); cursor:pointer; vertical-align:middle}
+tr.is-drafted td{opacity:.42}
+tr.is-drafted td:not(.col-icon){text-decoration:line-through; text-decoration-color:var(--ink-faint)}
+.drafted-tag{
+  display:inline-block; font-size:9.5px; font-family:'IBM Plex Mono',monospace; font-weight:600;
+  color:var(--ink-faint); border:1px solid var(--border); border-radius:4px; padding:1px 5px;
+  margin-left:6px; vertical-align:middle; letter-spacing:.03em;
+}
+.drafted-tag.watch-tag{color:var(--gold); border-color:var(--gold)}
+
 /* ---------- player card modal ---------- */
 .modal-overlay{
   position:fixed; inset:0; background:rgba(10,16,10,.55); backdrop-filter:blur(1px);
@@ -208,6 +241,15 @@ a.plink:visited{color:inherit}
 }
 .pm-name{font-family:'Oswald',sans-serif; font-size:24px; font-weight:600; line-height:1.1}
 .pm-sub{font-size:12.5px; color:var(--ink-soft); margin-top:3px}
+.pm-actions{display:flex; gap:8px; margin:14px 0 0; flex-wrap:wrap}
+.pm-watch-btn{
+  background:var(--surface-2); border:1px solid var(--border); border-radius:20px;
+  padding:6px 14px; font-size:12.5px; cursor:pointer; color:var(--ink-soft);
+  display:inline-flex; align-items:center; gap:6px; font-family:inherit;
+}
+.pm-watch-btn:hover{color:var(--ink)}
+.pm-watch-btn.active{color:var(--gold); border-color:var(--gold)}
+.pm-watch-btn.drafted.active{color:var(--accent); border-color:var(--accent)}
 .pm-badges{display:flex; gap:6px; flex-wrap:wrap; margin:14px 0}
 .pm-stats{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 0 16px}
 .pm-stat{background:var(--surface-2); border-radius:10px; padding:10px 12px}
@@ -240,6 +282,15 @@ a.plink:visited{color:inherit}
   font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);
 }
 .division-title::after{content:""; flex:1; height:1px; background:var(--border)}
+.division-jump{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 18px}
+.division-jump a{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+  padding:5px 10px; border-radius:100px; border:1px solid var(--border); color:var(--ink-soft);
+  text-decoration:none; background:var(--surface);
+}
+.division-jump a:hover{color:var(--ink); border-color:var(--accent)}
+.team-grid[data-empty="true"]{display:none}
+.division-block[data-hidden="true"]{display:none}
 .team-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px}
 details.team-card{
   background:var(--surface); border:1px solid var(--border); border-radius:12px;
@@ -339,26 +390,41 @@ footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-
   </div>
 
   <div class="toolbar">
-    <input type="search" id="searchBox" placeholder="Search player, team, or note&hellip;">
+    <input type="search" id="searchBox" placeholder="Search player, team, or note&hellip; (press / to focus)">
     <select id="posFilter">
       <option value="">All positions</option>
       <option value="RB">RB only</option>
       <option value="WR">WR only</option>
     </select>
     <select id="teamFilter"><option value="">All teams</option></select>
+    <select id="tierFilter">
+      <option value="">All backfield tiers</option>
+      <option value="bellcow">🟢 Bell cow</option>
+      <option value="lead">🟡 Lead + sharing</option>
+      <option value="committee">🟠 Committee</option>
+      <option value="avoid">🔴 Unclear/avoid</option>
+    </select>
     <select id="sleeperFilter">
       <option value="">Any sleeper rating</option>
       <option value="3">⭐⭐⭐ Priority target</option>
       <option value="2">⭐⭐ Strong sleeper</option>
       <option value="1">⭐ Sleeper</option>
     </select>
+    <label class="check-inline"><input type="checkbox" id="watchOnly"> Watchlist only</label>
+    <label class="check-inline"><input type="checkbox" id="hideDrafted"> Hide drafted</label>
+    <button type="button" class="btn-ghost" id="resetFilters">Reset filters</button>
     <span class="count-pill" id="rowCount"></span>
+  </div>
+  <div style="display:flex; justify-content:flex-end; margin:-8px 0 12px">
+    <button type="button" class="btn-link" id="clearDrafted" hidden>Clear entire draft board</button>
   </div>
 
   <div class="table-scroll">
     <table id="masterTable">
       <thead>
         <tr>
+          <th class="col-icon" title="Click a star to add a player to your watchlist">★</th>
+          <th class="col-icon" title="Check off players as they're drafted — tracked in this browser, filterable with Hide Drafted">✓</th>
           <th data-key="team">Team</th>
           <th data-key="pos">Pos</th>
           <th data-key="player">Player</th>
@@ -411,6 +477,11 @@ footer{border-top:1px solid var(--border); padding:26px 0 60px; color:var(--ink-
 <section id="teams">
   <div class="section-head"><h2>Team-by-Team Reports</h2><span class="part">Parts 1 &amp; 3</span></div>
   <p class="section-intro">Full backfield breakdown plus the WR pecking order for all 32 teams, grouped by division. Click a team to expand. Where beat reporters and depth charts disagree, both sides are noted.</p>
+  <div class="toolbar">
+    <input type="search" id="teamSearch" placeholder="Jump to a team, city, or player&hellip;">
+    <span class="count-pill" id="teamCount"></span>
+  </div>
+  <div class="division-jump" id="divisionJump"></div>
   <div id="teamsContainer"></div>
 </section>
 
@@ -457,6 +528,56 @@ const CLASS_LABEL = {
 const CLASS_BADGE = {
   bellcow: 'b-bellcow', lead: 'b-lead', committee: 'b-committee', avoid: 'b-avoid'
 };
+
+/* =================== DRAFT TRACKER / WATCHLIST ===================
+   Purely client-side, this-browser-only state for using the sheet live on
+   draft day: star a player to watchlist them, check them off once they're
+   drafted. Stored in localStorage so it survives a page refresh but never
+   leaves this device — there's no backend here. Keyed by the same
+   normalized key() used everywhere else so it lines up with ESPN_ID/
+   STATS_2025/ADP_10TEAM lookups regardless of which view toggled it. */
+const LS_DRAFTED = 'snapcount_drafted_v1';
+const LS_WATCH = 'snapcount_watch_v1';
+function loadTrackedSet(k){
+  try{
+    const raw = localStorage.getItem(k);
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  }catch(e){ return new Set(); }
+}
+function saveTrackedSet(k, set){
+  try{ localStorage.setItem(k, JSON.stringify(Array.from(set))); }catch(e){ /* best-effort only */ }
+}
+let draftedSet = loadTrackedSet(LS_DRAFTED);
+let watchSet = loadTrackedSet(LS_WATCH);
+function isDrafted(name){ return draftedSet.has(key(name)); }
+function isWatched(name){ return watchSet.has(key(name)); }
+function toggleDrafted(name){
+  const k = key(name);
+  if(draftedSet.has(k)) draftedSet.delete(k); else draftedSet.add(k);
+  saveTrackedSet(LS_DRAFTED, draftedSet);
+}
+function toggleWatch(name){
+  const k = key(name);
+  if(watchSet.has(k)) watchSet.delete(k); else watchSet.add(k);
+  saveTrackedSet(LS_WATCH, watchSet);
+}
+// A small read-only tag pair shown next to a player's name outside the Master Table
+// (team cards, sleeper cards, backfield summary) so tracker state stays visible everywhere,
+// even though the interactive star/checkbox controls only live in the Master Table and modal.
+function trackTags(name){
+  const w = isWatched(name) ? '<span class="drafted-tag watch-tag">★ WATCH</span>' : '';
+  const d = isDrafted(name) ? '<span class="drafted-tag">✓ DRAFTED</span>' : '';
+  return w + d;
+}
+// Re-renders every view that shows tracker state. Cheap enough for a ~350-row sheet;
+// called any time a star or drafted-checkbox is toggled from any view, including the modal.
+function onTrackingChange(activeModalName){
+  renderMaster();
+  renderBF();
+  renderTeams();
+  renderSleepers();
+  if(activeModalName) renderPlayerModal(activeModalName);
+}
 
 const teams = [
 // ---------------- AFC EAST ----------------
@@ -616,10 +737,10 @@ const teams = [
   {name:'Emmett Johnson', depth:'RB3', fpts:null, vol:'Deep bench', role:'Rookie depth', gl:'None', pd:'None', injury:'Healthy', secure:'Deep bench', slp:1, note:'Deep-league dynasty flier only.'}
  ],
  wrs:[
-  {name:'Xavier Worthy', depth:'Interim WR1 (Weeks 1-6)', fpts:null, targets:null, role:'Vertical/slot speed; inherits the top target role while Rice is out', injury:'Healthy', secure:'Yes through the suspension window', slp:'Real early-season value spike', note:'Rashee Rice is suspended the first 6 games — Worthy is the direct target-share beneficiary until Rice returns.'},
-  {name:'Rashee Rice', depth:'WR1 (once eligible)', fpts:267.5, targets:'~97 rec (proj., prorated for a partial season)', role:'True #1 when active', injury:'Suspended first 6 games (personal conduct policy)', secure:'Yes once back', slp:'Buy the discount — talent/role are elite, only games missed are the issue', note:'His per-game rate would rank as a top-tier WR1 — the suspension is the entire story on his ADP.'},
-  {name:'Tyquan Thornton', depth:'WR2/3', fpts:null, targets:null, role:'Depth beneficiary during Rice\'s suspension', injury:'Healthy', secure:'Temporary bump', slp:'Deep-league only, tied to Rice\'s absence', note:''}
- ], note:'The Rice suspension is the single most important WR-market inefficiency on this board — plan your bye-week-style math around games 1-6.'},
+  {name:'Rashee Rice', depth:'WR1', fpts:null, targets:null, role:'Entrenched #1, full route tree, target hog when on the field', injury:'Healthy — fully cleared from an offseason knee procedure', secure:'Yes — no games missed to start 2026', slp:'—', note:'Served a 6-game suspension in 2025 (personal conduct policy) — that\'s fully resolved, and the NFL reviewed his case again in April 2026 and assessed no further discipline. He is NOT suspended in 2026; some 2025-vintage rankings/discussion may still incorrectly reflect a missed-games discount from last year — ignore that, he\'s a clean 17-game WR1.'},
+  {name:'Xavier Worthy', depth:'WR2', fpts:null, targets:null, role:'Field-stretching #2 opposite Rice, plays every week regardless of Rice\'s health', injury:'Healthy', secure:'Yes — clear #2, no longer suspension-dependent', slp:'—', note:'Camp reports still question his route-running consistency and drops entering Year 2 — worth confirming he holds the #2 job through preseason, but there is no suspension tied to his role.'},
+  {name:'Tyquan Thornton', depth:'WR3/4', fpts:null, targets:null, role:'Standard depth/special-teams-adjacent WR', injury:'Healthy', secure:'No — normal WR4 competing with Royals/Allen for snaps', slp:'—', note:''}
+ ], note:'Rice is back to a full, suspension-free season in 2026 — the 2025 six-game ban is fully served and the NFL closed the book on further discipline in April. Treat him as a clean WR1 with real WR1 volume, not a discounted asset.'},
 
 {code:'LV', name:'Las Vegas Raiders', div:'AFC West', rbClass:'bellcow', split:'Jeanty ~85% / Washington ~10% (est.)',
  rbs:[
@@ -645,16 +766,16 @@ const teams = [
  ], note:'Publicly stated committee plans make this a lead-back-plus-real-passing-down-back situation rather than a clean bell cow, despite Hampton\'s name value.'},
 
 // ---------------- NFC EAST ----------------
-{code:'DAL', name:'Dallas Cowboys', div:'NFC East', rbClass:'lead', split:'Williams ~70% / Blue ~25% (est.)',
+{code:'DAL', name:'Dallas Cowboys', div:'NFC East', rbClass:'lead', split:'Williams ~70% / Davis ~20% (est.)',
  rbs:[
   {name:'Javonte Williams', depth:'RB1', fpts:null, vol:'Lead role', role:'Early-down/lead back', gl:'Primary', pd:'Shared', injury:'Healthy', secure:'Yes, for now', slp:0, note:''},
-  {name:'Jaydon Blue', depth:'RB2', fpts:null, vol:'Passing-down/change-of-pace', role:'Receiving back', gl:'Rare', pd:'Primary', injury:'Healthy', secure:'Clear #2', slp:1, note:'Real weekly-flex appeal in a pass-funnel offense if Williams struggles.'}
+  {name:'Malik Davis', depth:'RB2', fpts:null, vol:'Change-of-pace/passing-down', role:'Backup back — won the RB2 job over 2025 5th-round rookie Jaydon Blue in final roster cuts (Aug 30, 2026) on reliability, ball security, and special-teams value', gl:'Rare', pd:'Primary', injury:'Healthy', secure:'Clear #2', slp:1, note:'Undrafted free agent who has quietly out-produced more hyped camp competition — realistic deep-league/handcuff value behind Williams.'}
  ],
  wrs:[
   {name:'CeeDee Lamb', depth:'WR1', fpts:272.5, targets:null, role:'Alpha target', injury:'Healthy', secure:'Yes', slp:'—', note:''},
   {name:'George Pickens', depth:'WR1b/WR2', fpts:null, targets:null, role:'Offseason addition; genuinely competes with Lamb for the top target role', injury:'Healthy', secure:'Yes', slp:'—', note:'Two true WR1-caliber targets in one offense — good for both in a pass-funnel game plan, caps each other\'s ceiling slightly.'},
   {name:'Ryan Flournoy', depth:'WR3', fpts:null, targets:null, role:'Depth/slot', injury:'Healthy', secure:'Competing', slp:'Deep watch', note:''}
- ], note:'A pass-funnel offense with two big-bodied outside WRs makes Blue an interesting change-of-pace value if Williams stumbles.'},
+ ], note:'Dallas surprisingly waived RB2 Jaydon Blue in final roster cuts (Aug 30, 2026) despite a strong preseason — he later signed to Philadelphia\'s practice squad and is off Dallas\'s roster entirely. Malik Davis, a reliable UDFA, is now the clear #2 back behind Williams in this pass-funnel offense.'},
 
 {code:'NYG', name:'New York Giants', div:'NFC East', rbClass:'lead', split:'Skattebo ~75% / Tracy+Harris ~20% combined (est.)',
  rbs:[
@@ -714,16 +835,17 @@ const teams = [
   {name:'Isaac TeSlaa', depth:'WR3', fpts:null, targets:null, role:'Depth', injury:'Healthy', secure:'Competing', slp:'Deep watch', note:''}
  ], note:'Gibbs is the top overall fantasy running back on this entire board.'},
 
-{code:'GB', name:'Green Bay Packers', div:'NFC North', rbClass:'bellcow', split:'Jacobs ~78% / Lloyd ~18% (est.)',
+{code:'GB', name:'Green Bay Packers', div:'NFC North', rbClass:'avoid', split:'Genuinely unresolved — Jacobs\' 2026 availability is in real question; Lloyd is the presumptive lead if he\'s out, with Johnson/Brooks as depth',
  rbs:[
-  {name:'Josh Jacobs', depth:'RB1', fpts:null, vol:'Lead + goal-line', role:'Every-down/short-yardage back', gl:'Primary', pd:'Some', injury:'Healthy', secure:'Yes', slp:0, note:''},
-  {name:'MarShawn Lloyd', depth:'RB2', fpts:null, vol:'Change-of-pace', role:'Complementary back', gl:'Rare', pd:'Some', injury:'Healthy', secure:'Clear #2', slp:1, note:''}
+  {name:'Josh Jacobs', depth:'RB1 (status uncertain)', fpts:null, vol:'Lead + goal-line, if/when active', role:'Every-down/short-yardage back — but the season-long projection numbers on this board assume a full season and do NOT price in the absence described below', gl:'Primary, if active', pd:'Some', injury:'Placed on the NFL\'s Commissioner\'s Exempt List on Aug 30, 2026, following a May arrest; charges have since been reduced to two misdemeanors (battery and criminal damage to property). He cannot practice or play while on the list.', secure:'No — genuinely uncertain. HC Matt LaFleur said (late Aug) he "fully anticipated" Jacobs remaining with the team but could not confirm regular-season availability; GM Brian Gutekunst has said the team is preparing for the possibility of further discipline.', slp:0, note:'Do not draft him at his old bell-cow price without pricing in real downside — this is an evolving legal situation, not a normal injury, and there is no confirmed return timeline.'},
+  {name:'MarShawn Lloyd', depth:'RB1 (presumptive, while Jacobs is out)', fpts:null, vol:'Would inherit lead work', role:'Presumptive early-down/lead back for as long as Jacobs is unavailable', gl:'Primary, while Jacobs is out', pd:'Some', injury:'Healthy', secure:'Yes, for now — but GB traded for Kaleb Johnson as a hedge the same day Jacobs was placed on the exempt list, and Chris Brooks is also in the mix, so this isn\'t a clean bell-cow claim yet', slp:2, note:'The most actionable value play on this board if Jacobs stays out — real lead-role volume at a depth-chart price.'},
+  {name:'Kaleb Johnson', depth:'RB (depth/insurance)', fpts:null, vol:'Committee piece for now', role:'Acquired via trade from Pittsburgh on Aug 30, 2026 — the same day Jacobs went on the exempt list — brought in specifically as insurance/depth', gl:'Unclear', pd:'Unclear', injury:'Healthy', secure:'No — limited rookie usage in Pittsburgh (28 att for 69 yds, 1 rec for 9 yds, 0 TD across 10 games in 2025) and reporting has the backfield "headlined by" Lloyd and Chris Brooks ahead of him for now', slp:1, note:'Speculative stash rather than an immediate fantasy factor, but worth a bench spot in deeper leagues given how unsettled this backfield is.'}
  ],
  wrs:[
   {name:'Christian Watson', depth:'WR1', fpts:null, targets:null, role:"Now Jordan Love's primary deep threat after Doubs and Wicks both left this offseason", injury:'Healthy, previously returning from an ACL tear — efficiency (2.67 yds/route) has held up', secure:'Yes', slp:'Sleeper — role vacancy plus proven per-target efficiency', note:''},
   {name:'Matthew Golden', depth:'WR2', fpts:null, targets:null, role:'Year 2, HC Matt LaFleur reportedly tightening the rotation to feature him as the primary X', injury:'Healthy', secure:'Yes', slp:'Sleeper — "true league-winning upside" per analysts if the rotation call holds', note:''},
   {name:'Jayden Reed', depth:'WR3', fpts:null, targets:null, role:'Slot/gadget, competing in a genuinely deep but muddled room', injury:'Healthy', secure:'Competing', slp:'Target-share risk from the crowded room', note:''}
- ], note:'A deep, talented WR room with real target-share ambiguity below Watson/Golden — don\'t assume a clean pecking order.'},
+ ], note:'Josh Jacobs\' legal situation (see RB notes) is the swing factor for this entire backfield heading into Week 1 — treat every GB running back as volatile until there\'s a resolution. Separately, the WR room behind Watson/Golden remains deep and muddled, with real target-share ambiguity below the top two.'},
 
 {code:'MIN', name:'Minnesota Vikings', div:'NFC North', rbClass:'lead', split:'Jones ~55% / Mason ~40% (est., and trending toward Mason)',
  rbs:[
@@ -850,13 +972,13 @@ const bfSummary = [
  {team:'KC', rb1:'Kenneth Walker III', rb2:'Emari Demercado', split:'~70/20', gl:'Walker', pd:'Demercado', cls:'lead', best:'Kenneth Walker III', handcuff:'Emari Demercado', explain:'One of the best value FA RB signings of the offseason.'},
  {team:'LV', rb1:'Ashton Jeanty', rb2:'Mike Washington Jr.', split:'~85/10', gl:'Jeanty', pd:'Jeanty', cls:'bellcow', best:'Ashton Jeanty', handcuff:'Mike Washington Jr.', explain:'Rookie workhorse; O-line play is the only ceiling question.'},
  {team:'LAC', rb1:'Omarion Hampton', rb2:'Keaton Mitchell', split:'Hampton lead, but OC has floated a hot-hand rotation (est. 55-60/25)', gl:'Hampton', pd:'Mitchell', cls:'lead', best:'Omarion Hampton', handcuff:'Keaton Mitchell', explain:'McDaniel has publicly hedged on a workhorse plan.'},
- {team:'DAL', rb1:'Javonte Williams', rb2:'Jaydon Blue', split:'~70/25', gl:'Williams', pd:'Blue', cls:'lead', best:'Javonte Williams', handcuff:'Jaydon Blue', explain:'Blue has real weekly-flex appeal in a pass-funnel offense.'},
+ {team:'DAL', rb1:'Javonte Williams', rb2:'Malik Davis', split:'~70/20', gl:'Williams', pd:'Davis', cls:'lead', best:'Javonte Williams', handcuff:'Malik Davis', explain:'Dallas waived 2025 5th-rounder Jaydon Blue in final cuts (Aug 30, 2026); Davis, an undrafted free agent, won the RB2 job on reliability and special-teams value.'},
  {team:'NYG', rb1:'Cam Skattebo', rb2:'Tyrone Tracy Jr.', split:'~75/20', gl:'Skattebo', pd:'Skattebo', cls:'lead', best:'Cam Skattebo', handcuff:'Tyrone Tracy Jr. (Najee Harris a stash if he rounds into shape)', explain:'Clean lead; the subplot is Harris pushing for the #2 job later in the year.'},
  {team:'PHI', rb1:'Saquon Barkley', rb2:'Tank Bigsby', split:'~85/12', gl:'Barkley', pd:'Barkley', cls:'bellcow', best:'Saquon Barkley', handcuff:'Tank Bigsby', explain:'One of the safest bell cows on the board.'},
  {team:'WAS', rb1:'Jacory Croskey-Merritt', rb2:'Rachaad White', split:'Genuinely unsettled, six backs in camp', gl:'Contested', pd:'Contested', cls:'avoid', best:'Jacory Croskey-Merritt (nominal)', handcuff:'Rachaad White / Kaytron Allen', explain:'"Someone worthy of a role is getting cut" — the messiest room in the league.'},
  {team:'CHI', rb1:"D'Andre Swift", rb2:'Kyle Monangai', split:'Uncertain — both banged up (est. 55/30 if both healthy)', gl:'Swift', pd:'Swift', cls:'lead', best:"D'Andre Swift (if healthy)", handcuff:'Kyle Monangai', explain:'Unusually, both RBs are hurt entering Week 1 — check practice reports.'},
  {team:'DET', rb1:'Jahmyr Gibbs', rb2:'Isiah Pacheco', split:'~80/15', gl:'Gibbs', pd:'Gibbs', cls:'bellcow', best:'Jahmyr Gibbs', handcuff:'Isiah Pacheco', explain:'The #1 overall fantasy RB per consensus projections.'},
- {team:'GB', rb1:'Josh Jacobs', rb2:'MarShawn Lloyd', split:'~78/18', gl:'Jacobs', pd:'Jacobs', cls:'bellcow', best:'Josh Jacobs', handcuff:'MarShawn Lloyd', explain:'Clean every-down/goal-line role.'},
+ {team:'GB', rb1:'MarShawn Lloyd', rb2:'Kaleb Johnson', split:'Unresolved — Jacobs (nominal RB1) is on the Commissioner\'s Exempt List, availability uncertain', gl:'Lloyd, while Jacobs is out', pd:'Lloyd', cls:'avoid', best:'MarShawn Lloyd (presumptive)', handcuff:'Kaleb Johnson', explain:'Jacobs faces an unresolved legal situation (misdemeanor battery/property-damage charges) that has him off the field indefinitely; GB traded for Johnson as insurance the same day. A genuinely fluid backfield — don\'t price any of these three as a fixed commodity.'},
  {team:'MIN', rb1:'Aaron Jones', rb2:'Jordan Mason', split:'~55/40 and trending toward Mason', gl:'Jones', pd:'Jones', cls:'lead', best:'Aaron Jones (Mason if Jones sits)', handcuff:'Jordan Mason', explain:'Mason is an analytics-community favorite even without a Jones injury.'},
  {team:'ATL', rb1:'Bijan Robinson', rb2:'Brian Robinson Jr.', split:'~82/14', gl:'Robinson', pd:'Robinson', cls:'bellcow', best:'Bijan Robinson', handcuff:'Brian Robinson Jr.', explain:'A top-2 overall fantasy running back.'},
  {team:'CAR', rb1:'Chuba Hubbard', rb2:'Jonathon Brooks', split:'Hubbard leads early (est. ~60/35)', gl:'Hubbard (for now)', pd:'Unclear', cls:'lead', best:'Chuba Hubbard', handcuff:'Jonathon Brooks', explain:'Organization\'s long-term plan is Brooks if he\'s healthy — track this weekly.'},
@@ -950,6 +1072,7 @@ const rankings = [
    "Ja'Kobi Lane (BAL) ⭐ — rookie camp standout with real snap upside"
  ]},
  {title:'7. Most Important Depth-Chart Battles to Monitor', icon:'👀', items:[
+   'GB: Josh Jacobs\' Commissioner\'s Exempt List status (unresolved legal situation, no return timeline) vs. MarShawn Lloyd/Kaleb Johnson/Chris Brooks as replacements — the single most volatile backfield on this board',
    'PIT: Jaylen Warren vs. Rico Dowdle — depth chart vs. beat-reporter buzz disagree',
    'DEN: Dobbins vs. Harvey vs. Coleman — no resolution in sight',
    'WAS: six-man RB scrum — expect roster cuts to clarify this the week of Week 1',
@@ -959,11 +1082,16 @@ const rankings = [
    'NYG: Tyrone Tracy Jr. vs. Najee Harris for the RB2 job as Harris rounds into shape',
    'CHI: Health of BOTH D\'Andre Swift and Kyle Monangai heading into Week 1',
    'TB: Whether Bucky Irving reclaims any goal-line or receiving work from Gainwell/Tucker',
-   "KC: Rashee Rice's return from suspension (~Week 7) and what it does to Xavier Worthy's target share"
+   "KC: Whether Xavier Worthy holds the clear WR2 job opposite a fully healthy, suspension-free Rashee Rice, or camp questions about his route-running open the door for Thornton/Royals"
  ]}
 ];
 
 const sources = [
+ ['NFL.com — NFL places Packers RB Josh Jacobs on Commissioner\'s Exempt List','https://www.nfl.com/news/nfl-places-packers-rb-josh-jacobs-commissioner-exempt-list'],
+ ['ESPN — Sources: Packers acquire Kaleb Johnson in trade with Steelers','https://www.espn.com/nfl/story/_/id/49774343/sources-packers-acquire-kaleb-johnson-trade-steelers'],
+ ['CBS Sports — Kaleb Johnson trade grades: Packers gain Josh Jacobs insurance','https://www.cbssports.com/nfl/news/kaleb-johnson-traded-to-packers-josh-jacobs-insurance/'],
+ ['Yahoo Sports — Cowboys\' surprising decision to cut Jaydon Blue','https://sports.yahoo.com/articles/cowboys-surprising-decision-cut-jaydon-180603307.html'],
+ ['FantasyPros — Jaydon Blue signs with Eagles practice squad','https://www.fantasypros.com/nfl/news/605162/jaydon-blue-signs-with-eagles-practice-squad.php'],
  ['FantasyFootballCalculator — 10-Team PPR ADP (live mock drafts, Aug 28–Sept 4 2026)','https://fantasyfootballcalculator.com/adp/ppr/10-team/all/2026'],
  ['Pro-Football-Reference — 2025 NFL Fantasy Stats (season totals)','https://www.pro-football-reference.com/years/2025/fantasy.htm'],
  ['FantasyPros — 2026 PPR RB Projections','https://www.fantasypros.com/nfl/projections/rb.php?week=draft&scoring=PPR'],
@@ -979,7 +1107,8 @@ const sources = [
  ['Steeler Nation — Warren/Dowdle Sept. 3 update','https://www.steelernation.com/2026/09/03/steelers-jaylen-warren-surprising-defense'],
  ['Bleacher Report — Breece Hall injury timeline','https://bleacherreport.com/articles/25474387-breece-halls-injury-return-timeline-updated-jets-aaron-glenn-after-groin-setback'],
  ['Bleacher Report — Christian McCaffrey injury update','https://bleacherreport.com/articles/25481651-christian-mccaffrey-injury-update-latest-49ers-stars-practice-status-ahead-2026-nfl-season'],
- ['CBS Sports — Rashee Rice suspended six games','https://www.cbssports.com/nfl/news/rashee-rice-suspension-chiefs-wr-to-miss-first-six-games-of-season-as-part-of-disciplinary-action'],
+ ['Pro Football Rumors — Rashee Rice will not face further NFL suspension for 2026','https://www.profootballrumors.com/2026/04/chiefs-rashee-rice-will-not-face-nfl-suspension'],
+ ['A to Z Sports — Rice fully cleared from knee injury, full practice reps at 2026 camp','https://atozsports.com/nfl/kansas-city-chiefs-news/chiefs-rashee-rice-big-step-forward-injury-ramp-2026-nfl-training-camp/'],
  ['Yahoo Sports — Seahawks unofficial depth chart / Jadarian Price','https://sports.yahoo.com/articles/jadarian-price-set-heavy-workload-143916884.html'],
  ['Pro Football Rumors — Jeremiyah Love "50/50" for Week 1','https://www.profootballrumors.com/2026/09/cardinals-rb-jeremiyah-love-50-50-for-week-1'],
  ['FTN Fantasy — Chargers "cold water" on Hampton workload','https://ftnfantasy.com/nfl/chargers-throw-cold-water-on-omarion-hamptons-workload'],
@@ -1063,6 +1192,7 @@ const ESPN_ID = {
  'ladd mcconkey':{id:4612826,slug:'ladd-mcconkey'},'quentin johnston':{id:4429025,slug:'quentin-johnston'},
  'tre harris':{id:4686612,slug:'tre-harris'},'javonte williams':{id:4361579,slug:'javonte-williams'},
  'jaydon blue':{id:4685279,slug:'jaydon-blue'},'ceedee lamb':{id:4241389,slug:'ceedee-lamb'},
+ 'malik davis':{id:4240603,slug:'malik-davis'},
  'george pickens':{id:4426354,slug:'george-pickens'},'ryan flournoy':{id:5083754,slug:'ryan-flournoy'},
  'cam skattebo':{id:4696981,slug:'cam-skattebo'},'tyrone tracy':{id:4360516,slug:'tyrone-tracy-jr'},
  'najee harris':{id:4241457,slug:'najee-harris'},'malik nabers':{id:4595348,slug:'malik-nabers'},
@@ -1078,6 +1208,7 @@ const ESPN_ID = {
  'jahmyr gibbs':{id:4429795,slug:'jahmyr-gibbs'},'isiah pacheco':{id:4361529,slug:'isiah-pacheco'},
  'amon-ra st brown':{id:4374302,slug:'amon-ra-st-brown'},'jameson williams':{id:4426388,slug:'jameson-williams'},
  'isaac teslaa':{id:5123663,slug:'isaac-teslaa'},'josh jacobs':{id:4047365,slug:'josh-jacobs'},
+ 'kaleb johnson':{id:4819231,slug:'kaleb-johnson'},
  'marshawn lloyd':{id:4429023,slug:'marshawn-lloyd'},'christian watson':{id:4248528,slug:'christian-watson'},
  'matthew golden':{id:4701936,slug:'matthew-golden'},'jayden reed':{id:4362249,slug:'jayden-reed'},
  'aaron jones':{id:3042519,slug:'aaron-jones-sr'},'jordan mason':{id:4360569,slug:'jordan-mason'},
@@ -1188,6 +1319,7 @@ const STATS_2025 = {
  'jaxon smith-njigba':{att:7,rushYds:36,rushTD:0,rec:119,recYds:1793,recTD:10,pprPts:359.9},
  'jayden reed':{att:3,rushYds:28,rushTD:0,rec:19,recYds:207,recTD:1,pprPts:48.5},
  'jaydon blue':{att:38,rushYds:129,rushTD:1,rec:1,recYds:5,recTD:0,pprPts:20.4},
+ 'malik davis':{att:52,rushYds:250,rushTD:2,rec:2,recYds:16,recTD:0,pprPts:40.6},
  'jaylen waddle':{att:2,rushYds:28,rushTD:0,rec:64,recYds:910,recTD:6,pprPts:194.1},
  'jaylen warren':{att:211,rushYds:958,rushTD:6,rec:40,recYds:333,recTD:2,pprPts:217.1},
  'jaylen wright':{att:70,rushYds:288,rushTD:2,rec:5,recYds:44,recTD:0,pprPts:50.2},
@@ -1203,6 +1335,7 @@ const STATS_2025 = {
  'jordyn tyson':{rookie:true},
  'josh downs':{att:2,rushYds:-2,rushTD:0,rec:58,recYds:566,recTD:4,pprPts:138.4},
  'josh jacobs':{att:234,rushYds:929,rushTD:13,rec:36,recYds:282,recTD:1,pprPts:237.1},
+ 'kaleb johnson':{att:28,rushYds:69,rushTD:0,rec:1,recYds:9,recTD:0,pprPts:8.8},
  'justice hill':{att:18,rushYds:93,rushTD:2,rec:21,recYds:169,recTD:1,pprPts:65.2},
  'justin jefferson':{att:2,rushYds:7,rushTD:0,rec:84,recYds:1048,recTD:2,pprPts:201.5},
  'kalif raymond':{att:2,rushYds:19,rushTD:0,rec:24,recYds:289,recTD:1,pprPts:60.8},
@@ -1504,16 +1637,24 @@ function renderPlayerModal(name){
   let outlook = (p.note && p.note.trim()) ? p.note : (pos==='RB' ? fallbackRBNote(p) : fallbackWRNote(p));
   if(p.projNote) outlook = p.projNote + outlook;
 
-  const rbDepth = t.rbs.map(r=>`<div class="pm-depth-row ${r===p?'me':''}"><span>${esc(r.depth)} &mdash; ${esc(r.name)}</span><span class="r">${esc(r.role||'')}</span></div>`).join('');
-  const wrDepth = t.wrs.map(w=>`<div class="pm-depth-row ${w===p?'me':''}"><span>${esc(w.depth)} &mdash; ${esc(w.name)}</span><span class="r">${esc(w.role||'')}</span></div>`).join('');
+  const rbDepth = t.rbs.map(r=>`<div class="pm-depth-row ${r===p?'me':''}"><span>${esc(r.depth)} &mdash; ${esc(r.name)}${trackTags(r.name)}</span><span class="r">${esc(r.role||'')}</span></div>`).join('');
+  const wrDepth = t.wrs.map(w=>`<div class="pm-depth-row ${w===p?'me':''}"><span>${esc(w.depth)} &mdash; ${esc(w.name)}${trackTags(w.name)}</span><span class="r">${esc(w.role||'')}</span></div>`).join('');
+
+  const safeModalName = esc(p.name).replace(/'/g,"\\'");
+  const watched = isWatched(p.name);
+  const drafted = isDrafted(p.name);
 
   body.innerHTML = `
     <div class="pm-head">
       <div class="pm-avatar">${initials(p.name)}</div>
       <div>
-        <div class="pm-name" id="pmName">${esc(p.name)}</div>
+        <div class="pm-name" id="pmName">${esc(p.name)}${drafted?'<span class="drafted-tag">✓ DRAFTED</span>':''}</div>
         <div class="pm-sub">${esc(t.name)} &middot; ${pos} &middot; ${esc(p.depth)} &middot; split ${esc(t.split||'—')}</div>
       </div>
+    </div>
+    <div class="pm-actions">
+      <button type="button" class="pm-watch-btn ${watched?'active':''}" onclick="toggleWatch('${safeModalName}'); onTrackingChange('${safeModalName}');">${watched?'★ On watchlist':'☆ Add to watchlist'}</button>
+      <button type="button" class="pm-watch-btn drafted ${drafted?'active':''}" onclick="toggleDrafted('${safeModalName}'); onTrackingChange('${safeModalName}');">${drafted?'✓ Drafted':'Mark drafted'}</button>
     </div>
     <div class="pm-badges">${badges}</div>
     <div class="pm-stats">
@@ -1700,12 +1841,18 @@ function renderMaster(){
   const q = document.getElementById('searchBox').value.toLowerCase();
   const posF = document.getElementById('posFilter').value;
   const teamF = document.getElementById('teamFilter').value;
+  const tierF = document.getElementById('tierFilter').value;
   const slpF = document.getElementById('sleeperFilter').value;
+  const watchOnly = document.getElementById('watchOnly').checked;
+  const hideDrafted = document.getElementById('hideDrafted').checked;
 
   let rows = allRows.filter(r=>{
     if(posF && r.pos!==posF) return false;
     if(teamF && r.team!==teamF) return false;
+    if(tierF && r.cls!==tierF) return false;
     if(slpF && r.sleeper < Number(slpF)) return false;
+    if(watchOnly && !isWatched(r.player)) return false;
+    if(hideDrafted && isDrafted(r.player)) return false;
     if(q){
       const hay = (r.player+' '+r.team+' '+r.teamName+' '+r.role+' '+r.note).toLowerCase();
       if(!hay.includes(q)) return false;
@@ -1724,9 +1871,18 @@ function renderMaster(){
     return 0;
   });
 
-  document.getElementById('rowCount').textContent = rows.length + ' rows';
-  document.getElementById('masterBody').innerHTML = rows.map(r=>`
-    <tr>
+  const draftedTotal = draftedSet.size;
+  document.getElementById('rowCount').textContent = rows.length + ' rows shown' + (draftedTotal ? ' · ' + draftedTotal + ' drafted total' : '');
+  document.getElementById('clearDrafted').hidden = draftedTotal === 0;
+
+  document.getElementById('masterBody').innerHTML = rows.map(r=>{
+    const safeName = esc(r.player).replace(/'/g,"\\'");
+    const watched = isWatched(r.player);
+    const drafted = isDrafted(r.player);
+    return `
+    <tr class="${drafted?'is-drafted':''}">
+      <td class="col-icon"><button type="button" class="icon-btn ${watched?'active':''}" onclick="toggleWatch('${safeName}'); onTrackingChange();" title="${watched?'Remove from watchlist':'Add to watchlist'}">${watched?'★':'☆'}</button></td>
+      <td class="col-icon"><input type="checkbox" class="draft-check" ${drafted?'checked':''} onchange="toggleDrafted('${safeName}'); onTrackingChange();" title="Mark drafted"></td>
       <td><span class="pos-pill">${r.team}</span></td>
       <td>${r.pos}</td>
       <td class="player">${espnLink(r.player)}</td>
@@ -1742,18 +1898,40 @@ function renderMaster(){
       <td>${starStr(r.sleeper)}</td>
       <td class="small">${fmt(r.note)}</td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 }
 
-document.querySelectorAll('#masterTable thead th').forEach(th=>{
+document.querySelectorAll('#masterTable thead th[data-key]').forEach(th=>{
   th.addEventListener('click', ()=>{
     const key = th.dataset.key;
     if(masterSort.key===key) masterSort.dir *= -1; else { masterSort.key=key; masterSort.dir=1; }
     renderMaster();
   });
 });
-['searchBox','posFilter','teamFilter','sleeperFilter'].forEach(id=>{
+['searchBox','posFilter','teamFilter','tierFilter','sleeperFilter'].forEach(id=>{
   document.getElementById(id).addEventListener('input', renderMaster);
+});
+['watchOnly','hideDrafted'].forEach(id=>{
+  document.getElementById(id).addEventListener('change', renderMaster);
+});
+document.getElementById('resetFilters').addEventListener('click', ()=>{
+  document.getElementById('searchBox').value = '';
+  document.getElementById('posFilter').value = '';
+  document.getElementById('teamFilter').value = '';
+  document.getElementById('tierFilter').value = '';
+  document.getElementById('sleeperFilter').value = '';
+  document.getElementById('watchOnly').checked = false;
+  document.getElementById('hideDrafted').checked = false;
+  renderMaster();
+});
+document.getElementById('clearDrafted').addEventListener('click', ()=>{
+  if(draftedSet.size === 0) return;
+  if(confirm(`Clear all ${draftedSet.size} players marked drafted? This can't be undone.`)){
+    draftedSet.clear();
+    saveTrackedSet(LS_DRAFTED, draftedSet);
+    onTrackingChange();
+  }
 });
 
 // populate team filter options
@@ -1761,6 +1939,17 @@ const teamFilterSel = document.getElementById('teamFilter');
 teams.map(t=>t.code).forEach(code=>{
   const o = document.createElement('option'); o.value=code; o.textContent=code;
   teamFilterSel.appendChild(o);
+});
+
+// "/" jumps straight to the Master Table search box from anywhere on the page
+document.addEventListener('keydown', (ev)=>{
+  if(ev.key !== '/') return;
+  const tag = document.activeElement && document.activeElement.tagName;
+  if(tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+  ev.preventDefault();
+  const sb = document.getElementById('searchBox');
+  sb.scrollIntoView({block:'center', behavior:'smooth'});
+  sb.focus();
 });
 
 /* =================== BACKFIELD SUMMARY TABLE =================== */
@@ -1775,8 +1964,8 @@ function renderBF(){
   document.getElementById('bfBody').innerHTML = rows.map(r=>`
     <tr>
       <td><span class="pos-pill">${r.team}</span></td>
-      <td class="player">${espnLink(r.rb1)}</td>
-      <td>${espnLink(r.rb2)}</td>
+      <td class="player">${espnLink(r.rb1)}${trackTags(r.rb1)}</td>
+      <td>${espnLink(r.rb2)}${trackTags(r.rb2)}</td>
       <td class="small">${esc(r.split)}</td>
       <td class="small">${esc(r.gl)}</td>
       <td class="small">${esc(r.pd)}</td>
@@ -1805,11 +1994,27 @@ document.querySelectorAll('#bfTable thead th').forEach(th=>{
 
 /* =================== TEAM CARDS =================== */
 const DIVISIONS = ['AFC East','AFC North','AFC South','AFC West','NFC East','NFC North','NFC South','NFC West'];
+function divAnchorId(div){ return 'div-' + div.replace(/\s+/g,'-').toLowerCase(); }
+function renderDivisionJump(){
+  const el = document.getElementById('divisionJump');
+  if(!el) return;
+  el.innerHTML = DIVISIONS.map(div=>`<a href="#${divAnchorId(div)}">${div}</a>`).join('');
+}
 function renderTeams(){
+  const searchEl = document.getElementById('teamSearch');
+  const q = searchEl ? searchEl.value.toLowerCase() : '';
   const container = document.getElementById('teamsContainer');
+  let shownTeams = 0;
   container.innerHTML = DIVISIONS.map(div=>{
-    const inDiv = teams.filter(t=>t.div===div);
-    return `<div class="division-block">
+    const inDiv = teams.filter(t=>t.div===div).filter(t=>{
+      if(!q) return true;
+      const hay = (t.code+' '+t.name+' '+t.div+' '+t.rbs.map(r=>r.name).join(' ')+' '+t.wrs.map(w=>w.name).join(' ')).toLowerCase();
+      return hay.includes(q);
+    });
+    shownTeams += inDiv.length;
+    const divId = divAnchorId(div);
+    if(inDiv.length === 0) return `<div class="division-block" id="${divId}" data-hidden="true"></div>`;
+    return `<div class="division-block" id="${divId}">
       <div class="division-title">${div}</div>
       <div class="team-grid">
         ${inDiv.map(t=>`
@@ -1825,7 +2030,7 @@ function renderTeams(){
                 <div class="group-label">Running Backs &middot; split ${esc(t.split)}</div>
                 ${t.rbs.map(r=>`
                   <div class="rb-row">
-                    <div class="row-top"><span class="name">${espnLink(r.name)} <span class="pos-pill">${esc(r.depth)}</span></span><span class="fpts">${r.fpts?('Season '+r.fpts.toFixed(1)+' &middot; Wk1 '+(r.wk1!==null?r.wk1.toFixed(1)+(r.wk1Sourced?'':'~'):'—')):''}</span></div>
+                    <div class="row-top"><span class="name">${espnLink(r.name)}${trackTags(r.name)} <span class="pos-pill">${esc(r.depth)}</span></span><span class="fpts">${r.fpts?('Season '+r.fpts.toFixed(1)+' &middot; Wk1 '+(r.wk1!==null?r.wk1.toFixed(1)+(r.wk1Sourced?'':'~'):'—')):''}</span></div>
                     <div class="small">${esc(r.role)}</div>
                     <div class="row-meta">
                       <span class="tagchip">GL: ${esc(r.gl)}</span>
@@ -1843,7 +2048,7 @@ function renderTeams(){
                 <div class="group-label">Wide Receivers</div>
                 ${t.wrs.map(w=>`
                   <div class="wr-row">
-                    <div class="row-top"><span class="name">${espnLink(w.name)} <span class="pos-pill">${esc(w.depth)}</span></span><span class="fpts">${w.fpts?('Season '+w.fpts.toFixed(1)+' &middot; Wk1 '+(w.wk1!==null?w.wk1.toFixed(1)+(w.wk1Sourced?'':'~'):'—')):''}</span></div>
+                    <div class="row-top"><span class="name">${espnLink(w.name)}${trackTags(w.name)} <span class="pos-pill">${esc(w.depth)}</span></span><span class="fpts">${w.fpts?('Season '+w.fpts.toFixed(1)+' &middot; Wk1 '+(w.wk1!==null?w.wk1.toFixed(1)+(w.wk1Sourced?'':'~'):'—')):''}</span></div>
                     <div class="small">${esc(w.role)}</div>
                     <div class="row-meta">
                       <span class="tagchip">Injury: ${esc(w.injury)}</span>
@@ -1862,6 +2067,11 @@ function renderTeams(){
       </div>
     </div>`;
   }).join('');
+  const teamCountEl = document.getElementById('teamCount');
+  if(teamCountEl) teamCountEl.textContent = shownTeams + ' / ' + teams.length + ' teams shown';
+}
+if(document.getElementById('teamSearch')){
+  document.getElementById('teamSearch').addEventListener('input', renderTeams);
 }
 
 /* =================== SLEEPERS =================== */
@@ -1876,7 +2086,7 @@ function renderSleepers(){
       <div class="sleeper-grid">
         ${items.map(s=>`
           <div class="sleeper-card">
-            <div class="sname">${espnLink(s.name)}</div>
+            <div class="sname">${espnLink(s.name)}${trackTags(s.name)}</div>
             <div class="steam">${esc(s.team)}</div>
             <p>${esc(s.why)}</p>
           </div>
@@ -1921,6 +2131,7 @@ function setupNav(){
 /* =================== INIT =================== */
 renderMaster();
 renderBF();
+renderDivisionJump();
 renderTeams();
 renderSleepers();
 renderRankings();

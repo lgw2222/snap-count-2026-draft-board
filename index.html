@@ -530,14 +530,20 @@ const CLASS_BADGE = {
 };
 
 /* =================== DRAFT TRACKER / WATCHLIST ===================
-   Purely client-side, this-browser-only state for using the sheet live on
-   draft day: star a player to watchlist them, check them off once they're
-   drafted. Stored in localStorage so it survives a page refresh but never
-   leaves this device — there's no backend here. Keyed by the same
+   Star a player to watchlist them, check them off once they're drafted.
+   State is cached in localStorage (instant, works offline) AND synced to a
+   Firebase Realtime Database at /snapcount, so the same watchlist/drafted
+   list shows up on your phone as on your desktop. Keyed by the same
    normalized key() used everywhere else so it lines up with ESPN_ID/
-   STATS_2025/ADP_10TEAM lookups regardless of which view toggled it. */
+   STATS_2025/ADP_10TEAM lookups regardless of which view toggled it.
+   Cloud sync is best-effort: if it's offline or unreachable, everything
+   still works locally off the localStorage cache. */
 const LS_DRAFTED = 'snapcount_drafted_v1';
 const LS_WATCH = 'snapcount_watch_v1';
+const FIREBASE_DB_URL = 'https://basketball-76f8e.firebaseio.com';
+const SYNC_BASE = FIREBASE_DB_URL + '/snapcount';
+const SYNC_REMOTE_PATH = { [LS_DRAFTED]: 'drafted', [LS_WATCH]: 'watch' };
+
 function loadTrackedSet(k){
   try{
     const raw = localStorage.getItem(k);
@@ -551,15 +557,71 @@ let draftedSet = loadTrackedSet(LS_DRAFTED);
 let watchSet = loadTrackedSet(LS_WATCH);
 function isDrafted(name){ return draftedSet.has(key(name)); }
 function isWatched(name){ return watchSet.has(key(name)); }
+
+// Pushes one key's on/off state to Firebase. Fire-and-forget — the local
+// state (and UI) already updated before this is called, so a slow or failed
+// network request never blocks the interaction; it just means that one
+// toggle doesn't reach your other devices until the next successful sync.
+function cloudSetKey(lsKey, playerKey, on){
+  const remote = SYNC_REMOTE_PATH[lsKey];
+  if(!remote) return;
+  const url = `${SYNC_BASE}/${remote}/${encodeURIComponent(playerKey)}.json`;
+  try{
+    fetch(url, { method: on ? 'PUT' : 'DELETE', body: on ? 'true' : undefined }).catch(()=>{});
+  }catch(e){ /* offline — local state already saved, will resync on next load */ }
+}
 function toggleDrafted(name){
   const k = key(name);
-  if(draftedSet.has(k)) draftedSet.delete(k); else draftedSet.add(k);
+  const nowOn = !draftedSet.has(k);
+  if(nowOn) draftedSet.add(k); else draftedSet.delete(k);
   saveTrackedSet(LS_DRAFTED, draftedSet);
+  cloudSetKey(LS_DRAFTED, k, nowOn);
 }
 function toggleWatch(name){
   const k = key(name);
-  if(watchSet.has(k)) watchSet.delete(k); else watchSet.add(k);
+  const nowOn = !watchSet.has(k);
+  if(nowOn) watchSet.add(k); else watchSet.delete(k);
   saveTrackedSet(LS_WATCH, watchSet);
+  cloudSetKey(LS_WATCH, k, nowOn);
+}
+// Pulls the full /snapcount snapshot from Firebase and makes it the local
+// state. Used on load and whenever a live update arrives from another device.
+function applyCloudSnapshot(snapshot){
+  if(!snapshot || typeof snapshot !== 'object') return;
+  draftedSet = new Set(Object.keys(snapshot.drafted || {}));
+  watchSet = new Set(Object.keys(snapshot.watch || {}));
+  saveTrackedSet(LS_DRAFTED, draftedSet);
+  saveTrackedSet(LS_WATCH, watchSet);
+}
+async function cloudFetchAll(){
+  try{
+    const res = await fetch(SYNC_BASE + '.json');
+    if(!res.ok) return null;
+    return await res.json();
+  }catch(e){ return null; }
+}
+// Pulls the current cloud state once on load, then keeps listening for live
+// updates (Firebase's REST "server-sent events" stream) so a checkbox you
+// tick on desktop shows up on your phone without a manual refresh. If the
+// stream can't connect (offline, blocked, older browser) the page still
+// works fine off the last-synced localStorage cache.
+function startCloudSync(){
+  cloudFetchAll().then(snap=>{
+    if(snap){ applyCloudSnapshot(snap); onTrackingChange(); }
+    else {
+      // Nothing in the cloud yet (fresh database) — seed it from whatever's
+      // already stored locally so the first device to load "wins" the initial state.
+      draftedSet.forEach(k=>cloudSetKey(LS_DRAFTED, k, true));
+      watchSet.forEach(k=>cloudSetKey(LS_WATCH, k, true));
+    }
+  });
+  try{
+    const es = new EventSource(SYNC_BASE + '.json');
+    const resync = ()=>{ cloudFetchAll().then(snap=>{ if(snap){ applyCloudSnapshot(snap); onTrackingChange(); } }); };
+    es.addEventListener('put', resync);
+    es.addEventListener('patch', resync);
+    // no onerror handling needed — EventSource auto-reconnects on its own
+  }catch(e){ /* EventSource unsupported/blocked — local cache still works */ }
 }
 // A small read-only tag pair shown next to a player's name outside the Master Table
 // (team cards, sleeper cards, backfield summary) so tracker state stays visible everywhere,
@@ -2137,5 +2199,6 @@ renderSleepers();
 renderRankings();
 renderSources();
 setupNav();
+startCloudSync();
 </script>
 
